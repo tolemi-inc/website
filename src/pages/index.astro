@@ -1,0 +1,37 @@
+---
+import Base from "../layouts/Base.astro";
+import Hero from "../components/blocks/Hero.astro";
+import Features from "../components/blocks/Features.astro";
+import MapExplorer from "../components/blocks/MapExplorer.astro";
+import CityLogos from "../components/blocks/CityLogos.astro";
+import Stats from "../components/blocks/Stats.astro";
+import CallToAction from "../components/blocks/CallToAction.astro";
+
+import homeData from "../../content/pages/home.json";
+
+// Find specific blocks from the data
+const heroBlock = homeData.blocks.find((b: any) => b._template === "hero");
+const featuresBlock = homeData.blocks.find((b: any) => b._template === "features");
+const statsBlock = homeData.blocks.find((b: any) => b._template === "stats");
+const ctaBlock = homeData.blocks.find((b: any) => b._template === "cta");
+---
+
+<Base title={homeData.title}>
+  {/* Hero + sub-hero CTA */}
+  {heroBlock && <Hero {...heroBlock} />}
+
+  {/* Interactive map explorer (zoom) */}
+  <MapExplorer />
+
+  {/* City logos - Trusted by Cities Nationwide */}
+  <CityLogos />
+
+  {/* Features - Why City Leaders Choose Tolemi */}
+  {featuresBlock && <Features {...featuresBlock} />}
+
+  {/* Stats - Trusted by Growing Cities */}
+  {statsBlock && <Stats {...statsBlock} />}
+
+  {/* CTA - Ready to Transform Your Data? */}
+  {ctaBlock && <CallToAction {...ctaBlock} />}
+</Base>

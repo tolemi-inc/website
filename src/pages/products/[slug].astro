@@ -1,0 +1,56 @@
+---
+import Base from "../../layouts/Base.astro";
+import PageHero from "../../components/blocks/PageHero.astro";
+import ContentSection from "../../components/blocks/ContentSection.astro";
+import CrossLinkCards from "../../components/blocks/CrossLinkCards.astro";
+import CallToAction from "../../components/blocks/CallToAction.astro";
+
+import buildingBlocks from "../../../content/products/building-blocks.json";
+import slate from "../../../content/products/slate.json";
+import publicity from "../../../content/products/publicity.json";
+
+const allProducts = [buildingBlocks, slate, publicity];
+
+export function getStaticPaths() {
+  const products = [buildingBlocks, slate, publicity];
+  return products.map((p) => ({ params: { slug: p.slug }, props: { product: p } }));
+}
+
+const { product } = Astro.props;
+const otherProducts = allProducts.filter((p) => p.slug !== product.slug);
+---
+
+<Base title={product.title}>
+  <PageHero headline={product.headline} subheadline={product.subheadline} />
+
+  <ContentSection body={product.body} />
+
+  {product.features && product.features.length > 0 && (
+    <section class="py-16 md:py-20 px-6">
+      <div class="max-w-5xl mx-auto reveal">
+        <h2 class="font-heading text-3xl md:text-4xl font-bold text-text-primary mb-10 text-center">Key Features</h2>
+        <div class="grid md:grid-cols-2 gap-6">
+          {product.features.map((f) => (
+            <div class="bg-white rounded-2xl border border-black/[0.06] p-8">
+              <h3 class="font-heading text-lg font-semibold text-text-primary mb-2">{f.title}</h3>
+              <p class="text-text-secondary text-sm leading-relaxed">{f.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <CrossLinkCards
+    heading="Other Products"
+    basePath="/products"
+    items={otherProducts.map((p) => ({ title: p.title, slug: p.slug, subheadline: p.subheadline }))}
+  />
+
+  <CallToAction
+    heading="See It in Action"
+    text="Schedule a demo to see how our products work together to power your city."
+    buttonText="Get a Demo"
+    buttonLink="#contact"
+  />
+</Base>

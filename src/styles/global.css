@@ -1,0 +1,149 @@
+@import "tailwindcss";
+
+@theme {
+  /* Typography */
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Raleway", ui-sans-serif, system-ui, sans-serif;
+  --font-logo: "Montserrat", ui-sans-serif, system-ui, sans-serif;
+
+  /* Tolemi Brand Colors */
+  --color-tolemi-green: #37A04F;
+  --color-tolemi-red: #FF0025;
+  --color-tolemi-sky: #4CD5FF;
+  --color-tolemi-yellow: #FFCB1B;
+
+  /* Neutrals */
+  --color-tolemi-dark: #343332;
+  --color-tolemi-light: #F5F5F5;
+
+  /* Semantic surface/text (light mode defaults) */
+  --color-surface: #ffffff;
+  --color-surface-secondary: #F5F5F5;
+  --color-text-primary: #343332;
+  --color-text-secondary: #6b7280;
+  --color-text-muted: #9ca3af;
+
+  /* Green scale (primary) */
+  --color-tolemi-green-50: #f0faf2;
+  --color-tolemi-green-100: #d9f2df;
+  --color-tolemi-green-200: #a8e2b5;
+  --color-tolemi-green-300: #6fcc83;
+  --color-tolemi-green-400: #4ab862;
+  --color-tolemi-green-500: #37A04F;
+  --color-tolemi-green-600: #2d8541;
+  --color-tolemi-green-700: #246b35;
+  --color-tolemi-green-800: #1d5629;
+  --color-tolemi-green-900: #153f1e;
+
+  /* Sky scale (accent) */
+  --color-tolemi-sky-50: #eefbff;
+  --color-tolemi-sky-100: #d4f4ff;
+  --color-tolemi-sky-200: #a8e9ff;
+  --color-tolemi-sky-300: #76dcff;
+  --color-tolemi-sky-400: #4CD5FF;
+  --color-tolemi-sky-500: #1dbfed;
+  --color-tolemi-sky-600: #0e9bc4;
+  --color-tolemi-sky-700: #0a7a9e;
+
+  /* Red scale */
+  --color-tolemi-red-50: #fff0f2;
+  --color-tolemi-red-100: #ffd6db;
+  --color-tolemi-red-200: #ff99a5;
+  --color-tolemi-red-300: #ff5c72;
+  --color-tolemi-red-400: #FF0025;
+  --color-tolemi-red-500: #dd0020;
+  --color-tolemi-red-600: #b3001a;
+
+  /* Yellow scale */
+  --color-tolemi-yellow-50: #fffbeb;
+  --color-tolemi-yellow-100: #fff0c2;
+  --color-tolemi-yellow-200: #ffe494;
+  --color-tolemi-yellow-300: #ffd75c;
+  --color-tolemi-yellow-400: #FFCB1B;
+  --color-tolemi-yellow-500: #e6b200;
+  --color-tolemi-yellow-600: #b38a00;
+
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-float-delayed: float 6s ease-in-out 3s infinite;
+  --animate-fade-in: fadeIn 0.8s ease-out forwards;
+  --animate-fade-in-up: fadeInUp 0.8s ease-out forwards;
+  --animate-fade-in-slow: fadeIn 2s ease-out forwards;
+}
+
+/* Light theme is always used — no automatic dark mode switch */
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Keyframes */
+@keyframes float {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-30px) scale(1.05); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scrollLeft {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* Animation delay utilities */
+.animation-delay-100 { animation-delay: 0.1s; opacity: 0; }
+.animation-delay-200 { animation-delay: 0.2s; opacity: 0; }
+.animation-delay-300 { animation-delay: 0.3s; opacity: 0; }
+
+/* Scroll-reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Feature slide-up: cards rise from below and stack */
+.feature-slide {
+  opacity: 0;
+  transform: translateY(80px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.feature-slide.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Alternating slide directions for inner panels */
+.feature-slide-left {
+  opacity: 0;
+  transform: translateX(-60px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.15s,
+              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.15s;
+}
+.feature-slide-left.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.feature-slide-right {
+  opacity: 0;
+  transform: translateX(60px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.15s,
+              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.15s;
+}
+.feature-slide-right.visible {
+  opacity: 1;
+  transform: translateX(0);
+}

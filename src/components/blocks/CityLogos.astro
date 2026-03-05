@@ -1,0 +1,94 @@
+---
+// City seals — 3 rows, scroll sideways on page scroll
+const row1 = [57, 59, 63, 68, 73, 79, 83, 88, 91, 99, 100, 105, 110, 116];
+const row2 = [120, 125, 130, 135, 140, 145, 150, 155, 160, 165, 170, 175, 180, 186];
+const row3 = [190, 195, 200, 205, 210, 220, 225, 230, 235, 240, 258, 265];
+---
+
+<section id="city-logos" class="py-20 md:py-28 relative overflow-hidden bg-surface-secondary">
+  <div class="max-w-7xl mx-auto px-6 mb-14 reveal">
+    <h2 class="font-heading text-[2.5rem] md:text-5xl font-bold text-text-primary tracking-tight text-center mb-4">
+      Trusted by Cities Nationwide
+    </h2>
+    <p class="text-base text-text-secondary text-center max-w-xl mx-auto">
+      Over 100 municipal governments use Tolemi to manage and understand their data.
+    </p>
+  </div>
+
+  <!-- Row 1 -->
+  <div class="mb-5 overflow-hidden">
+    <div class="city-row city-row-1 flex w-max">
+      {row1.map((id) => (
+        <div class="flex-shrink-0 w-20 h-20 md:w-24 md:h-24 mx-3 rounded-xl bg-surface border border-text-muted/10 shadow-sm flex items-center justify-center p-3 hover:shadow-lg hover:scale-105 transition-all duration-300">
+          <img
+            src={`/city_seals/${id}.png`}
+            alt="City seal"
+            class="w-full h-full object-contain"
+            loading="lazy"
+          />
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- Row 2 -->
+  <div class="mb-5 overflow-hidden">
+    <div class="city-row city-row-2 flex w-max">
+      {row2.map((id) => (
+        <div class="flex-shrink-0 w-20 h-20 md:w-24 md:h-24 mx-3 rounded-xl bg-surface border border-text-muted/10 shadow-sm flex items-center justify-center p-3 hover:shadow-lg hover:scale-105 transition-all duration-300">
+          <img
+            src={`/city_seals/${id}.png`}
+            alt="City seal"
+            class="w-full h-full object-contain"
+            loading="lazy"
+          />
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- Row 3 -->
+  <div class="overflow-hidden">
+    <div class="city-row city-row-3 flex w-max">
+      {row3.map((id) => (
+        <div class="flex-shrink-0 w-20 h-20 md:w-24 md:h-24 mx-3 rounded-xl bg-surface border border-text-muted/10 shadow-sm flex items-center justify-center p-3 hover:shadow-lg hover:scale-105 transition-all duration-300">
+          <img
+            src={`/city_seals/${id}.png`}
+            alt="City seal"
+            class="w-full h-full object-contain"
+            loading="lazy"
+          />
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- Fade edges -->
+  <div class="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-surface-secondary to-transparent z-10 pointer-events-none"></div>
+  <div class="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-surface-secondary to-transparent z-10 pointer-events-none"></div>
+</section>
+
+<script>
+  const section = document.getElementById('city-logos');
+  const row1 = document.querySelector('.city-row-1') as HTMLElement;
+  const row2 = document.querySelector('.city-row-2') as HTMLElement;
+  const row3 = document.querySelector('.city-row-3') as HTMLElement;
+
+  function onCityScroll() {
+    if (!section || !row1 || !row2 || !row3) return;
+
+    const rect = section.getBoundingClientRect();
+    const viewH = window.innerHeight;
+    const progress = Math.max(0, Math.min(1, (viewH - rect.top) / (viewH + rect.height)));
+
+    const maxShift = 300;
+    const shift = (progress - 0.5) * maxShift * 2;
+
+    row1.style.transform = `translateX(${-shift}px)`;
+    row2.style.transform = `translateX(${shift}px)`;
+    row3.style.transform = `translateX(${-shift * 0.7}px)`;
+  }
+
+  window.addEventListener('scroll', onCityScroll, { passive: true });
+  onCityScroll();
+</script>

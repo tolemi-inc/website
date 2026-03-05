@@ -1,0 +1,180 @@
+---
+// Data flow illustration: Sources → Tolemi → Insights
+// Full-width, clean minimal style with fine lines and sparse color
+---
+
+<section class="py-20 md:py-28 bg-surface overflow-hidden">
+  <div class="max-w-6xl mx-auto px-6">
+
+    {/* Desktop: horizontal flow */}
+    <div class="hidden md:block relative" style="height: 380px;">
+      {/* SVG lines layer — behind everything */}
+      <svg class="absolute inset-0 w-full h-full" viewBox="0 0 1000 380" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+        {/* Left converging lines: sources → logo center */}
+        {/* Permits → top slider */}
+        <path d="M185,48 C300,48 340,120 410,120" fill="none" stroke="currentColor" class="text-text-muted" stroke-width="1" opacity="0.2"/>
+        {/* Assessments → top slider */}
+        <path d="M185,118 C280,118 340,120 410,120" fill="none" stroke="currentColor" class="text-text-muted" stroke-width="1" opacity="0.2"/>
+        {/* Code Enforcement → mid slider */}
+        <path d="M185,188 C300,188 360,190 410,190" fill="none" stroke="currentColor" class="text-text-muted" stroke-width="1" opacity="0.2"/>
+        {/* Zoning → mid slider */}
+        <path d="M185,258 C280,258 350,210 410,190" fill="none" stroke="currentColor" class="text-text-muted" stroke-width="1" opacity="0.2"/>
+        {/* Inspections → bottom slider */}
+        <path d="M185,328 C300,328 360,260 410,260" fill="none" stroke="currentColor" class="text-text-muted" stroke-width="1" opacity="0.2"/>
+
+        {/* Right diverging lines: logo center → insights */}
+        {/* top slider → Registered Rental */}
+        <path d="M590,120 C660,120 700,48 815,48" fill="none" stroke="currentColor" class="text-text-muted" stroke-width="1" opacity="0.2"/>
+        {/* top slider → Owner Occupied */}
+        <path d="M590,120 C660,120 700,118 815,118" fill="none" stroke="currentColor" class="text-text-muted" stroke-width="1" opacity="0.2"/>
+        {/* mid slider → Vacant Property */}
+        <path d="M590,190 C660,190 700,188 815,188" fill="none" stroke="currentColor" class="text-text-muted" stroke-width="1" opacity="0.2"/>
+        {/* bottom slider → Compliance Risk */}
+        <path d="M590,260 C660,260 700,258 815,258" fill="none" stroke="currentColor" class="text-text-muted" stroke-width="1" opacity="0.2"/>
+        {/* mid slider → Market Trend */}
+        <path d="M590,190 C660,190 700,328 815,328" fill="none" stroke="currentColor" class="text-text-muted" stroke-width="1" opacity="0.2"/>
+
+        {/* Center: Tolemi logo — 3 horizontal sliders */}
+        {/* Tracks */}
+        <rect x="410" y="110" width="180" height="20" rx="10" fill="currentColor" class="text-text-muted" opacity="0.06"/>
+        <rect x="410" y="180" width="180" height="20" rx="10" fill="currentColor" class="text-text-muted" opacity="0.06"/>
+        <rect x="410" y="250" width="180" height="20" rx="10" fill="currentColor" class="text-text-muted" opacity="0.06"/>
+
+        {/* Tick marks */}
+        {[0,1,2].map((track) => (
+          [0,1,2,3,4,5].map((tick) => (
+            <rect
+              x={430 + tick * 28}
+              y={110 + track * 70 - 1}
+              width={0.5}
+              height={22}
+              fill="currentColor"
+              class="text-text-muted"
+              opacity="0.08"
+            />
+          ))
+        ))}
+
+        {/* Red dot — top track, positioned right */}
+        <circle cx="555" cy="120" r="15" fill="#FF0025" opacity="0.12"/>
+        <circle cx="555" cy="120" r="9" fill="#FF0025" opacity="0.85"/>
+
+        {/* Yellow dot — mid track, positioned left */}
+        <circle cx="460" cy="190" r="15" fill="#FFCB1B" opacity="0.12"/>
+        <circle cx="460" cy="190" r="9" fill="#FFCB1B" opacity="0.85"/>
+
+        {/* Sky dot — bottom track, positioned right-center */}
+        <circle cx="540" cy="260" r="15" fill="#4CD5FF" opacity="0.12"/>
+        <circle cx="540" cy="260" r="9" fill="#4CD5FF" opacity="0.85"/>
+      </svg>
+
+      {/* Left column: Data Sources */}
+      <div class="absolute left-0 top-0 bottom-0 w-[185px] flex flex-col justify-between py-2">
+        <div class="flex items-center gap-2 h-10">
+          <div class="w-1.5 h-1.5 rounded-full bg-tolemi-red"></div>
+          <span class="text-sm text-text-secondary">Permits</span>
+        </div>
+        <div class="flex items-center gap-2 h-10">
+          <div class="w-1.5 h-1.5 rounded-full bg-tolemi-yellow"></div>
+          <span class="text-sm text-text-secondary">Assessments</span>
+        </div>
+        <div class="flex items-center gap-2 h-10">
+          <div class="w-1.5 h-1.5 rounded-full bg-tolemi-sky"></div>
+          <span class="text-sm text-text-secondary">Code Enforcement</span>
+        </div>
+        <div class="flex items-center gap-2 h-10">
+          <div class="w-1.5 h-1.5 rounded-full bg-tolemi-green"></div>
+          <span class="text-sm text-text-secondary">Zoning</span>
+        </div>
+        <div class="flex items-center gap-2 h-10">
+          <div class="w-1.5 h-1.5 rounded-full bg-tolemi-red"></div>
+          <span class="text-sm text-text-secondary">Inspections</span>
+        </div>
+      </div>
+
+      {/* Right column: Insights */}
+      <div class="absolute right-0 top-0 bottom-0 w-[185px] flex flex-col justify-between py-2">
+        <div class="flex items-center justify-end gap-2 h-10">
+          <span class="text-sm font-medium text-text-primary">Registered Rental?</span>
+          <div class="w-1 h-6 rounded-full bg-tolemi-red/40"></div>
+        </div>
+        <div class="flex items-center justify-end gap-2 h-10">
+          <span class="text-sm font-medium text-text-primary">Owner Occupied?</span>
+          <div class="w-1 h-6 rounded-full bg-tolemi-yellow/40"></div>
+        </div>
+        <div class="flex items-center justify-end gap-2 h-10">
+          <span class="text-sm font-medium text-text-primary">Vacant Property?</span>
+          <div class="w-1 h-6 rounded-full bg-tolemi-sky/40"></div>
+        </div>
+        <div class="flex items-center justify-end gap-2 h-10">
+          <span class="text-sm font-medium text-text-primary">Compliance Risk</span>
+          <div class="w-1 h-6 rounded-full bg-tolemi-green/40"></div>
+        </div>
+        <div class="flex items-center justify-end gap-2 h-10">
+          <span class="text-sm font-medium text-text-primary">Market Trend</span>
+          <div class="w-1 h-6 rounded-full bg-tolemi-yellow/40"></div>
+        </div>
+      </div>
+
+      {/* Center labels */}
+      <div class="absolute left-1/2 -translate-x-1/2 bottom-[-8px]">
+        <span class="text-xs text-text-muted tracking-widest uppercase">Tolemi</span>
+      </div>
+    </div>
+
+    {/* Mobile: vertical flow */}
+    <div class="md:hidden">
+      {/* Sources */}
+      <div class="mb-8">
+        <p class="text-xs text-text-muted tracking-widest uppercase mb-4">City Data Sources</p>
+        <div class="flex flex-wrap gap-2">
+          {["Permits", "Assessments", "Code Enforcement", "Zoning", "Inspections"].map((s, i) => (
+            <span class="inline-flex items-center gap-1.5 text-sm text-text-secondary border border-text-muted/15 rounded-full px-3 py-1">
+              <span class:list={["w-1.5 h-1.5 rounded-full", i % 4 === 0 ? "bg-tolemi-red" : i % 4 === 1 ? "bg-tolemi-yellow" : i % 4 === 2 ? "bg-tolemi-sky" : "bg-tolemi-green"]}></span>
+              {s}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Arrow down */}
+      <div class="flex justify-center mb-6">
+        <svg class="w-6 h-12 text-text-muted" viewBox="0 0 24 48" fill="none" stroke="currentColor" stroke-width="1"><path d="M12,4 L12,40 M6,34 L12,40 L18,34"/></svg>
+      </div>
+
+      {/* Center logo */}
+      <div class="flex justify-center mb-6">
+        <svg viewBox="0 0 200 120" class="w-48" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="10" width="180" height="24" rx="12" fill="currentColor" class="text-text-muted" opacity="0.08"/>
+          <rect x="10" y="48" width="180" height="24" rx="12" fill="currentColor" class="text-text-muted" opacity="0.08"/>
+          <rect x="10" y="86" width="180" height="24" rx="12" fill="currentColor" class="text-text-muted" opacity="0.08"/>
+          <circle cx="140" cy="22" r="11" fill="#FF0025" opacity="0.85"/>
+          <circle cx="65" cy="60" r="11" fill="#FFCB1B" opacity="0.85"/>
+          <circle cx="125" cy="98" r="11" fill="#4CD5FF" opacity="0.85"/>
+        </svg>
+      </div>
+      <div class="text-center mb-6">
+        <span class="text-xs text-text-muted tracking-widest uppercase">Tolemi</span>
+      </div>
+
+      {/* Arrow down */}
+      <div class="flex justify-center mb-6">
+        <svg class="w-6 h-12 text-text-muted" viewBox="0 0 24 48" fill="none" stroke="currentColor" stroke-width="1"><path d="M12,4 L12,40 M6,34 L12,40 L18,34"/></svg>
+      </div>
+
+      {/* Insights */}
+      <div>
+        <p class="text-xs text-text-muted tracking-widest uppercase mb-4">Insights</p>
+        <div class="flex flex-wrap gap-2">
+          {["Registered Rental?", "Owner Occupied?", "Vacant Property?", "Compliance Risk", "Market Trend"].map((s, i) => (
+            <span class="inline-flex items-center gap-1.5 text-sm font-medium text-text-primary border border-text-muted/15 rounded-full px-3 py-1">
+              {s}
+              <span class:list={["w-1 h-4 rounded-full", i % 4 === 0 ? "bg-tolemi-red/40" : i % 4 === 1 ? "bg-tolemi-yellow/40" : i % 4 === 2 ? "bg-tolemi-sky/40" : "bg-tolemi-green/40"]}></span>
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>

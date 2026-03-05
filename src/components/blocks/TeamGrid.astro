@@ -1,0 +1,37 @@
+---
+interface Member {
+  name: string;
+  title?: string;
+  bio?: string;
+  photo?: string;
+}
+
+interface Props {
+  members: Member[];
+}
+
+const { members } = Astro.props;
+---
+
+<section class="py-16 md:py-20 px-6">
+  <div class="max-w-6xl mx-auto">
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      {members.map((member) => (
+        <div class="bg-white rounded-2xl border border-black/[0.06] p-8 text-center reveal">
+          <div class="w-24 h-24 mx-auto mb-5 rounded-full bg-gradient-to-br from-tolemi-green/20 to-tolemi-sky/20 flex items-center justify-center overflow-hidden">
+            {member.photo ? (
+              <img src={member.photo} alt={member.name} class="w-full h-full object-cover rounded-full" />
+            ) : (
+              <span class="text-3xl font-bold text-tolemi-green/60">
+                {member.name.split(' ').map(n => n[0]).join('')}
+              </span>
+            )}
+          </div>
+          <h3 class="font-heading text-lg font-semibold text-text-primary">{member.name}</h3>
+          {member.title && <p class="text-sm text-tolemi-green font-medium mt-1">{member.title}</p>}
+          {member.bio && <p class="text-text-secondary text-sm mt-3 leading-relaxed">{member.bio}</p>}
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,42 @@
+---
+interface TestimonialItem {
+  quote: string;
+  author?: string;
+  role?: string;
+}
+
+interface Props {
+  heading?: string;
+  items?: TestimonialItem[];
+}
+
+const { heading, items = [] } = Astro.props;
+
+const accentBorders = ["border-l-tolemi-green", "border-l-tolemi-sky", "border-l-tolemi-yellow"];
+---
+
+<section class="py-24 md:py-32 px-6 bg-surface relative">
+  <div class="max-w-6xl mx-auto">
+    {heading && (
+      <h2 class="font-heading text-[2.5rem] md:text-5xl font-bold text-text-primary text-center mb-20 reveal">{heading}</h2>
+    )}
+    <div class="grid md:grid-cols-2 gap-8">
+      {items.map((item, i) => (
+        <blockquote class:list={[
+          "bg-surface-secondary rounded-2xl p-8 md:p-10 border-l-4 reveal",
+          accentBorders[i % accentBorders.length],
+        ]} style={`transition-delay: ${i * 150}ms`}>
+          <p class="text-base text-text-secondary italic mb-6 leading-relaxed">"{item.quote}"</p>
+          <footer>
+            {item.author && (
+              <span class="font-heading font-semibold text-text-primary text-sm">{item.author}</span>
+            )}
+            {item.role && (
+              <span class="text-text-muted text-xs ml-2">— {item.role}</span>
+            )}
+          </footer>
+        </blockquote>
+      ))}
+    </div>
+  </div>
+</section>

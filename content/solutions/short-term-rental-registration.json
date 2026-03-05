@@ -1,0 +1,13 @@
+{
+  "title": "Short-Term Rental Registration",
+  "slug": "short-term-rental-registration",
+  "headline": "Manage Short-Term Rentals Effectively",
+  "subheadline": "Bring transparency to your city's short-term rental market with streamlined registration and monitoring.",
+  "body": "Short-term rentals are growing in every community, and cities need modern tools to keep up. Tolemi's Short-Term Rental Registration solution helps you create a clear registration process, monitor compliance, and enforce local ordinances—all from one platform.",
+  "features": [
+    { "title": "Permit Applications", "description": "Accept and process short-term rental permit applications online with built-in validation." },
+    { "title": "Platform Monitoring", "description": "Identify active listings on major rental platforms and cross-reference with your permit database." },
+    { "title": "Neighbor Complaint Intake", "description": "Provide residents a simple way to report issues tied to specific rental properties." },
+    { "title": "Ordinance Enforcement", "description": "Automate violation notices and track enforcement actions for non-compliant operators." }
+  ]
+}

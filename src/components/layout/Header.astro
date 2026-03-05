@@ -1,0 +1,156 @@
+---
+interface NavChild {
+  label: string;
+  href: string;
+}
+
+interface NavLink {
+  label: string;
+  href: string;
+  children?: NavChild[];
+}
+
+interface Props {
+  companyName?: string;
+  nav?: NavLink[];
+}
+
+const { companyName = "Tolemi", nav = [] } = Astro.props;
+---
+
+<header id="site-header" class="fixed top-0 w-full z-50 backdrop-blur-2xl border-b transition-colors duration-300" style="background: linear-gradient(180deg, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0.7) 100%); box-shadow: 0 4px 30px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.15); border-color: rgba(0,0,0,0.06);">
+  <div class="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
+    <a href="/" class="flex items-center">
+      <img src="/logos/dark_tolemi_gradient.svg" alt={companyName} class="h-9" />
+    </a>
+
+    {/* Desktop nav */}
+    <nav class="hidden md:flex items-center gap-8">
+      {nav.map((link) =>
+        link.children && link.children.length > 0 ? (
+          <div class="relative group">
+            <button
+              type="button"
+              class="font-heading text-sm font-medium text-text-primary hover:text-tolemi-green transition-colors flex items-center gap-1"
+            >
+              {link.label}
+              <svg class="w-3.5 h-3.5 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div class="absolute top-full left-1/2 -translate-x-1/2 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+              <div class="bg-white/90 backdrop-blur-xl border border-black/[0.06] rounded-xl shadow-lg shadow-black/[0.08] py-2 min-w-[220px]">
+                {link.children.map((child) => (
+                  <a
+                    href={child.href}
+                    class="block px-4 py-2.5 text-sm text-text-primary hover:bg-tolemi-green/5 hover:text-tolemi-green transition-colors"
+                  >
+                    {child.label}
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+        ) : (
+          <a
+            href={link.href}
+            class="font-heading text-sm font-medium text-text-primary hover:text-tolemi-green transition-colors"
+          >
+            {link.label}
+          </a>
+        )
+      )}
+      <a
+        href="#contact"
+        class="font-heading text-sm font-medium bg-tolemi-green text-white px-5 py-2 rounded-full hover:bg-tolemi-green-600 transition-colors"
+      >
+        Get a Demo
+      </a>
+    </nav>
+
+    {/* Mobile hamburger */}
+    <button
+      id="mobile-menu-btn"
+      type="button"
+      class="md:hidden flex flex-col justify-center items-center w-10 h-10 gap-1.5"
+      aria-label="Toggle menu"
+    >
+      <span class="hamburger-line block w-6 h-0.5 bg-text-primary transition-all duration-300"></span>
+      <span class="hamburger-line block w-6 h-0.5 bg-text-primary transition-all duration-300"></span>
+      <span class="hamburger-line block w-6 h-0.5 bg-text-primary transition-all duration-300"></span>
+    </button>
+  </div>
+
+  {/* Mobile menu */}
+  <div id="mobile-menu" class="md:hidden hidden border-t border-black/[0.06]" style="background: rgba(255,255,255,0.95); backdrop-filter: blur(24px);">
+    <nav class="max-w-7xl mx-auto px-6 py-4 flex flex-col gap-1">
+      {nav.map((link) =>
+        link.children && link.children.length > 0 ? (
+          <div class="mobile-dropdown">
+            <button
+              type="button"
+              class="mobile-dropdown-btn w-full flex items-center justify-between py-3 font-heading text-sm font-medium text-text-primary"
+            >
+              {link.label}
+              <svg class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div class="mobile-dropdown-content hidden pl-4 pb-2">
+              {link.children.map((child) => (
+                <a
+                  href={child.href}
+                  class="block py-2.5 text-sm text-text-secondary hover:text-tolemi-green transition-colors"
+                >
+                  {child.label}
+                </a>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <a
+            href={link.href}
+            class="block py-3 font-heading text-sm font-medium text-text-primary hover:text-tolemi-green transition-colors"
+          >
+            {link.label}
+          </a>
+        )
+      )}
+      <a
+        href="#contact"
+        class="mt-2 text-center font-heading text-sm font-medium bg-tolemi-green text-white px-5 py-2.5 rounded-full hover:bg-tolemi-green-600 transition-colors"
+      >
+        Get a Demo
+      </a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const menuBtn = document.getElementById('mobile-menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  menuBtn?.addEventListener('click', () => {
+    const isOpen = !mobileMenu?.classList.contains('hidden');
+    mobileMenu?.classList.toggle('hidden');
+    const lines = menuBtn.querySelectorAll('.hamburger-line');
+    if (!isOpen) {
+      lines[0]?.classList.add('translate-y-[4px]', 'rotate-45');
+      lines[1]?.classList.add('opacity-0');
+      lines[2]?.classList.add('-translate-y-[4px]', '-rotate-45');
+    } else {
+      lines[0]?.classList.remove('translate-y-[4px]', 'rotate-45');
+      lines[1]?.classList.remove('opacity-0');
+      lines[2]?.classList.remove('-translate-y-[4px]', '-rotate-45');
+    }
+  });
+
+  document.querySelectorAll('.mobile-dropdown-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const content = btn.nextElementSibling;
+      const icon = btn.querySelector('svg');
+      content?.classList.toggle('hidden');
+      icon?.classList.toggle('rotate-180');
+    });
+  });
+</script>

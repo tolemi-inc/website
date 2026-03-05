@@ -1,0 +1,56 @@
+---
+interface Job {
+  title: string;
+  department?: string;
+  location?: string;
+  type?: string;
+  description?: string;
+  applyLink?: string;
+}
+
+interface Props {
+  jobs: Job[];
+}
+
+const { jobs } = Astro.props;
+---
+
+<section class="py-16 md:py-20 px-6">
+  <div class="max-w-3xl mx-auto">
+    <h2 class="font-heading text-3xl md:text-4xl font-bold text-text-primary mb-10 reveal">Open Positions</h2>
+    <div class="flex flex-col gap-6">
+      {jobs.map((job) => (
+        <div class="bg-white rounded-2xl border border-black/[0.06] p-8 reveal">
+          <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+            <div class="flex-1">
+              <h3 class="font-heading text-xl font-semibold text-text-primary">{job.title}</h3>
+              <div class="flex flex-wrap gap-3 mt-2">
+                {job.department && (
+                  <span class="text-xs font-medium bg-tolemi-green/10 text-tolemi-green px-3 py-1 rounded-full">{job.department}</span>
+                )}
+                {job.location && (
+                  <span class="text-xs font-medium bg-tolemi-sky/10 text-tolemi-sky-700 px-3 py-1 rounded-full">{job.location}</span>
+                )}
+                {job.type && (
+                  <span class="text-xs font-medium bg-tolemi-yellow/10 text-tolemi-yellow-700 px-3 py-1 rounded-full">{job.type}</span>
+                )}
+              </div>
+              {job.description && <p class="text-text-secondary text-sm mt-4 leading-relaxed">{job.description}</p>}
+            </div>
+            {job.applyLink && (
+              <a
+                href={job.applyLink}
+                class="shrink-0 inline-flex items-center gap-2 bg-tolemi-green text-white font-medium text-sm px-5 py-2.5 rounded-full hover:bg-tolemi-green-600 transition-colors"
+              >
+                Apply
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </a>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,56 @@
+---
+import Base from "../../layouts/Base.astro";
+import PageHero from "../../components/blocks/PageHero.astro";
+import ContentSection from "../../components/blocks/ContentSection.astro";
+import CrossLinkCards from "../../components/blocks/CrossLinkCards.astro";
+import CallToAction from "../../components/blocks/CallToAction.astro";
+
+import codeEnforcement from "../../../content/solutions/code-enforcement.json";
+import longTermRental from "../../../content/solutions/long-term-rental-registration.json";
+import shortTermRental from "../../../content/solutions/short-term-rental-registration.json";
+
+const allSolutions = [codeEnforcement, longTermRental, shortTermRental];
+
+export function getStaticPaths() {
+  const solutions = [codeEnforcement, longTermRental, shortTermRental];
+  return solutions.map((s) => ({ params: { slug: s.slug }, props: { solution: s } }));
+}
+
+const { solution } = Astro.props;
+const otherSolutions = allSolutions.filter((s) => s.slug !== solution.slug);
+---
+
+<Base title={solution.title}>
+  <PageHero headline={solution.headline} subheadline={solution.subheadline} />
+
+  <ContentSection body={solution.body} />
+
+  {solution.features && solution.features.length > 0 && (
+    <section class="py-16 md:py-20 px-6">
+      <div class="max-w-5xl mx-auto reveal">
+        <h2 class="font-heading text-3xl md:text-4xl font-bold text-text-primary mb-10 text-center">Key Features</h2>
+        <div class="grid md:grid-cols-2 gap-6">
+          {solution.features.map((f) => (
+            <div class="bg-white rounded-2xl border border-black/[0.06] p-8">
+              <h3 class="font-heading text-lg font-semibold text-text-primary mb-2">{f.title}</h3>
+              <p class="text-text-secondary text-sm leading-relaxed">{f.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <CrossLinkCards
+    heading="Other Solutions"
+    basePath="/solutions"
+    items={otherSolutions.map((s) => ({ title: s.title, slug: s.slug, subheadline: s.subheadline }))}
+  />
+
+  <CallToAction
+    heading="Ready to Get Started?"
+    text="See how Tolemi can help your city with a personalized demo."
+    buttonText="Get a Demo"
+    buttonLink="#contact"
+  />
+</Base>

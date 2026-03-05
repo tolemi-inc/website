@@ -1,0 +1,46 @@
+---
+// Investor logos section
+// Using text placeholders — replace with actual SVGs/PNGs when available
+const investors = [
+  { name: "Y Combinator", logo: "/logos/investors/ycombinator.svg" },
+  { name: "Investor 2", logo: null },
+  { name: "Investor 3", logo: null },
+  { name: "Investor 4", logo: null },
+];
+---
+
+<section class="py-20 md:py-28 bg-surface relative">
+  <div class="max-w-5xl mx-auto px-6">
+    <div class="text-center mb-16 reveal">
+      <h2 class="font-heading text-[2.5rem] md:text-5xl font-bold text-text-primary tracking-tight mb-4">
+        Backed by the Best
+      </h2>
+      <p class="text-base text-text-secondary max-w-lg mx-auto">
+        We're proud to be supported by world-class investors who believe in the future of civic technology.
+      </p>
+    </div>
+
+    <div class="flex flex-wrap items-center justify-center gap-12 md:gap-16 reveal">
+      {investors.map((inv) => (
+        <div class="flex items-center justify-center group">
+          {inv.logo ? (
+            <img
+              src={inv.logo}
+              alt={inv.name}
+              class="h-10 md:h-12 opacity-60 group-hover:opacity-100 transition-opacity grayscale group-hover:grayscale-0"
+            />
+          ) : (
+            <div class="h-10 md:h-12 px-6 flex items-center justify-center bg-surface-secondary rounded-lg border border-text-muted/15">
+              <span class="font-heading text-sm font-semibold text-text-muted group-hover:text-text-primary transition-colors">
+                {inv.name}
+              </span>
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- Decorative bottom border -->
+  <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-32 h-1 rounded-full bg-gradient-to-r from-tolemi-red via-tolemi-yellow to-tolemi-sky"></div>
+</section>

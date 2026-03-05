@@ -1,0 +1,36 @@
+---
+interface SocialLink {
+  platform: string;
+  url: string;
+}
+
+interface Props {
+  footerText?: string;
+  socialLinks?: SocialLink[];
+}
+
+const { footerText, socialLinks = [] } = Astro.props;
+---
+
+<footer class="bg-surface-secondary border-t border-text-muted/10 text-text-secondary py-12 px-6">
+  <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+    <a href="/">
+      <img src="/logos/dark_tolemi_gradient.svg" alt="Tolemi" class="h-8 opacity-60 hover:opacity-100 transition-opacity" />
+    </a>
+    {footerText && <p class="text-sm">{footerText}</p>}
+    {socialLinks.length > 0 && (
+      <div class="flex gap-6">
+        {socialLinks.map((link) => (
+          <a
+            href={link.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-sm hover:text-text-primary transition-colors"
+          >
+            {link.platform}
+          </a>
+        ))}
+      </div>
+    )}
+  </div>
+</footer>

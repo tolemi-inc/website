@@ -1,0 +1,43 @@
+{
+  "title": "Our Team",
+  "headline": "Meet the Team Behind Tolemi",
+  "subheadline": "Passionate people building the future of civic technology.",
+  "members": [
+    {
+      "name": "Alex Chen",
+      "title": "CEO & Co-Founder",
+      "bio": "Alex brings over a decade of experience in civic technology and urban planning. Previously led product at a major GovTech firm.",
+      "photo": ""
+    },
+    {
+      "name": "Maria Gonzalez",
+      "title": "CTO & Co-Founder",
+      "bio": "Maria is a full-stack engineer with deep expertise in geospatial systems and data infrastructure for local governments.",
+      "photo": ""
+    },
+    {
+      "name": "James Okafor",
+      "title": "VP of Product",
+      "bio": "James has spent his career at the intersection of design and public policy, ensuring Tolemi's products serve real community needs.",
+      "photo": ""
+    },
+    {
+      "name": "Sarah Kim",
+      "title": "Head of Engineering",
+      "bio": "Sarah leads our engineering team with a focus on scalable, reliable systems that cities can depend on every day.",
+      "photo": ""
+    },
+    {
+      "name": "David Reeves",
+      "title": "Head of Sales",
+      "bio": "David works directly with city leaders to understand their challenges and match them with the right Tolemi solutions.",
+      "photo": ""
+    },
+    {
+      "name": "Priya Patel",
+      "title": "Head of Customer Success",
+      "bio": "Priya ensures every Tolemi client gets maximum value, from onboarding through long-term partnership.",
+      "photo": ""
+    }
+  ]
+}

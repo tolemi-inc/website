@@ -1,0 +1,13 @@
+{
+  "title": "Slate",
+  "slug": "slate",
+  "headline": "Slate",
+  "subheadline": "Beautiful, interactive dashboards that make city data accessible to everyone.",
+  "body": "Slate transforms raw city data into visual, interactive dashboards that staff and residents can understand at a glance. From compliance heat maps to trend charts, Slate helps your team make data-driven decisions and share insights with the public—no technical skills required.",
+  "features": [
+    { "title": "Interactive Dashboards", "description": "Build and customize dashboards with drag-and-drop widgets for maps, charts, and tables." },
+    { "title": "Public-Facing Views", "description": "Share read-only dashboards with residents to increase transparency and public trust." },
+    { "title": "Real-Time Updates", "description": "Dashboards refresh automatically as underlying data changes in Building Blocks." },
+    { "title": "Export & Embed", "description": "Export charts as images or embed live dashboards on your city's website." }
+  ]
+}

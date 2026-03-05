@@ -1,0 +1,47 @@
+---
+interface StatItem {
+  value: string;
+  label: string;
+}
+
+interface Props {
+  heading?: string;
+  items?: StatItem[];
+}
+
+const { heading, items = [] } = Astro.props;
+
+const accentColors = ["text-tolemi-green", "text-tolemi-sky", "text-tolemi-yellow", "text-tolemi-red"];
+const cardGradients = [
+  "from-tolemi-green/15 via-tolemi-sky/5 to-transparent",
+  "from-tolemi-sky/15 via-tolemi-yellow/5 to-transparent",
+  "from-tolemi-yellow/15 via-tolemi-red/5 to-transparent",
+  "from-tolemi-red/15 via-tolemi-green/5 to-transparent",
+];
+const borderColors = ["border-tolemi-green/20", "border-tolemi-sky/20", "border-tolemi-yellow/20", "border-tolemi-red/20"];
+---
+
+<section class="py-24 md:py-32 px-6 relative overflow-hidden bg-surface-secondary">
+  <div class="max-w-7xl mx-auto relative z-10">
+    {heading && (
+      <h2 class="font-heading text-[2.5rem] md:text-5xl font-bold text-text-primary text-center mb-20 reveal">{heading}</h2>
+    )}
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+      {items.map((item, i) => (
+        <div
+          class:list={[
+            "text-center p-8 rounded-2xl border backdrop-blur-sm reveal bg-gradient-to-br",
+            borderColors[i % borderColors.length],
+            cardGradients[i % cardGradients.length]
+          ]}
+          style={`transition-delay: ${i * 100}ms`}
+        >
+          <div class:list={["font-heading text-4xl md:text-5xl font-bold mb-3", accentColors[i % accentColors.length]]}>
+            {item.value}
+          </div>
+          <div class="text-sm text-text-secondary">{item.label}</div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

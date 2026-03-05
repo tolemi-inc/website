@@ -1,0 +1,377 @@
+---
+interface Props {
+  headline: string;
+  subheadline?: string;
+  ctaText?: string;
+  ctaLink?: string;
+}
+
+const { headline, subheadline, ctaText, ctaLink } = Astro.props;
+---
+
+<!-- Outer wrapper: tall enough for sticky scroll (100vh visible + scroll space for overlays) -->
+<div id="hero-scroll-wrapper" class="relative" style="height: 250vh;">
+<section id="hero" class="sticky top-0 h-screen overflow-hidden bg-[#f8f8f6]">
+
+  <!-- Full-width map background -->
+  <div id="hero-interactive" class="absolute inset-0">
+    <div id="map" class="absolute inset-0 w-full h-full"></div>
+
+  </div>
+
+  <!-- Large horizontal sliders — overlaid on map area -->
+  <div id="hero-sliders" class="absolute right-8 lg:right-16 xl:right-24 bottom-12 md:bottom-16 lg:bottom-20 z-30 hidden md:block">
+    <svg id="slider-svg" viewBox="0 0 500 300" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-[400px] lg:w-[520px] xl:w-[600px]">
+      <defs>
+        <linearGradient id="trackSkyGrad" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#4CD5FF" stop-opacity="0.3"/>
+          <stop offset="100%" stop-color="#4CD5FF" stop-opacity="0.08"/>
+        </linearGradient>
+        <linearGradient id="trackYellowGrad" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#FFCB1B" stop-opacity="0.3"/>
+          <stop offset="100%" stop-color="#FFCB1B" stop-opacity="0.08"/>
+        </linearGradient>
+        <linearGradient id="trackRedGrad" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#FF0025" stop-opacity="0.3"/>
+          <stop offset="100%" stop-color="#FF0025" stop-opacity="0.08"/>
+        </linearGradient>
+      </defs>
+
+      <!-- Tracks (base) — opaque with black outline to match map -->
+      {[25, 125, 225].map((y) => (
+        <g>
+          <rect x="30" y={y} width="440" height="60" rx="30" fill="#e8e7e3"/>
+          <rect x="30" y={y} width="440" height="60" rx="30" fill="none" stroke="#222222" stroke-width="0.5"/>
+        </g>
+      ))}
+
+      <!-- Colored track overlays (fade in when layer activates) — order: blue, yellow, red -->
+      <g id="track-sky-fill" opacity="0">
+        <rect x="30" y="25" width="440" height="60" rx="30" fill="url(#trackSkyGrad)"/>
+        <rect x="30" y="25" width="440" height="60" rx="30" fill="none" stroke="#4CD5FF" stroke-opacity="0.4" stroke-width="0.5"/>
+      </g>
+      <g id="track-yellow-fill" opacity="0">
+        <rect x="30" y="125" width="440" height="60" rx="30" fill="url(#trackYellowGrad)"/>
+        <rect x="30" y="125" width="440" height="60" rx="30" fill="none" stroke="#FFCB1B" stroke-opacity="0.4" stroke-width="0.5"/>
+      </g>
+      <g id="track-red-fill" opacity="0">
+        <rect x="30" y="225" width="440" height="60" rx="30" fill="url(#trackRedGrad)"/>
+        <rect x="30" y="225" width="440" height="60" rx="30" fill="none" stroke="#FF0025" stroke-opacity="0.4" stroke-width="0.5"/>
+      </g>
+
+      <!-- Flat circle buttons — order: blue, yellow, red (top to bottom) -->
+      <circle id="dot-sky" cx="68" cy="55" r="24" fill="#4CD5FF"/>
+      <circle id="dot-yellow" cx="68" cy="155" r="24" fill="#FFCB1B"/>
+      <circle id="dot-red" cx="68" cy="255" r="24" fill="#FF0025"/>
+    </svg>
+  </div>
+
+  <!-- Headline only — large and prominent -->
+  <div class="relative z-30 flex items-center h-full max-w-7xl mx-auto px-6 w-full pointer-events-none">
+    <h1 class="font-heading text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold tracking-tight text-text-primary leading-[1.05] max-w-4xl animate-fade-in-up">
+      {headline}
+    </h1>
+  </div>
+
+</section>
+</div><!-- end hero-scroll-wrapper -->
+
+<!-- Sub-hero: subheadline + CTA buttons -->
+<section class="py-16 md:py-20 bg-surface">
+  <div class="max-w-3xl mx-auto px-6 text-center">
+    {subheadline && (
+      <p class="text-lg md:text-xl text-text-secondary mb-10 leading-relaxed">
+        {subheadline}
+      </p>
+    )}
+    <div class="flex flex-wrap justify-center gap-4">
+      {ctaText && (
+        <a
+          href={ctaLink || "#"}
+          class="inline-flex items-center gap-2 bg-tolemi-green text-white font-semibold px-7 py-3.5 rounded-full hover:bg-tolemi-green-600 transition-all hover:shadow-lg hover:shadow-tolemi-green/20"
+        >
+          {ctaText}
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+        </a>
+      )}
+      <a
+        href="#features"
+        class="inline-flex items-center gap-2 border border-text-muted/20 text-text-primary font-medium px-7 py-3.5 rounded-full hover:bg-surface-secondary transition-all"
+      >
+        See how it works
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+  import 'maplibre-gl/dist/maplibre-gl.css';
+  import maplibregl from 'maplibre-gl';
+  import { Protocol } from 'pmtiles';
+
+  // --- MapLibre map initialization ---
+  let map: maplibregl.Map | null = null;
+  let mapStyleLoaded = false;
+
+  try {
+    const protocol = new Protocol();
+    maplibregl.addProtocol('pmtiles', protocol.tile);
+
+    const style: maplibregl.StyleSpecification = {
+      version: 8,
+      sources: {
+        parcels: {
+          type: 'vector',
+          url: 'pmtiles:///maps/boston_parcels.pmtiles',
+        },
+        heat_islands: {
+          type: 'vector',
+          url: 'pmtiles:///maps/boston_heat_islands.pmtiles',
+        },
+        floodmap: {
+          type: 'vector',
+          url: 'pmtiles:///maps/boston_floodmap.pmtiles',
+        },
+        mbta: {
+          type: 'vector',
+          url: 'pmtiles:///maps/boston_mbta.pmtiles',
+        },
+      },
+      layers: [
+        {
+          id: 'background',
+          type: 'background',
+          paint: { 'background-color': '#f8f8f6' },
+        },
+        {
+          id: 'parcels-fill',
+          type: 'fill',
+          source: 'parcels',
+          'source-layer': 'boston_parcels',
+          paint: {
+            'fill-color': '#e8e7e3',
+            'fill-opacity': 1,
+          },
+        },
+        {
+          id: 'parcels-outline',
+          type: 'line',
+          source: 'parcels',
+          'source-layer': 'boston_parcels',
+          paint: {
+            'line-color': '#222222',
+            'line-width': 0.5,
+          },
+        },
+        {
+          id: 'heat-islands',
+          type: 'fill',
+          source: 'heat_islands',
+          'source-layer': 'boston_heat_islands',
+          paint: {
+            'fill-color': '#FF0025',
+            'fill-opacity': 0,
+          },
+        },
+        {
+          id: 'floodmap',
+          type: 'fill',
+          source: 'floodmap',
+          'source-layer': 'boston_floodmap',
+          paint: {
+            'fill-color': '#4CD5FF',
+            'fill-opacity': 0,
+          },
+        },
+        {
+          id: 'mbta-lines',
+          type: 'line',
+          source: 'mbta',
+          'source-layer': 'boston_mbta',
+          paint: {
+            'line-color': '#FFCB1B',
+            'line-width': 3,
+            'line-opacity': 0,
+          },
+        },
+      ],
+    };
+
+    map = new maplibregl.Map({
+      container: 'map',
+      style,
+      center: [-71.06, 42.36],
+      zoom: 13,
+      interactive: false,
+      attributionControl: false,
+    });
+
+    map.on('style.load', () => { mapStyleLoaded = true; });
+    map.on('error', (e) => { console.warn('MapLibre error:', e.error); });
+  } catch (e) {
+    console.warn('Map init failed:', e);
+  }
+
+  // --- Scroll-driven animation (runs regardless of map) ---
+  const wrapper = document.getElementById('hero-scroll-wrapper');
+  const sliderSvg = document.getElementById('slider-svg') as unknown as SVGSVGElement;
+  const dotSky = document.getElementById('dot-sky') as unknown as SVGCircleElement;
+  const dotYellow = document.getElementById('dot-yellow') as unknown as SVGCircleElement;
+  const dotRed = document.getElementById('dot-red') as unknown as SVGCircleElement;
+
+  const trackSkyFill = document.getElementById('track-sky-fill');
+  const trackYellowFill = document.getElementById('track-yellow-fill');
+  const trackRedFill = document.getElementById('track-red-fill');
+
+  const trackLeft = 68;
+  const trackRight = 432;
+
+  // Current positions (what's rendered)
+  let skyX = trackLeft;
+  let yellowX = trackLeft;
+  let redX = trackLeft;
+
+  // Target positions (what we lerp toward)
+  let targetSkyX = trackLeft;
+  let targetYellowX = trackLeft;
+  let targetRedX = trackLeft;
+
+  // Track which dots the user has manually dragged (skip scroll override)
+  let manualSky = false;
+  let manualYellow = false;
+  let manualRed = false;
+
+  function clamp(v: number, min: number, max: number) {
+    return Math.max(min, Math.min(max, v));
+  }
+
+  function dotProgress(currentX: number): number {
+    return clamp((currentX - trackLeft) / (trackRight - trackLeft), 0, 1);
+  }
+
+  function updateDots() {
+    if (dotSky) dotSky.setAttribute('cx', String(skyX));
+    if (dotYellow) dotYellow.setAttribute('cx', String(yellowX));
+    if (dotRed) dotRed.setAttribute('cx', String(redX));
+  }
+
+  function updateOverlays() {
+    const skyOpacity = dotProgress(skyX);
+    const yellowOpacity = dotProgress(yellowX);
+    const redOpacity = dotProgress(redX);
+
+    // Map overlay layers — order: blue (floodplains), yellow (transit), red (heat)
+    if (map && mapStyleLoaded) {
+      try {
+        map.setPaintProperty('floodmap', 'fill-opacity', skyOpacity * 0.5);
+        map.setPaintProperty('mbta-lines', 'line-opacity', yellowOpacity);
+        map.setPaintProperty('heat-islands', 'fill-opacity', redOpacity * 0.6);
+      } catch (_) {}
+    }
+
+    // Colored track fills
+    if (trackSkyFill) trackSkyFill.setAttribute('opacity', String(skyOpacity));
+    if (trackYellowFill) trackYellowFill.setAttribute('opacity', String(yellowOpacity));
+    if (trackRedFill) trackRedFill.setAttribute('opacity', String(redOpacity));
+  }
+
+  const lerpSpeed = 0.12;
+
+  function lerp(a: number, b: number, t: number) {
+    return a + (b - a) * t;
+  }
+
+  function onScroll() {
+    if (!wrapper) return;
+    const rect = wrapper.getBoundingClientRect();
+    const viewH = window.innerHeight;
+    const scrolled = clamp(-rect.top / (rect.height - viewH), 0, 1);
+
+    // Order: sky first, yellow second, red third
+    const skyProgress = clamp(scrolled / 0.33, 0, 1);
+    const yellowProgress = clamp((scrolled - 0.33) / 0.33, 0, 1);
+    const redProgress = clamp((scrolled - 0.66) / 0.34, 0, 1);
+
+    if (!manualSky) targetSkyX = trackLeft + skyProgress * (trackRight - trackLeft);
+    if (!manualYellow) targetYellowX = trackLeft + yellowProgress * (trackRight - trackLeft);
+    if (!manualRed) targetRedX = trackLeft + redProgress * (trackRight - trackLeft);
+  }
+
+  function animate() {
+    skyX = lerp(skyX, targetSkyX, lerpSpeed);
+    yellowX = lerp(yellowX, targetYellowX, lerpSpeed);
+    redX = lerp(redX, targetRedX, lerpSpeed);
+
+    updateDots();
+    updateOverlays();
+    requestAnimationFrame(animate);
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  requestAnimationFrame(animate);
+
+  // --- Drag interaction ---
+  let activeDot: 'sky' | 'yellow' | 'red' | null = null;
+
+  function svgPoint(evt: PointerEvent): DOMPoint {
+    const pt = sliderSvg.createSVGPoint();
+    pt.x = evt.clientX;
+    pt.y = evt.clientY;
+    return pt.matrixTransform(sliderSvg.getScreenCTM()!.inverse());
+  }
+
+  function onPointerDown(evt: PointerEvent) {
+    if (!sliderSvg) return;
+    const pt = svgPoint(evt);
+
+    const dots: [string, number, number][] = [
+      ['sky', skyX, 55],
+      ['yellow', yellowX, 155],
+      ['red', redX, 255],
+    ];
+
+    for (const [name, cx, cy] of dots) {
+      const dx = pt.x - cx;
+      const dy = pt.y - cy;
+      if (Math.sqrt(dx * dx + dy * dy) < 44) {
+        activeDot = name as 'sky' | 'yellow' | 'red';
+        sliderSvg.style.cursor = 'grabbing';
+        (evt.target as Element)?.setPointerCapture?.(evt.pointerId);
+        evt.preventDefault();
+        return;
+      }
+    }
+  }
+
+  function onPointerMove(evt: PointerEvent) {
+    if (!activeDot || !sliderSvg) return;
+    const pt = svgPoint(evt);
+    const newX = clamp(pt.x, trackLeft, trackRight);
+
+    // Set both current and target so animate loop doesn't fight us
+    if (activeDot === 'sky') { skyX = newX; targetSkyX = newX; manualSky = true; }
+    else if (activeDot === 'yellow') { yellowX = newX; targetYellowX = newX; manualYellow = true; }
+    else { redX = newX; targetRedX = newX; manualRed = true; }
+
+    updateDots();
+    updateOverlays();
+  }
+
+  function onPointerUp() {
+    if (sliderSvg) sliderSvg.style.cursor = 'grab';
+    activeDot = null;
+  }
+
+  if (sliderSvg) {
+    sliderSvg.addEventListener('pointerdown', onPointerDown);
+    sliderSvg.addEventListener('pointermove', onPointerMove);
+    sliderSvg.addEventListener('pointerup', onPointerUp);
+    sliderSvg.addEventListener('pointerleave', onPointerUp);
+    sliderSvg.style.cursor = 'grab';
+  }
+
+  // Initial state
+  onScroll();
+  updateDots();
+  updateOverlays();
+</script>

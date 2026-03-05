@@ -1,0 +1,79 @@
+{
+  "title": "Tolemi",
+  "blocks": [
+    {
+      "headline": "Smarter Cities Start with Better Data",
+      "subheadline": "Tolemi helps city governments unlock the power of their data to make faster, better informed decisions for the future of their communities.",
+      "ctaText": "Request a Demo Now",
+      "ctaLink": "#contact",
+      "_template": "hero"
+    },
+    {
+      "heading": "Why City Leaders Choose Tolemi",
+      "subheading": "Modern SAAS purpose-built to put rich municipal data to use.",
+      "items": [
+        {
+          "title": "Location Intelligence",
+          "description": "See every property in context — zoning, districts, representatives, and geographic details at a glance.",
+          "icon": "📊"
+        },
+        {
+          "title": "Ownership Tracking",
+          "description": "Trace the full chain of property ownership over time, with linked entities and associated addresses.",
+          "icon": "⚡"
+        },
+        {
+          "title": "Assessment Analytics",
+          "description": "Track property values, land use classifications, and assessment trends across your entire portfolio.",
+          "icon": "📄"
+        }
+      ],
+      "_template": "features"
+    },
+    {
+      "heading": "Trusted by Growing Cities",
+      "items": [
+        {
+          "value": "100+",
+          "label": "Municipal Partners"
+        },
+        {
+          "value": "3",
+          "label": "States"
+        },
+        {
+          "value": "35%",
+          "label": "Faster Decision-Making"
+        },
+        {
+          "value": "99.9%",
+          "label": "Platform Uptime"
+        }
+      ],
+      "_template": "stats"
+    },
+    {
+      "heading": "What Our Partners Say",
+      "items": [
+        {
+          "quote": "Tolemi transformed how we approach budget planning. We went from weeks of spreadsheet wrangling to real-time dashboards overnight.",
+          "author": "Jamie Rodriguez",
+          "role": "City Manager, Maplewood"
+        },
+        {
+          "quote": "The team at Tolemi genuinely understands the challenges local governments face. Their platform is built for us, not adapted from the private sector.",
+          "author": "Priya Kapoor",
+          "role": "Director of Public Works, Lakeville"
+        }
+      ],
+      "_template": "testimonials"
+    },
+    {
+      "heading": "Ready to Transform Your City's Data?",
+      "text": "Join the municipalities already using Tolemi to serve their communities better. Schedule a personalized demo today.",
+      "buttonText": "Get Started",
+      "buttonLink": "#contact",
+      "_template": "cta"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHero from "../components/blocks/PageHero.astro";
+import TeamGrid from "../components/blocks/TeamGrid.astro";
+import CallToAction from "../components/blocks/CallToAction.astro";
+
+import teamData from "../../content/team/team.json";
+---
+
+<Base title={teamData.title}>
+  <PageHero headline={teamData.headline} subheadline={teamData.subheadline} />
+  <TeamGrid members={teamData.members} />
+  <CallToAction
+    heading="Want to Join Our Team?"
+    text="We're always looking for talented people who are passionate about civic technology."
+    buttonText="View Careers"
+    buttonLink="/careers"
+  />
+</Base>
