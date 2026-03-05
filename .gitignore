@@ -34,3 +34,6 @@ tina/__generated__/
 *.swp
 *.swo
 *~
+
+# archived map source data
+archive/
