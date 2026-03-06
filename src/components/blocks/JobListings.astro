@@ -40,6 +40,8 @@ const { jobs } = Astro.props;
             {job.applyLink && (
               <a
                 href={job.applyLink}
+                target="_blank"
+                rel="noopener noreferrer"
                 class="shrink-0 inline-flex items-center gap-2 bg-tolemi-green text-white font-medium text-sm px-5 py-2.5 rounded-full hover:bg-tolemi-green-600 transition-colors"
               >
                 Apply

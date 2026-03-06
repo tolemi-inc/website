@@ -190,6 +190,16 @@ export default defineConfig({
           { name: "cultureHeading", label: "Culture Heading", type: "string" },
           { name: "cultureBody", label: "Culture Body", type: "string", ui: { component: "textarea" } },
           {
+            name: "perks",
+            label: "Perks",
+            type: "object",
+            list: true,
+            fields: [
+              { name: "title", label: "Title", type: "string", required: true },
+              { name: "description", label: "Description", type: "string" },
+            ],
+          },
+          {
             name: "featuredPosts",
             label: "Featured Blog Posts",
             type: "object",

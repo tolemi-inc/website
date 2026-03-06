@@ -18,11 +18,25 @@
         { "label": "Slate", "href": "/products/slate" },
         { "label": "Publicity", "href": "/products/publicity" }
       ]
-    },
-    { "label": "About", "href": "/about" },
-    { "label": "Team", "href": "/team" },
-    { "label": "Careers", "href": "/careers" }
+    }
   ],
+  "footerLinks": {
+    "solutions": [
+      { "label": "Code Enforcement", "href": "/solutions/code-enforcement" },
+      { "label": "Long-Term Rental", "href": "/solutions/long-term-rental-registration" },
+      { "label": "Short-Term Rental", "href": "/solutions/short-term-rental-registration" }
+    ],
+    "products": [
+      { "label": "Building Blocks", "href": "/products/building-blocks" },
+      { "label": "Slate", "href": "/products/slate" },
+      { "label": "Publicity", "href": "/products/publicity" }
+    ],
+    "company": [
+      { "label": "About", "href": "/about" },
+      { "label": "Team", "href": "/team" },
+      { "label": "Careers", "href": "/careers" }
+    ]
+  },
   "footerText": "© 2026 Tolemi. All rights reserved.",
   "socialLinks": [
     { "platform": "Twitter", "url": "https://twitter.com/tolemi" },

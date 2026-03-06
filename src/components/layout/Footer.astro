@@ -1,36 +1,101 @@
 ---
+interface LinkItem {
+  label: string;
+  href: string;
+}
+
 interface SocialLink {
   platform: string;
   url: string;
 }
 
+interface FooterLinks {
+  solutions?: LinkItem[];
+  products?: LinkItem[];
+  company?: LinkItem[];
+}
+
 interface Props {
   footerText?: string;
   socialLinks?: SocialLink[];
+  footerLinks?: FooterLinks;
 }
 
-const { footerText, socialLinks = [] } = Astro.props;
+const { footerText, socialLinks = [], footerLinks } = Astro.props;
 ---
 
-<footer class="bg-surface-secondary border-t border-text-muted/10 text-text-secondary py-12 px-6">
-  <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-    <a href="/">
-      <img src="/logos/dark_tolemi_gradient.svg" alt="Tolemi" class="h-8 opacity-60 hover:opacity-100 transition-opacity" />
-    </a>
-    {footerText && <p class="text-sm">{footerText}</p>}
-    {socialLinks.length > 0 && (
-      <div class="flex gap-6">
-        {socialLinks.map((link) => (
-          <a
-            href={link.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-sm hover:text-text-primary transition-colors"
-          >
-            {link.platform}
-          </a>
-        ))}
+<footer class="bg-text-primary text-white/70 pt-16 pb-8 px-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-10 mb-12">
+      <!-- Brand -->
+      <div class="col-span-2 md:col-span-1">
+        <a href="/">
+          <img src="/logos/light_tolemi_gradient.svg" alt="Tolemi" class="h-8 mb-4" onerror="this.src='/logos/dark_tolemi_gradient.svg'; this.classList.add('invert')" />
+        </a>
+        <p class="text-sm leading-relaxed">Modern data tools for local governments.</p>
+        {socialLinks.length > 0 && (
+          <div class="flex gap-4 mt-4">
+            {socialLinks.map((link) => (
+              <a
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-sm text-white/50 hover:text-white transition-colors"
+              >
+                {link.platform}
+              </a>
+            ))}
+          </div>
+        )}
       </div>
-    )}
+
+      <!-- Solutions -->
+      {footerLinks?.solutions && (
+        <div>
+          <h4 class="text-white font-heading text-sm font-semibold mb-4">Solutions</h4>
+          <ul class="flex flex-col gap-2.5">
+            {footerLinks.solutions.map((link) => (
+              <li>
+                <a href={link.href} class="text-sm hover:text-white transition-colors">{link.label}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      <!-- Products -->
+      {footerLinks?.products && (
+        <div>
+          <h4 class="text-white font-heading text-sm font-semibold mb-4">Products</h4>
+          <ul class="flex flex-col gap-2.5">
+            {footerLinks.products.map((link) => (
+              <li>
+                <a href={link.href} class="text-sm hover:text-white transition-colors">{link.label}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      <!-- Company -->
+      {footerLinks?.company && (
+        <div>
+          <h4 class="text-white font-heading text-sm font-semibold mb-4">Company</h4>
+          <ul class="flex flex-col gap-2.5">
+            {footerLinks.company.map((link) => (
+              <li>
+                <a href={link.href} class="text-sm hover:text-white transition-colors">{link.label}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="border-t border-white/10 pt-6 flex flex-col md:flex-row items-center justify-between gap-4">
+      {footerText && <p class="text-xs text-white/40">{footerText}</p>}
+      <a href="#contact" class="text-xs text-white/40 hover:text-white transition-colors">Request a Demo</a>
+    </div>
   </div>
 </footer>

@@ -1,38 +1,41 @@
 {
   "title": "Careers at Tolemi",
-  "headline": "Join Our Mission",
-  "subheadline": "Help us build technology that empowers local governments and strengthens communities.",
-  "intro": "At Tolemi, we believe that better data leads to better cities. We're a growing team of engineers, designers, and civic technologists working to transform how local governments manage their communities. If you're passionate about making a real impact, we'd love to hear from you.",
-  "cultureHeading": "Our Culture",
-  "cultureBody": "We value curiosity, collaboration, and impact. Our team works in a hybrid environment with flexible hours, generous PTO, and a commitment to professional growth. We celebrate diverse perspectives and believe the best solutions come from inclusive teams that reflect the communities we serve.",
-  "featuredPosts": [
-    { "title": "Why We Built Tolemi: Our Founding Story", "href": "/blog/founding-story" },
-    { "title": "A Day in the Life of a Tolemi Engineer", "href": "/blog/day-in-the-life" }
+  "headline": "Build the Future of Civic Tech",
+  "subheadline": "Join a team that's helping local governments make smarter, data-driven decisions.",
+  "intro": "At Tolemi, we believe that better data leads to better cities. We're a growing team of engineers, designers, and civic technologists working to transform how local governments manage their communities.",
+  "cultureHeading": "Why Work Here",
+  "cultureBody": "We're a remote-first team with flexible hours, generous PTO, and a commitment to professional growth. We celebrate diverse perspectives and believe the best solutions come from inclusive teams that reflect the communities we serve.",
+  "perks": [
+    { "title": "Remote-First", "description": "Work from anywhere in the US with flexible hours." },
+    { "title": "Health & Wellness", "description": "Comprehensive medical, dental, and vision coverage." },
+    { "title": "Growth Budget", "description": "Annual stipend for conferences, courses, and books." },
+    { "title": "Generous PTO", "description": "Unlimited vacation with a minimum of 3 weeks encouraged." }
   ],
+  "featuredPosts": [],
   "jobs": [
     {
       "title": "Senior Full-Stack Engineer",
       "department": "Engineering",
       "location": "Remote (US)",
       "type": "Full-time",
-      "description": "Build and scale our core platform powering city data workflows. You'll work across the stack with TypeScript, React, and Node.js.",
-      "applyLink": "mailto:careers@tolemi.com?subject=Senior Full-Stack Engineer"
+      "description": "Build and scale our core platform powering city data workflows. TypeScript, React, and Node.js.",
+      "applyLink": "http://localhost:3000/sites/tolemi/positions/senior-full-stack-engineer-2"
     },
     {
       "title": "Product Designer",
       "department": "Design",
       "location": "Remote (US)",
       "type": "Full-time",
-      "description": "Design intuitive interfaces that make complex civic data accessible to city staff and residents alike.",
-      "applyLink": "mailto:careers@tolemi.com?subject=Product Designer"
+      "description": "Design intuitive interfaces that make complex civic data accessible to city staff and residents.",
+      "applyLink": "http://localhost:3000/sites/tolemi/positions/product-designer-3"
     },
     {
       "title": "Account Executive",
       "department": "Sales",
       "location": "Remote (US)",
       "type": "Full-time",
-      "description": "Drive growth by helping city leaders discover how Tolemi can solve their toughest data challenges.",
-      "applyLink": "mailto:careers@tolemi.com?subject=Account Executive"
+      "description": "Help city leaders discover how Tolemi can solve their toughest data challenges.",
+      "applyLink": "http://localhost:3000/sites/tolemi/positions/account-executive-4"
     }
   ]
 }

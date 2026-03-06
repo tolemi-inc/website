@@ -31,7 +31,7 @@ const { title = siteData.companyName } = Astro.props;
     <main>
       <slot />
     </main>
-    <Footer footerText={siteData.footerText} socialLinks={siteData.socialLinks} />
+    <Footer footerText={siteData.footerText} socialLinks={siteData.socialLinks} footerLinks={(siteData as any).footerLinks} />
     <DemoModal />
 
     <!-- Global scroll-reveal observer -->

@@ -1,46 +1,54 @@
 ---
 import Base from "../layouts/Base.astro";
 import PageHero from "../components/blocks/PageHero.astro";
-import ContentSection from "../components/blocks/ContentSection.astro";
 import JobListings from "../components/blocks/JobListings.astro";
 import CallToAction from "../components/blocks/CallToAction.astro";
 
 import careersData from "../../content/careers/careers.json";
+
+const perks = (careersData as any).perks || [];
 ---
 
 <Base title={careersData.title}>
   <PageHero headline={careersData.headline} subheadline={careersData.subheadline} />
 
-  <ContentSection heading="Why Tolemi?" body={careersData.intro} />
+  <!-- Intro + Why -->
+  <section class="py-16 md:py-20 px-6">
+    <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 reveal">
+      <div>
+        <h2 class="font-heading text-3xl font-bold text-text-primary mb-4">About Tolemi</h2>
+        <p class="text-text-secondary text-lg leading-relaxed">{careersData.intro}</p>
+      </div>
+      <div>
+        <h2 class="font-heading text-3xl font-bold text-text-primary mb-4">{careersData.cultureHeading}</h2>
+        <p class="text-text-secondary text-lg leading-relaxed">{careersData.cultureBody}</p>
+      </div>
+    </div>
+  </section>
 
-  <ContentSection heading={careersData.cultureHeading} body={careersData.cultureBody} />
-
-  {careersData.featuredPosts && careersData.featuredPosts.length > 0 && (
-    <section class="py-12 px-6">
-      <div class="max-w-3xl mx-auto reveal">
-        <h2 class="font-heading text-2xl font-bold text-text-primary mb-6">From Our Blog</h2>
-        <div class="flex flex-col gap-3">
-          {careersData.featuredPosts.map((post) => (
-            <a
-              href={post.href}
-              class="inline-flex items-center gap-2 text-tolemi-green hover:text-tolemi-green-600 font-medium transition-colors"
-            >
-              <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-              {post.title}
-            </a>
+  <!-- Perks grid -->
+  {perks.length > 0 && (
+    <section class="py-16 md:py-20 px-6 bg-surface-muted/50">
+      <div class="max-w-5xl mx-auto reveal">
+        <h2 class="font-heading text-3xl font-bold text-text-primary mb-10 text-center">Benefits & Perks</h2>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {perks.map((perk: any) => (
+            <div class="bg-white rounded-2xl border border-black/[0.06] p-6 text-center">
+              <h3 class="font-heading text-base font-semibold text-text-primary mb-2">{perk.title}</h3>
+              <p class="text-sm text-text-secondary leading-relaxed">{perk.description}</p>
+            </div>
           ))}
         </div>
       </div>
     </section>
   )}
 
+  <!-- Open roles -->
   <JobListings jobs={careersData.jobs} />
 
   <CallToAction
     heading="Don't See Your Role?"
-    text="We're always interested in hearing from great people. Send us your resume and we'll keep you in mind."
+    text="We're always interested in hearing from great people. Send us your resume."
     buttonText="Get in Touch"
     buttonLink="mailto:careers@tolemi.com"
   />
