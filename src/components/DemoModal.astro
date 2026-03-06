@@ -1,0 +1,149 @@
+<!-- Demo Request Modal — triggered by any element with data-demo-trigger -->
+<div id="demo-modal" class="fixed inset-0 z-[100] hidden">
+  <!-- Backdrop -->
+  <div id="demo-backdrop" class="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
+
+  <!-- Modal -->
+  <div class="absolute inset-0 flex items-center justify-center p-4">
+    <div id="demo-panel" class="relative bg-white rounded-2xl shadow-2xl w-full max-w-md p-8 transform scale-95 opacity-0 transition-all duration-200">
+      <!-- Close button -->
+      <button id="demo-close" type="button" class="absolute top-4 right-4 text-text-muted hover:text-text-primary transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+
+      <!-- Form state -->
+      <div id="demo-form-wrapper">
+        <h2 class="font-heading text-2xl font-bold text-text-primary mb-1">Get a Demo</h2>
+        <p class="text-sm text-text-secondary mb-6">See how Tolemi can work for your city.</p>
+
+        <form id="demo-form" class="flex flex-col gap-4">
+          <div>
+            <label for="demo-name" class="block text-sm font-medium text-text-primary mb-1">Name</label>
+            <input id="demo-name" name="name" type="text" required
+              class="w-full rounded-lg border border-black/10 px-3.5 py-2.5 text-sm text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-tolemi-green/30 focus:border-tolemi-green transition-colors"
+              placeholder="Jane Smith" />
+          </div>
+          <div>
+            <label for="demo-email" class="block text-sm font-medium text-text-primary mb-1">Work Email</label>
+            <input id="demo-email" name="email" type="email" required
+              class="w-full rounded-lg border border-black/10 px-3.5 py-2.5 text-sm text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-tolemi-green/30 focus:border-tolemi-green transition-colors"
+              placeholder="jane@cityofexample.gov" />
+          </div>
+          <div>
+            <label for="demo-org" class="block text-sm font-medium text-text-primary mb-1">City / Organization</label>
+            <input id="demo-org" name="organization" type="text" required
+              class="w-full rounded-lg border border-black/10 px-3.5 py-2.5 text-sm text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-tolemi-green/30 focus:border-tolemi-green transition-colors"
+              placeholder="City of Example" />
+          </div>
+          <div>
+            <label for="demo-message" class="block text-sm font-medium text-text-primary mb-1">Anything else? <span class="text-text-muted font-normal">(optional)</span></label>
+            <textarea id="demo-message" name="message" rows="2"
+              class="w-full rounded-lg border border-black/10 px-3.5 py-2.5 text-sm text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-tolemi-green/30 focus:border-tolemi-green transition-colors resize-none"
+              placeholder="Tell us what you're looking for..."></textarea>
+          </div>
+          <div id="demo-error" class="hidden text-sm text-red-600"></div>
+          <button type="submit" id="demo-submit"
+            class="mt-1 w-full bg-tolemi-green text-white font-semibold py-3 rounded-full hover:bg-tolemi-green-600 transition-colors text-sm">
+            Request a Demo
+          </button>
+        </form>
+      </div>
+
+      <!-- Success state -->
+      <div id="demo-success" class="hidden text-center py-4">
+        <div class="w-14 h-14 mx-auto mb-4 rounded-full bg-tolemi-green/10 flex items-center justify-center">
+          <svg class="w-7 h-7 text-tolemi-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <h2 class="font-heading text-2xl font-bold text-text-primary mb-2">We'll be in touch!</h2>
+        <p class="text-sm text-text-secondary">Our team will reach out within one business day to schedule your demo.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const modal = document.getElementById('demo-modal')!;
+  const panel = document.getElementById('demo-panel')!;
+  const backdrop = document.getElementById('demo-backdrop')!;
+  const closeBtn = document.getElementById('demo-close')!;
+  const form = document.getElementById('demo-form') as HTMLFormElement;
+  const formWrapper = document.getElementById('demo-form-wrapper')!;
+  const successEl = document.getElementById('demo-success')!;
+  const errorEl = document.getElementById('demo-error')!;
+  const submitBtn = document.getElementById('demo-submit') as HTMLButtonElement;
+
+  function openModal() {
+    modal.classList.remove('hidden');
+    requestAnimationFrame(() => {
+      panel.classList.remove('scale-95', 'opacity-0');
+      panel.classList.add('scale-100', 'opacity-100');
+    });
+  }
+
+  function closeModal() {
+    panel.classList.remove('scale-100', 'opacity-100');
+    panel.classList.add('scale-95', 'opacity-0');
+    setTimeout(() => {
+      modal.classList.add('hidden');
+      // Reset to form state if it was showing success
+      formWrapper.classList.remove('hidden');
+      successEl.classList.add('hidden');
+      errorEl.classList.add('hidden');
+      form.reset();
+    }, 200);
+  }
+
+  // Open triggers — any link/button with href="#contact" or data-demo-trigger
+  document.querySelectorAll('a[href="#contact"], [data-demo-trigger]').forEach((el) => {
+    el.addEventListener('click', (e) => {
+      e.preventDefault();
+      openModal();
+    });
+  });
+
+  closeBtn.addEventListener('click', closeModal);
+  backdrop.addEventListener('click', closeModal);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeModal();
+  });
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    errorEl.classList.add('hidden');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending...';
+
+    const data = {
+      name: (document.getElementById('demo-name') as HTMLInputElement).value.trim(),
+      email: (document.getElementById('demo-email') as HTMLInputElement).value.trim(),
+      organization: (document.getElementById('demo-org') as HTMLInputElement).value.trim(),
+      message: (document.getElementById('demo-message') as HTMLTextAreaElement).value.trim(),
+    };
+
+    try {
+      const res = await fetch('/api/demo-request', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.error || 'Something went wrong.');
+      }
+
+      formWrapper.classList.add('hidden');
+      successEl.classList.remove('hidden');
+    } catch (err: any) {
+      errorEl.textContent = err.message || 'Something went wrong. Please try again.';
+      errorEl.classList.remove('hidden');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Request a Demo';
+    }
+  });
+</script>
