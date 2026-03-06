@@ -1,0 +1,10 @@
+{
+  "heading": "Every Property. Every Detail.",
+  "subheading": "Scroll to explore how Tolemi surfaces data at the parcel level.",
+  "cards": [
+    { "label": "Permits", "detail": "12 new this week", "color": "green" },
+    { "label": "Zoning", "detail": "R-1 → Mixed Use", "color": "sky" },
+    { "label": "Violation", "detail": "Overdue 14d", "color": "red" },
+    { "label": "$425k", "detail": "+8.2% YoY", "color": "yellow" }
+  ]
+}

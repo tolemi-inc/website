@@ -1,5 +1,59 @@
 ---
-// Map explorer: scroll-driven zoom into a parcel grid, highlighting individual properties with data labels
+import mapData from "../../../content/map-explorer/map-explorer.json";
+
+const { heading, subheading, cards } = mapData;
+
+// Card geometry: fixed positions for each of the 4 highlight parcels
+// Each entry: parcel rect, card rect position, dot/text positions
+const cardSlots = [
+  {
+    // Parcel 1 (Block B top-right): green
+    parcel: { x: 500, y: 208, w: 72, h: 50 },
+    card: { x: 496, y: 262, w: 80, h: 36 },
+    dot: { cx: 507, cy: 274 },
+    labelPos: { x: 514, y: 278 },
+    detailPos: { x: 504, y: 292 },
+    filter: "url(#gGreen)",
+    defaultColor: "green",
+  },
+  {
+    // Parcel 2 (Block C top-right): sky
+    parcel: { x: 664, y: 208, w: 68, h: 50 },
+    card: { x: 660, y: 262, w: 76, h: 36 },
+    dot: { cx: 671, cy: 274 },
+    labelPos: { x: 678, y: 278 },
+    detailPos: { x: 668, y: 292 },
+    filter: "url(#gSky)",
+    defaultColor: "sky",
+  },
+  {
+    // Parcel 3 (Block G left): red
+    parcel: { x: 588, y: 328, w: 72, h: 104 },
+    card: { x: 592, y: 370, w: 64, h: 36 },
+    dot: { cx: 603, cy: 382 },
+    labelPos: { x: 610, y: 386 },
+    detailPos: { x: 600, y: 400 },
+    filter: "url(#gRed)",
+    defaultColor: "red",
+  },
+  {
+    // Parcel 4 (Block J wide top): yellow
+    parcel: { x: 428, y: 448, w: 144, h: 50 },
+    card: { x: 460, y: 502, w: 78, h: 36 },
+    dot: { cx: 471, cy: 514 },
+    labelPos: { x: 478, y: 518 },
+    detailPos: { x: 468, y: 532 },
+    filter: "url(#gYellow)",
+    defaultColor: "yellow",
+  },
+];
+
+const colorMap: Record<string, { fill: string; stroke: string; labelFill: string }> = {
+  green:  { fill: "#37A04F", stroke: "#37A04F", labelFill: "#37A04F" },
+  sky:    { fill: "#4CD5FF", stroke: "#4CD5FF", labelFill: "#0e9bc4" },
+  red:    { fill: "#FF0025", stroke: "#FF0025", labelFill: "#FF0025" },
+  yellow: { fill: "#FFCB1B", stroke: "#FFCB1B", labelFill: "#b38a00" },
+};
 ---
 
 <section id="map-explorer" class="relative bg-[#f8f8f6]">
@@ -8,7 +62,6 @@
       <div id="map-container" class="absolute inset-0">
         <svg id="map-svg" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <!-- Glow filters -->
             <filter id="gGreen" x="-40%" y="-40%" width="180%" height="180%">
               <feGaussianBlur stdDeviation="8" result="b"/><feFlood flood-color="#37A04F" flood-opacity="0.5"/><feComposite in2="b" operator="in"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
             </filter>
@@ -25,15 +78,13 @@
 
           <rect width="1200" height="800" fill="#f8f8f6"/>
 
-          <!-- === STREETS === -->
-          <!-- Horizontal roads -->
+          <!-- Streets -->
           <g stroke="#222" stroke-width="2" opacity="0.08">
             <line x1="80" y1="200" x2="1120" y2="200"/>
             <line x1="80" y1="320" x2="1120" y2="320"/>
             <line x1="80" y1="440" x2="1120" y2="440"/>
             <line x1="80" y1="560" x2="1120" y2="560"/>
           </g>
-          <!-- Vertical roads -->
           <g stroke="#222" stroke-width="2" opacity="0.08">
             <line x1="260" y1="100" x2="260" y2="700"/>
             <line x1="420" y1="100" x2="420" y2="700"/>
@@ -41,125 +92,81 @@
             <line x1="740" y1="100" x2="740" y2="700"/>
             <line x1="900" y1="100" x2="900" y2="700"/>
           </g>
-          <!-- Diagonal avenue -->
           <line x1="150" y1="150" x2="1000" y2="680" stroke="#222" stroke-width="3" opacity="0.05"/>
 
-          <!-- === PARCELS (within city blocks, between streets) === -->
-
-          <!-- Row 1 (y 208–312): between street y200 and y320 -->
-          <!-- Block A (x 268–412) -->
+          <!-- Parcels Row 1 -->
           <rect x="268" y="208" width="68" height="104" rx="2" fill="#e8e7e3" stroke="#222" stroke-width="0.5" stroke-opacity="0.15"/>
           <rect x="342" y="208" width="72" height="48" rx="2" fill="#e8e7e3" stroke="#222" stroke-width="0.5" stroke-opacity="0.15"/>
           <rect x="342" y="262" width="72" height="50" rx="2" fill="#e8e7e3" stroke="#222" stroke-width="0.5" stroke-opacity="0.15"/>
-          <!-- Block B (x 428–572) — contains highlight parcel 1 -->
           <rect x="428" y="208" width="66" height="104" rx="2" fill="#e8e7e3" stroke="#222" stroke-width="0.5" stroke-opacity="0.15"/>
           <rect x="500" y="208" width="72" height="50" rx="2" fill="#e8e7e3" stroke="#222" stroke-width="0.5" stroke-opacity="0.15"/>
           <rect x="500" y="264" width="72" height="48" rx="2" fill="#e8e7e3" stroke="#222" stroke-width="0.5" stroke-opacity="0.15"/>
-          <!-- Block C (x 588–732) — contains highlight parcel 2 -->
           <rect x="588" y="208" width="70" height="50" rx="2" fill="#e8e7e3" stroke="#222" stroke-width="0.5" stroke-opacity="0.15"/>
           <rect x="664" y="208" width="68" height="50" rx="2" fill="#e8e7e3" stroke="#222" stroke-width="0.5" stroke-opacity="0.15"/>
           <rect x="588" y="264" width="144" height="48" rx="2" fill="#e8e7e3" stroke="#222" stroke-width="0.5" stroke-opacity="0.15"/>
-          <!-- Block D (x 748–892) -->
           <rect x="748" y="208" width="64" height="104" rx="2" fill="#e8e7e3" stroke="#222" stroke-width="0.5" stroke-opacity="0.15"/>
           <rect x="818" y="208" width="74" height="48" rx="2" fill="#e8e7e3" stroke="#222" stroke-width="0.5" stroke-opacity="0.15"/>
           <rect x="818" y="262" width="74" height="50" rx="2" fill="#e8e7e3" stroke="#222" stroke-width="0.5" stroke-opacity="0.15"/>
 
-          <!-- Row 2 (y 328–432): between street y320 and y440 -->
-          <!-- Block E (x 268–412) -->
+          <!-- Parcels Row 2 -->
           <rect x="268" y="328" width="144" height="48" rx="2" fill="#e8e7e3" stroke="#222" stroke-width="0.5" stroke-opacity="0.15"/>
           <rect x="268" y="382" width="68" height="50" rx="2" fill="#e8e7e3" stroke="#222" stroke-width="0.5" stroke-opacity="0.15"/>
           <rect x="342" y="382" width="70" height="50" rx="2" fill="#e8e7e3" stroke="#222" stroke-width="0.5" stroke-opacity="0.15"/>
-          <!-- Block F (x 428–572) -->
           <rect x="428" y="328" width="66" height="104" rx="2" fill="#e8e7e3" stroke="#222" stroke-width="0.5" stroke-opacity="0.15"/>
           <rect x="500" y="328" width="72" height="48" rx="2" fill="#e8e7e3" stroke="#222" stroke-width="0.5" stroke-opacity="0.15"/>
           <rect x="500" y="382" width="72" height="50" rx="2" fill="#e8e7e3" stroke="#222" stroke-width="0.5" stroke-opacity="0.15"/>
-          <!-- Block G (x 588–732) — contains highlight parcel 3 -->
           <rect x="588" y="328" width="72" height="104" rx="2" fill="#e8e7e3" stroke="#222" stroke-width="0.5" stroke-opacity="0.15"/>
           <rect x="666" y="328" width="66" height="48" rx="2" fill="#e8e7e3" stroke="#222" stroke-width="0.5" stroke-opacity="0.15"/>
           <rect x="666" y="382" width="66" height="50" rx="2" fill="#e8e7e3" stroke="#222" stroke-width="0.5" stroke-opacity="0.15"/>
-          <!-- Block H (x 748–892) — contains highlight parcel 4 -->
           <rect x="748" y="328" width="144" height="48" rx="2" fill="#e8e7e3" stroke="#222" stroke-width="0.5" stroke-opacity="0.15"/>
           <rect x="748" y="382" width="70" height="50" rx="2" fill="#e8e7e3" stroke="#222" stroke-width="0.5" stroke-opacity="0.15"/>
           <rect x="824" y="382" width="68" height="50" rx="2" fill="#e8e7e3" stroke="#222" stroke-width="0.5" stroke-opacity="0.15"/>
 
-          <!-- Row 3 (y 448–552): between street y440 and y560 -->
-          <!-- Block I (x 268–412) -->
+          <!-- Parcels Row 3 -->
           <rect x="268" y="448" width="68" height="48" rx="2" fill="#e8e7e3" stroke="#222" stroke-width="0.5" stroke-opacity="0.15"/>
           <rect x="342" y="448" width="70" height="48" rx="2" fill="#e8e7e3" stroke="#222" stroke-width="0.5" stroke-opacity="0.15"/>
           <rect x="268" y="502" width="144" height="50" rx="2" fill="#e8e7e3" stroke="#222" stroke-width="0.5" stroke-opacity="0.15"/>
-          <!-- Block J (x 428–572) -->
           <rect x="428" y="448" width="144" height="50" rx="2" fill="#e8e7e3" stroke="#222" stroke-width="0.5" stroke-opacity="0.15"/>
           <rect x="428" y="504" width="66" height="48" rx="2" fill="#e8e7e3" stroke="#222" stroke-width="0.5" stroke-opacity="0.15"/>
           <rect x="500" y="504" width="72" height="48" rx="2" fill="#e8e7e3" stroke="#222" stroke-width="0.5" stroke-opacity="0.15"/>
-          <!-- Block K (x 588–732) -->
           <rect x="588" y="448" width="70" height="104" rx="2" fill="#e8e7e3" stroke="#222" stroke-width="0.5" stroke-opacity="0.15"/>
           <rect x="664" y="448" width="68" height="48" rx="2" fill="#e8e7e3" stroke="#222" stroke-width="0.5" stroke-opacity="0.15"/>
           <rect x="664" y="502" width="68" height="50" rx="2" fill="#e8e7e3" stroke="#222" stroke-width="0.5" stroke-opacity="0.15"/>
-          <!-- Block L (x 748–892) -->
           <rect x="748" y="448" width="64" height="104" rx="2" fill="#e8e7e3" stroke="#222" stroke-width="0.5" stroke-opacity="0.15"/>
           <rect x="818" y="448" width="74" height="48" rx="2" fill="#e8e7e3" stroke="#222" stroke-width="0.5" stroke-opacity="0.15"/>
           <rect x="818" y="502" width="74" height="50" rx="2" fill="#e8e7e3" stroke="#222" stroke-width="0.5" stroke-opacity="0.15"/>
 
-          <!-- Parks -->
+          <!-- Parks & water -->
           <ellipse cx="305" cy="270" rx="20" ry="14" fill="#37A04F" opacity="0.1"/>
           <ellipse cx="850" cy="480" rx="25" ry="18" fill="#37A04F" opacity="0.1"/>
-
-          <!-- Water edge -->
           <path d="M950,350 Q1000,340 1050,360 Q1100,380 1120,350 L1120,700 L950,700 Z" fill="#4CD5FF" opacity="0.08"/>
 
-          <!-- === HIGHLIGHTED PARCELS === -->
-
-          <!-- Parcel 1: Permits (green) — Block B, top-right parcel -->
-          <g id="hl-1" opacity="0" filter="url(#gGreen)">
-            <rect x="500" y="208" width="72" height="50" rx="2" fill="#37A04F" opacity="0.25"/>
-            <rect x="500" y="208" width="72" height="50" rx="2" fill="none" stroke="#37A04F" stroke-opacity="0.7" stroke-width="1.5"/>
-            <rect x="496" y="262" width="80" height="36" rx="6" fill="white" opacity="0.95"/>
-            <rect x="496" y="262" width="80" height="36" rx="6" fill="none" stroke="#37A04F" stroke-opacity="0.3" stroke-width="0.5"/>
-            <circle cx="507" cy="274" r="3" fill="#37A04F"/>
-            <text x="514" y="278" fill="#37A04F" font-size="9" font-weight="700" font-family="Raleway, sans-serif">Permits</text>
-            <text x="504" y="292" fill="#343332" font-size="8" font-family="Inter, sans-serif" opacity="0.6">12 new this week</text>
-          </g>
-
-          <!-- Parcel 2: Zoning (sky) — Block C, top-right parcel -->
-          <g id="hl-2" opacity="0" filter="url(#gSky)">
-            <rect x="664" y="208" width="68" height="50" rx="2" fill="#4CD5FF" opacity="0.25"/>
-            <rect x="664" y="208" width="68" height="50" rx="2" fill="none" stroke="#4CD5FF" stroke-opacity="0.7" stroke-width="1.5"/>
-            <rect x="660" y="262" width="76" height="36" rx="6" fill="white" opacity="0.95"/>
-            <rect x="660" y="262" width="76" height="36" rx="6" fill="none" stroke="#4CD5FF" stroke-opacity="0.3" stroke-width="0.5"/>
-            <circle cx="671" cy="274" r="3" fill="#4CD5FF"/>
-            <text x="678" y="278" fill="#0e9bc4" font-size="9" font-weight="700" font-family="Raleway, sans-serif">Zoning</text>
-            <text x="668" y="292" fill="#343332" font-size="8" font-family="Inter, sans-serif" opacity="0.6">R-1 → Mixed Use</text>
-          </g>
-
-          <!-- Parcel 3: Violation (red) — Block G, left parcel -->
-          <g id="hl-3" opacity="0" filter="url(#gRed)">
-            <rect x="588" y="328" width="72" height="104" rx="2" fill="#FF0025" opacity="0.2"/>
-            <rect x="588" y="328" width="72" height="104" rx="2" fill="none" stroke="#FF0025" stroke-opacity="0.7" stroke-width="1.5"/>
-            <rect x="592" y="370" width="64" height="36" rx="6" fill="white" opacity="0.95"/>
-            <rect x="592" y="370" width="64" height="36" rx="6" fill="none" stroke="#FF0025" stroke-opacity="0.3" stroke-width="0.5"/>
-            <circle cx="603" cy="382" r="3" fill="#FF0025"/>
-            <text x="610" y="386" fill="#FF0025" font-size="9" font-weight="700" font-family="Raleway, sans-serif">Violation</text>
-            <text x="600" y="400" fill="#343332" font-size="8" font-family="Inter, sans-serif" opacity="0.6">Overdue 14d</text>
-          </g>
-
-          <!-- Parcel 4: Assessment (yellow) — Block J, wide top parcel (428,448 144x50) -->
-          <g id="hl-4" opacity="0" filter="url(#gYellow)">
-            <rect x="428" y="448" width="144" height="50" rx="2" fill="#FFCB1B" opacity="0.25"/>
-            <rect x="428" y="448" width="144" height="50" rx="2" fill="none" stroke="#FFCB1B" stroke-opacity="0.7" stroke-width="1.5"/>
-            <rect x="460" y="502" width="78" height="36" rx="6" fill="white" opacity="0.95"/>
-            <rect x="460" y="502" width="78" height="36" rx="6" fill="none" stroke="#FFCB1B" stroke-opacity="0.3" stroke-width="0.5"/>
-            <circle cx="471" cy="514" r="3" fill="#FFCB1B"/>
-            <text x="478" y="518" fill="#b38a00" font-size="9" font-weight="700" font-family="Raleway, sans-serif">$425k</text>
-            <text x="468" y="532" fill="#343332" font-size="8" font-family="Inter, sans-serif" opacity="0.6">+8.2% YoY</text>
-          </g>
+          <!-- Highlighted parcels with data cards (content from CMS) -->
+          {cards.slice(0, 4).map((card, i) => {
+            const slot = cardSlots[i];
+            const color = colorMap[card.color || slot.defaultColor] || colorMap[slot.defaultColor];
+            const p = slot.parcel;
+            const c = slot.card;
+            return (
+              <g id={`hl-${i + 1}`} opacity="0" filter={slot.filter}>
+                <rect x={p.x} y={p.y} width={p.w} height={p.h} rx="2" fill={color.fill} opacity="0.25"/>
+                <rect x={p.x} y={p.y} width={p.w} height={p.h} rx="2" fill="none" stroke={color.stroke} stroke-opacity="0.7" stroke-width="1.5"/>
+                <rect x={c.x} y={c.y} width={c.w} height={c.h} rx="6" fill="white" opacity="0.95"/>
+                <rect x={c.x} y={c.y} width={c.w} height={c.h} rx="6" fill="none" stroke={color.stroke} stroke-opacity="0.3" stroke-width="0.5"/>
+                <circle cx={slot.dot.cx} cy={slot.dot.cy} r="3" fill={color.fill}/>
+                <text x={slot.labelPos.x} y={slot.labelPos.y} fill={color.labelFill} font-size="9" font-weight="700" font-family="Raleway, sans-serif">{card.label}</text>
+                <text x={slot.detailPos.x} y={slot.detailPos.y} fill="#343332" font-size="8" font-family="Inter, sans-serif" opacity="0.6">{card.detail}</text>
+              </g>
+            );
+          })}
         </svg>
       </div>
 
-      <!-- Overlay text -->
+      <!-- Overlay text (also from CMS) -->
       <div class="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
         <div id="map-text" class="text-center transition-opacity duration-300">
-          <h2 class="font-heading text-4xl md:text-5xl font-bold text-text-primary mb-4">Every Property. Every Detail.</h2>
-          <p class="text-base text-text-secondary max-w-lg mx-auto">Scroll to explore how Tolemi surfaces data at the parcel level.</p>
+          <h2 class="font-heading text-4xl md:text-5xl font-bold text-text-primary mb-4">{heading}</h2>
+          <p class="text-base text-text-secondary max-w-lg mx-auto">{subheading}</p>
         </div>
       </div>
     </div>
@@ -179,14 +186,12 @@
     const scrollH = rect.height - window.innerHeight;
     const p = Math.max(0, Math.min(1, -rect.top / scrollH));
 
-    // Phase 1 (0–0.15): zoom into the parcel grid, fade heading
     const zoom = Math.min(1, p / 0.15);
     const scale = 1 + zoom * 0.5;
     mapSvg.style.transform = `scale(${scale})`;
     mapSvg.style.transformOrigin = '55% 45%';
     mapText.style.opacity = String(Math.max(0, 1 - p * 8));
 
-    // Phase 2 (0.2–0.9): reveal highlighted parcels one at a time
     const start = 0.2, end = 0.9, count = 4;
     const slice = (end - start) / count;
 

@@ -262,6 +262,37 @@ export default defineConfig({
         ],
       },
       {
+        name: "mapExplorer",
+        label: "Map Explorer",
+        path: "content/map-explorer",
+        format: "json",
+        fields: [
+          { name: "heading", label: "Heading", type: "string" },
+          { name: "subheading", label: "Subheading", type: "string" },
+          {
+            name: "cards",
+            label: "Property Cards",
+            type: "object",
+            list: true,
+            fields: [
+              { name: "label", label: "Label", type: "string", required: true },
+              { name: "detail", label: "Detail Text", type: "string", required: true },
+              {
+                name: "color",
+                label: "Color",
+                type: "string",
+                options: [
+                  { value: "green", label: "Green" },
+                  { value: "sky", label: "Blue" },
+                  { value: "red", label: "Red" },
+                  { value: "yellow", label: "Yellow" },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
         name: "about",
         label: "About",
         path: "content/about",
