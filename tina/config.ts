@@ -80,9 +80,9 @@ const cta = {
 };
 
 export default defineConfig({
-  branch: "",
-  clientId: "",
-  token: "",
+  token: process.env.TINA_TOKEN,
+  clientId: process.env.NEXT_PUBLIC_TINA_CLIENT_ID,
+  branch: process.env.NEXT_PUBLIC_TINA_BRANCH || '',
   build: {
     outputFolder: "admin",
     publicFolder: "public",
