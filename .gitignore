@@ -29,6 +29,7 @@ tina/__generated__/
 # catch all .env variants
 .env.*
 .env.local
+.envrc
 
 # editor
 *.swp
@@ -37,3 +38,4 @@ tina/__generated__/
 
 # archived map source data
 archive/
+node_modules
