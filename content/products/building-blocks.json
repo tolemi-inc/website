@@ -3,11 +3,27 @@
   "slug": "building-blocks",
   "headline": "Building Blocks",
   "subheadline": "The foundational data infrastructure that powers every Tolemi solution.",
-  "body": "Building Blocks is Tolemi's core data platform. It ingests, normalizes, and connects disparate city datasets—property records, permits, violations, and more—into a single unified data layer. Every Tolemi product is built on Building Blocks, and it's available as a standalone platform for cities that want to build their own solutions on top of clean, connected data.",
+  "body": "BuildingBlocks is a map-based application that connects and updates data held in different systems and formats across departments & agencies. Your staff can find the answers they need in seconds, run advanced spatial analysis, and automate reports in a single interface.",
   "features": [
-    { "title": "Data Ingestion", "description": "Connect to existing city systems, spreadsheets, and third-party sources with pre-built integrations." },
-    { "title": "Data Normalization", "description": "Automatically clean, deduplicate, and standardize records across systems." },
-    { "title": "Unified Data Layer", "description": "Access all your city's property and compliance data through a single API and dashboard." },
-    { "title": "Custom Workflows", "description": "Build automated workflows on top of your connected data without writing code." }
+    {
+      "title": "One-click property data",
+      "description": "A complete, up-to-date profile for every property in your municipality with information pulled automatically from any system or department."
+    },
+    {
+      "title": "Search and filter properties",
+      "description": "Easy-to-use filters and search tools to quickly identify properties that meet specific criteria relevant to your work."
+    },
+    {
+      "title": "Research and link owners",
+      "description": "Comprehensive data on every owner in your municipality in a single screen, and smart linking that identifies potentially related owners through shell LLC's."
+    },
+    {
+      "title": "Build and share reports",
+      "description": "Customizable reports and data visualization tools, shareable through dashboards that automatically refresh when the data changes."
+    },
+    {
+      "title": "Set alerts",
+      "description": "Get an email delivered to your inbox when properties meet custom-defined triggers so you can stay on top of changing conditions and stay ahead of the game."
+    }
   ]
 }
