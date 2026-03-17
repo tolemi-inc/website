@@ -5,9 +5,17 @@
   "subheadline": "Automated public notices and resident communications powered by your data.",
   "body": "Publicity connects to your city's data and automatically generates and distributes public notices, compliance letters, and resident updates. Whether it's a code violation notice, a rental registration reminder, or a community update, Publicity ensures the right message reaches the right people at the right time.",
   "features": [
-    { "title": "Automated Notices", "description": "Generate violation notices, renewal reminders, and public announcements automatically from your data." },
-    { "title": "Multi-Channel Delivery", "description": "Send communications via email, SMS, postal mail, or publish to your city website." },
-    { "title": "Template Builder", "description": "Create and manage reusable templates with dynamic fields that pull from your city data." },
-    { "title": "Delivery Tracking", "description": "Track delivery status, open rates, and response rates for every communication sent." }
+    {
+      "title": "List Properties for Sale",
+      "description": "Allow prospective buyers to search for properties and submit purchase applications."
+    },
+    {
+      "title": "Present Major Projects to the Public",
+      "description": "Publish major projects to inform your community about new developments."
+    },
+    {
+      "title": "Customizable Search Filters",
+      "description": "Customizable search filters help prospective buyers and community members identify properties of interest."
+    }
   ]
 }
