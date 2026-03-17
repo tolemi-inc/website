@@ -3,11 +3,23 @@
   "slug": "slate",
   "headline": "Slate",
   "subheadline": "Beautiful, interactive dashboards that make city data accessible to everyone.",
-  "body": "Slate transforms raw city data into visual, interactive dashboards that staff and residents can understand at a glance. From compliance heat maps to trend charts, Slate helps your team make data-driven decisions and share insights with the public—no technical skills required.",
+  "body": "Slate is a workflow management software designed for city governments and land banks to streamline property and parcel acquisition, disposition, management, registration, and compliance. Unlike generic project management tools, it optimizes property and parcel processes by organizing tasks into clear, stage-based workflows. With organization at its core, Slate ensures no task or detail is missed, helping cities and land banks work smarter and achieve results faster.",
   "features": [
-    { "title": "Interactive Dashboards", "description": "Build and customize dashboards with drag-and-drop widgets for maps, charts, and tables." },
-    { "title": "Public-Facing Views", "description": "Share read-only dashboards with residents to increase transparency and public trust." },
-    { "title": "Real-Time Updates", "description": "Dashboards refresh automatically as underlying data changes in Building Blocks." },
-    { "title": "Export & Embed", "description": "Export charts as images or embed live dashboards on your city's website." }
+    {
+      "title": "Operationalize Data",
+      "description": "Slate is connected to parcels of record and integrated with all other city data, allowing your team to instantly analyze and operationalize data to deliver tangible results for properties and land in your city."
+    },
+    {
+      "title": "Custom Configuration",
+      "description": "We work with you to understand the workflows, registries and & information you need to track, and we customize Slate to be applicable and intuitive."
+    },
+    {
+      "title": "Manage Team Workflows",
+      "description": "Delegate tasks to your team, track workflow progress, view automated reports to measure your workflow data and your team's impact, and holistically manage processes from start to finish."
+    },
+    {
+      "title": "Analyze Data",
+      "description": "Seamlessly layer data you create in Slate with BuildingBlocks data to understand how your programs and teams are impacting your city."
+    }
   ]
 }
