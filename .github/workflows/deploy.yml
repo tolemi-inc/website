@@ -22,7 +22,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '22.12.0'
+          node-version: "22.12.0"
 
       - name: Install dependencies
         run: npm install
@@ -40,7 +40,6 @@ jobs:
           role-to-assume: ${{ env.AWS_ROLE }}
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
 
       - name: Deploy to S3
         run: aws s3 sync ./dist s3://tolemi-website --delete
