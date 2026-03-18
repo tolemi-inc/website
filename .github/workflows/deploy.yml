@@ -11,6 +11,9 @@ env:
   AWS_ROLE: "arn:aws:iam::993874376304:role/github_oidc_role"
   AWS_REGION: "us-east-1"
 
+permissions:
+  id-token: write
+
 jobs:
   deploy:
     if: github.event.pull_request.merged == true
