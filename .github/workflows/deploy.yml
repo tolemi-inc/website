@@ -8,6 +8,8 @@ on:
 
 env:
   NEXT_PUBLIC_TINA_BRANCH: main
+  AWS_ROLE: "arn:aws:iam::993874376304:role/github_oidc_role"
+  AWS_REGION: "us-east-1"
 
 jobs:
   deploy:
@@ -21,7 +23,7 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '22.12.0'
-      
+
       - name: Install dependencies
         run: npm install
 
@@ -34,12 +36,11 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ env.AWS_ROLE }}
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
       - name: Deploy to S3
         run: aws s3 sync ./dist s3://tolemi-website --delete
-
-
-
