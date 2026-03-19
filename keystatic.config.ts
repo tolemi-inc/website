@@ -11,90 +11,39 @@ const heroFields = {
   ctaLink: fields.text({ label: 'CTA Button Link' }),
 };
 
-const featureItem = fields.object({
-  label: 'Feature Item',
-  fields: {
+const featureItem = fields.object(
+  {
     title: fields.text({ label: 'Title', validation: { isRequired: true } }),
     description: fields.text({ label: 'Description', multiline: true }),
     icon: fields.text({ label: 'Icon (emoji or text)' }),
   },
-});
+  { label: 'Feature Item' }
+);
 
-const statItem = fields.object({
-  label: 'Stat Item',
-  fields: {
+const statItem = fields.object(
+  {
     value: fields.text({ label: 'Value', validation: { isRequired: true } }),
     label: fields.text({ label: 'Label', validation: { isRequired: true } }),
   },
-});
+  { label: 'Stat Item' }
+);
 
-const testimonialItem = fields.object({
-  label: 'Testimonial',
-  fields: {
+const testimonialItem = fields.object(
+  {
     quote: fields.text({ label: 'Quote', multiline: true, validation: { isRequired: true } }),
     author: fields.text({ label: 'Author Name' }),
     role: fields.text({ label: 'Author Role' }),
   },
-});
+  { label: 'Testimonial' }
+);
 
-const navChild = fields.object({
-  label: 'Nav Child Link',
-  fields: {
+const navChild = fields.object(
+  {
     label: fields.text({ label: 'Label', validation: { isRequired: true } }),
     href: fields.text({ label: 'URL', validation: { isRequired: true } }),
   },
-});
-
-// ---------------------------------------------------------------------------
-// Block templates for the home page
-// ---------------------------------------------------------------------------
-
-const heroBlock = fields.object({
-  label: 'Hero Block',
-  fields: {
-    _template: fields.text({ label: 'Template', defaultValue: 'hero' }),
-    ...heroFields,
-  },
-});
-
-const featuresBlock = fields.object({
-  label: 'Features Block',
-  fields: {
-    _template: fields.text({ label: 'Template', defaultValue: 'features' }),
-    heading: fields.text({ label: 'Section Heading' }),
-    subheading: fields.text({ label: 'Section Subheading' }),
-    items: fields.array(featureItem, { label: 'Feature Items', itemLabel: (props) => props.fields.title.value || 'Feature' }),
-  },
-});
-
-const statsBlock = fields.object({
-  label: 'Stats Block',
-  fields: {
-    _template: fields.text({ label: 'Template', defaultValue: 'stats' }),
-    heading: fields.text({ label: 'Section Heading' }),
-    items: fields.array(statItem, { label: 'Stat Items', itemLabel: (props) => props.fields.value.value || 'Stat' }),
-  },
-});
-
-const testimonialsBlock = fields.object({
-  label: 'Testimonials Block',
-  fields: {
-    _template: fields.text({ label: 'Template', defaultValue: 'testimonials' }),
-    heading: fields.text({ label: 'Section Heading' }),
-    items: fields.array(testimonialItem, { label: 'Testimonials', itemLabel: (props) => props.fields.author.value || 'Testimonial' }),
-  },
-});
-
-const ctaBlock = fields.object({
-  label: 'Call to Action Block',
-  fields: {
-    _template: fields.text({ label: 'Template', defaultValue: 'cta' }),
-    heading: fields.text({ label: 'Heading' }),
-    text: fields.text({ label: 'Body Text', multiline: true }),
-    buttonText: fields.text({ label: 'Button Text' }),
-    buttonLink: fields.text({ label: 'Button Link' }),
-  },
-});
+  { label: 'Nav Child Link' }
+);
 
 // ---------------------------------------------------------------------------
 // Config
@@ -127,9 +76,8 @@ export default config({
       schema: {
         companyName: fields.text({ label: 'Company Name' }),
         nav: fields.array(
-          fields.object({
-            label: 'Nav Link',
-            fields: {
+          fields.object(
+            {
               label: fields.text({ label: 'Label', validation: { isRequired: true } }),
               href: fields.text({ label: 'URL', validation: { isRequired: true } }),
               children: fields.array(navChild, {
@@ -137,18 +85,54 @@ export default config({
                 itemLabel: (props) => props.fields.label.value || 'Link',
               }),
             },
-          }),
+            { label: 'Nav Link' }
+          ),
           { label: 'Navigation Links', itemLabel: (props) => props.fields.label.value || 'Link' }
         ),
         footerText: fields.text({ label: 'Footer Text' }),
+        footerLinks: fields.object(
+          {
+            solutions: fields.array(
+              fields.object(
+                {
+                  label: fields.text({ label: 'Label', validation: { isRequired: true } }),
+                  href: fields.text({ label: 'URL', validation: { isRequired: true } }),
+                },
+                { label: 'Link' }
+              ),
+              { label: 'Solutions Links', itemLabel: (props) => props.fields.label.value || 'Link' }
+            ),
+            products: fields.array(
+              fields.object(
+                {
+                  label: fields.text({ label: 'Label', validation: { isRequired: true } }),
+                  href: fields.text({ label: 'URL', validation: { isRequired: true } }),
+                },
+                { label: 'Link' }
+              ),
+              { label: 'Products Links', itemLabel: (props) => props.fields.label.value || 'Link' }
+            ),
+            company: fields.array(
+              fields.object(
+                {
+                  label: fields.text({ label: 'Label', validation: { isRequired: true } }),
+                  href: fields.text({ label: 'URL', validation: { isRequired: true } }),
+                },
+                { label: 'Link' }
+              ),
+              { label: 'Company Links', itemLabel: (props) => props.fields.label.value || 'Link' }
+            ),
+          },
+          { label: 'Footer Links' }
+        ),
         socialLinks: fields.array(
-          fields.object({
-            label: 'Social Link',
-            fields: {
+          fields.object(
+            {
               platform: fields.text({ label: 'Platform', validation: { isRequired: true } }),
               url: fields.text({ label: 'URL', validation: { isRequired: true } }),
             },
-          }),
+            { label: 'Social Link' }
+          ),
           { label: 'Social Links', itemLabel: (props) => props.fields.platform.value || 'Platform' }
         ),
       },
@@ -174,38 +158,47 @@ export default config({
               defaultValue: 'hero',
             }),
             {
-              hero: fields.object({ label: 'Hero', fields: heroFields }),
-              features: fields.object({
-                label: 'Features',
-                fields: {
+              hero: fields.object(heroFields, { label: 'Hero' }),
+              features: fields.object(
+                {
                   heading: fields.text({ label: 'Section Heading' }),
                   subheading: fields.text({ label: 'Section Subheading' }),
-                  items: fields.array(featureItem, { label: 'Feature Items', itemLabel: (props) => props.fields.title.value || 'Feature' }),
+                  items: fields.array(featureItem, {
+                    label: 'Feature Items',
+                    itemLabel: (props) => props.fields.title.value || 'Feature',
+                  }),
                 },
-              }),
-              stats: fields.object({
-                label: 'Stats',
-                fields: {
+                { label: 'Features' }
+              ),
+              stats: fields.object(
+                {
                   heading: fields.text({ label: 'Section Heading' }),
-                  items: fields.array(statItem, { label: 'Stat Items', itemLabel: (props) => props.fields.value.value || 'Stat' }),
+                  items: fields.array(statItem, {
+                    label: 'Stat Items',
+                    itemLabel: (props) => props.fields.value.value || 'Stat',
+                  }),
                 },
-              }),
-              testimonials: fields.object({
-                label: 'Testimonials',
-                fields: {
+                { label: 'Stats' }
+              ),
+              testimonials: fields.object(
+                {
                   heading: fields.text({ label: 'Section Heading' }),
-                  items: fields.array(testimonialItem, { label: 'Testimonials', itemLabel: (props) => props.fields.author.value || 'Testimonial' }),
+                  items: fields.array(testimonialItem, {
+                    label: 'Testimonials',
+                    itemLabel: (props) => props.fields.author.value || 'Testimonial',
+                  }),
                 },
-              }),
-              cta: fields.object({
-                label: 'Call to Action',
-                fields: {
+                { label: 'Testimonials' }
+              ),
+              cta: fields.object(
+                {
                   heading: fields.text({ label: 'Heading' }),
                   text: fields.text({ label: 'Body Text', multiline: true }),
                   buttonText: fields.text({ label: 'Button Text' }),
                   buttonLink: fields.text({ label: 'Button Link' }),
                 },
-              }),
+                { label: 'Call to Action' }
+              ),
             }
           ),
           { label: 'Page Blocks', itemLabel: (props) => props.discriminant }
@@ -224,13 +217,13 @@ export default config({
         historyHeading: fields.text({ label: 'History Heading' }),
         historyBody: fields.text({ label: 'History Body', multiline: true }),
         milestones: fields.array(
-          fields.object({
-            label: 'Milestone',
-            fields: {
+          fields.object(
+            {
               year: fields.text({ label: 'Year', validation: { isRequired: true } }),
               event: fields.text({ label: 'Event', validation: { isRequired: true } }),
             },
-          }),
+            { label: 'Milestone' }
+          ),
           { label: 'Milestones', itemLabel: (props) => props.fields.year.value || 'Milestone' }
         ),
       },
@@ -245,9 +238,8 @@ export default config({
         headline: fields.text({ label: 'Headline' }),
         subheadline: fields.text({ label: 'Subheadline' }),
         members: fields.array(
-          fields.object({
-            label: 'Team Member',
-            fields: {
+          fields.object(
+            {
               name: fields.text({ label: 'Name', validation: { isRequired: true } }),
               title: fields.text({ label: 'Title' }),
               bio: fields.text({ label: 'Bio', multiline: true }),
@@ -257,7 +249,8 @@ export default config({
                 publicPath: '/uploads/',
               }),
             },
-          }),
+            { label: 'Team Member' }
+          ),
           { label: 'Team Members', itemLabel: (props) => props.fields.name.value || 'Member' }
         ),
       },
@@ -275,29 +268,28 @@ export default config({
         cultureHeading: fields.text({ label: 'Culture Heading' }),
         cultureBody: fields.text({ label: 'Culture Body', multiline: true }),
         perks: fields.array(
-          fields.object({
-            label: 'Perk',
-            fields: {
+          fields.object(
+            {
               title: fields.text({ label: 'Title', validation: { isRequired: true } }),
               description: fields.text({ label: 'Description', multiline: true }),
             },
-          }),
+            { label: 'Perk' }
+          ),
           { label: 'Perks', itemLabel: (props) => props.fields.title.value || 'Perk' }
         ),
         featuredPosts: fields.array(
-          fields.object({
-            label: 'Featured Post',
-            fields: {
+          fields.object(
+            {
               title: fields.text({ label: 'Title', validation: { isRequired: true } }),
               href: fields.text({ label: 'URL', validation: { isRequired: true } }),
             },
-          }),
+            { label: 'Featured Post' }
+          ),
           { label: 'Featured Blog Posts', itemLabel: (props) => props.fields.title.value || 'Post' }
         ),
         jobs: fields.array(
-          fields.object({
-            label: 'Job Posting',
-            fields: {
+          fields.object(
+            {
               title: fields.text({ label: 'Job Title', validation: { isRequired: true } }),
               department: fields.text({ label: 'Department' }),
               location: fields.text({ label: 'Location' }),
@@ -305,7 +297,8 @@ export default config({
               description: fields.text({ label: 'Description', multiline: true }),
               applyLink: fields.text({ label: 'Apply Link' }),
             },
-          }),
+            { label: 'Job Posting' }
+          ),
           { label: 'Job Postings', itemLabel: (props) => props.fields.title.value || 'Job' }
         ),
       },
@@ -319,9 +312,8 @@ export default config({
         heading: fields.text({ label: 'Heading' }),
         subheading: fields.text({ label: 'Subheading' }),
         cards: fields.array(
-          fields.object({
-            label: 'Property Card',
-            fields: {
+          fields.object(
+            {
               label: fields.text({ label: 'Label', validation: { isRequired: true } }),
               detail: fields.text({ label: 'Detail Text', validation: { isRequired: true } }),
               color: fields.select({
@@ -335,7 +327,8 @@ export default config({
                 defaultValue: 'green',
               }),
             },
-          }),
+            { label: 'Property Card' }
+          ),
           { label: 'Property Cards', itemLabel: (props) => props.fields.label.value || 'Card' }
         ),
       },
@@ -358,13 +351,13 @@ export default config({
         subheadline: fields.text({ label: 'Subheadline' }),
         body: fields.text({ label: 'Body', multiline: true }),
         features: fields.array(
-          fields.object({
-            label: 'Feature',
-            fields: {
+          fields.object(
+            {
               title: fields.text({ label: 'Title', validation: { isRequired: true } }),
               description: fields.text({ label: 'Description', multiline: true }),
             },
-          }),
+            { label: 'Feature' }
+          ),
           { label: 'Features', itemLabel: (props) => props.fields.title.value || 'Feature' }
         ),
       },
@@ -382,13 +375,13 @@ export default config({
         subheadline: fields.text({ label: 'Subheadline' }),
         body: fields.text({ label: 'Body', multiline: true }),
         features: fields.array(
-          fields.object({
-            label: 'Feature',
-            fields: {
+          fields.object(
+            {
               title: fields.text({ label: 'Title', validation: { isRequired: true } }),
               description: fields.text({ label: 'Description', multiline: true }),
             },
-          }),
+            { label: 'Feature' }
+          ),
           { label: 'Features', itemLabel: (props) => props.fields.title.value || 'Feature' }
         ),
       },

@@ -9,11 +9,11 @@ import CallToAction from "../components/blocks/CallToAction.astro";
 
 import homeData from "../../content/pages/home.json";
 
-// Find specific blocks from the data
-const heroBlock = homeData.blocks.find((b: any) => b._template === "hero");
-const featuresBlock = homeData.blocks.find((b: any) => b._template === "features");
-const statsBlock = homeData.blocks.find((b: any) => b._template === "stats");
-const ctaBlock = homeData.blocks.find((b: any) => b._template === "cta");
+// Blocks are stored as { discriminant, value } by Keystatic
+const heroBlock = (homeData.blocks.find((b: any) => b.discriminant === "hero") as any)?.value;
+const featuresBlock = (homeData.blocks.find((b: any) => b.discriminant === "features") as any)?.value;
+const statsBlock = (homeData.blocks.find((b: any) => b.discriminant === "stats") as any)?.value;
+const ctaBlock = (homeData.blocks.find((b: any) => b.discriminant === "cta") as any)?.value;
 ---
 
 <Base title={homeData.title}>
