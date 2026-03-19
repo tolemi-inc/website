@@ -3,19 +3,22 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "tinacms dev -c \"astro dev\"",
-    "build": "tinacms build && astro build",
+    "dev": "astro dev",
+    "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/node": "^9.5.4",
+    "@astrojs/netlify": "^6.6.5",
+    "@astrojs/react": "^4.2.1",
+    "@keystatic/astro": "^5.0.6",
+    "@keystatic/core": "^0.5.48",
     "@tailwindcss/vite": "^4.2.1",
-    "@tinacms/cli": "^2.1.8",
     "astro": "^5.17.1",
     "maplibre-gl": "^5.19.0",
     "pmtiles": "^4.4.0",
-    "tailwindcss": "^4.2.1",
-    "tinacms": "^3.6.0"
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "tailwindcss": "^4.2.1"
   }
 }

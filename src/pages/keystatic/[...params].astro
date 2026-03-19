@@ -1,0 +1,9 @@
+---
+// This file intentionally re-exports Keystatic's admin UI.
+// The @keystatic/astro integration injects this route automatically,
+// but this explicit file is kept for clarity.
+import { Keystatic } from '@keystatic/astro/internal/keystatic-page.js';
+export const prerender = false;
+---
+
+<Keystatic client:only="react" />
