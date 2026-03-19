@@ -1,8 +1,6 @@
 ---
 export const prerender = false;
-import { makePage } from '@keystatic/astro/ui';
-import config from 'virtual:keystatic-config';
-const KeystaticApp = makePage(config);
+import KeystaticApp from '../../components/KeystaticApp';
 ---
 
 <!DOCTYPE html>
