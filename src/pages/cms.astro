@@ -1,0 +1,154 @@
+---
+export const prerender = false;
+
+// If already authenticated, redirect straight to the Keystatic app
+const sessionCookie = Astro.cookies.get('keystatic-gh-session');
+if (sessionCookie?.value) {
+  return Astro.redirect('/keystatic');
+}
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Tolemi CMS</title>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      body {
+        font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+        background: #f5f5f5;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .card {
+        background: #ffffff;
+        border: 1px solid rgba(0,0,0,0.08);
+        border-radius: 16px;
+        padding: 48px 40px;
+        width: 100%;
+        max-width: 400px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 32px;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+      }
+
+      .brand {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .logo-mark {
+        width: 48px;
+        height: 48px;
+      }
+
+      .brand-name {
+        font-size: 22px;
+        font-weight: 700;
+        color: #343332;
+        letter-spacing: -0.02em;
+      }
+
+      .brand-sub {
+        font-size: 14px;
+        color: #6b6a69;
+        margin-top: -6px;
+      }
+
+      .divider {
+        width: 100%;
+        height: 1px;
+        background: rgba(0,0,0,0.07);
+      }
+
+      .copy {
+        text-align: center;
+      }
+
+      .copy h1 {
+        font-size: 18px;
+        font-weight: 600;
+        color: #343332;
+        margin-bottom: 8px;
+      }
+
+      .copy p {
+        font-size: 14px;
+        color: #6b6a69;
+        line-height: 1.5;
+      }
+
+      .btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        width: 100%;
+        padding: 12px 20px;
+        background: #37A04F;
+        color: #ffffff;
+        font-size: 15px;
+        font-weight: 600;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: background 0.15s ease;
+      }
+
+      .btn:hover { background: #2d8541; }
+
+      .btn svg {
+        flex-shrink: 0;
+      }
+
+      .footer {
+        font-size: 12px;
+        color: #9e9d9c;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div class="brand">
+        <!-- Tolemi logomark - three coloured dots from the SVG -->
+        <svg class="logo-mark" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="72" cy="30" r="22" fill="#4CD5FF"/>
+          <circle cx="48" cy="64" r="22" fill="#FFCB1B"/>
+          <circle cx="80" cy="90" r="22" fill="#FF0025"/>
+        </svg>
+        <span class="brand-name">Tolemi</span>
+        <span class="brand-sub">Content Management</span>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="copy">
+        <h1>Sign in to continue</h1>
+        <p>Use your GitHub account to access and edit website content.</p>
+      </div>
+
+      <a href="/api/keystatic/github/login" class="btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+        </svg>
+        Sign in with GitHub
+      </a>
+
+      <p class="footer">
+        Only authorised team members can sign in.<br />
+        Changes create a GitHub PR for review before going live.
+      </p>
+    </div>
+  </body>
+</html>
