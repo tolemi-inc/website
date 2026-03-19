@@ -60,8 +60,8 @@ export default config({
       : {
           kind: 'github',
           repo: {
-            owner: process.env.GITHUB_REPO_OWNER!,
-            name: process.env.GITHUB_REPO_NAME!,
+            owner: 'tolemi-inc',
+            name: 'website',
           },
         },
 
