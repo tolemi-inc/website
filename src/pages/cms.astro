@@ -48,22 +48,14 @@ if (sessionCookie?.value) {
         gap: 12px;
       }
 
-      .logo-mark {
-        width: 48px;
-        height: 48px;
-      }
-
-      .brand-name {
-        font-size: 22px;
-        font-weight: 700;
-        color: #343332;
-        letter-spacing: -0.02em;
+      .tolemi-logo {
+        width: 180px;
+        height: auto;
       }
 
       .brand-sub {
         font-size: 14px;
         color: #6b6a69;
-        margin-top: -6px;
       }
 
       .divider {
@@ -121,13 +113,7 @@ if (sessionCookie?.value) {
   <body>
     <div class="card">
       <div class="brand">
-        <!-- Tolemi logomark - three coloured dots from the SVG -->
-        <svg class="logo-mark" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="72" cy="30" r="22" fill="#4CD5FF"/>
-          <circle cx="48" cy="64" r="22" fill="#FFCB1B"/>
-          <circle cx="80" cy="90" r="22" fill="#FF0025"/>
-        </svg>
-        <span class="brand-name">Tolemi</span>
+        <img src="/tolemi-logo.svg" class="tolemi-logo" alt="Tolemi" />
         <span class="brand-sub">Content Management</span>
       </div>
 
