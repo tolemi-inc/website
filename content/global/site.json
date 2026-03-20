@@ -5,41 +5,88 @@
       "label": "Solutions",
       "href": "/solutions",
       "children": [
-        { "label": "Code Enforcement", "href": "/solutions/code-enforcement" },
-        { "label": "Long-Term Rental Registration", "href": "/solutions/long-term-rental-registration" },
-        { "label": "Short-Term Rental Registration", "href": "/solutions/short-term-rental-registration" }
+        {
+          "label": "Code Enforcement",
+          "href": "/solutions/code-enforcement"
+        },
+        {
+          "label": "Long-Term Rental Registration",
+          "href": "/solutions/long-term-rental-registration"
+        },
+        {
+          "label": "Short-Term Rental Registration",
+          "href": "/solutions/short-term-rental-registration"
+        }
       ]
     },
     {
       "label": "Products",
       "href": "/products",
       "children": [
-        { "label": "Building Blocks", "href": "/products/building-blocks" },
-        { "label": "Slate", "href": "/products/slate" },
-        { "label": "Publicity", "href": "/products/publicity" }
+        {
+          "label": "Building Blocks",
+          "href": "/products/building-blocks"
+        },
+        {
+          "label": "Slate",
+          "href": "/products/slate"
+        },
+        {
+          "label": "Publicity",
+          "href": "/products/publicity"
+        }
       ]
     }
   ],
+  "footerText": "© 2026 Tolemi. All rights reserved.",
   "footerLinks": {
     "solutions": [
-      { "label": "Code Enforcement", "href": "/solutions/code-enforcement" },
-      { "label": "Long-Term Rental", "href": "/solutions/long-term-rental-registration" },
-      { "label": "Short-Term Rental", "href": "/solutions/short-term-rental-registration" }
+      {
+        "label": "Code Enforcement",
+        "href": "/solutions/code-enforcement"
+      },
+      {
+        "label": "Long-Term Rental",
+        "href": "/solutions/long-term-rental-registration"
+      },
+      {
+        "label": "Short-Term Rental",
+        "href": "/solutions/short-term-rental-registration"
+      }
     ],
     "products": [
-      { "label": "Building Blocks", "href": "/products/building-blocks" },
-      { "label": "Slate", "href": "/products/slate" },
-      { "label": "Publicity", "href": "/products/publicity" }
+      {
+        "label": "Building Blocks",
+        "href": "/products/building-blocks"
+      },
+      {
+        "label": "Slate",
+        "href": "/products/slate"
+      },
+      {
+        "label": "Publicity",
+        "href": "/products/publicity"
+      }
     ],
     "company": [
-      { "label": "About", "href": "/about" },
-      { "label": "Team", "href": "/team" },
-      { "label": "Careers", "href": "/careers" }
+      {
+        "label": "About",
+        "href": "/about"
+      },
+      {
+        "label": "Team",
+        "href": "/team"
+      },
+      {
+        "label": "Careers",
+        "href": "/careers"
+      }
     ]
   },
-  "footerText": "© 2026 Tolemi. All rights reserved.",
   "socialLinks": [
-    { "platform": "Twitter", "url": "https://twitter.com/tolemi" },
-    { "platform": "LinkedIn", "url": "https://linkedin.com/company/tolemi" }
+    {
+      "platform": "LinkedIn",
+      "url": "https://linkedin.com/company/tolemi"
+    }
   ]
 }
