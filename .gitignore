@@ -39,3 +39,6 @@ tina/__generated__/
 # archived map source data
 archive/
 node_modules
+
+# Local Netlify folder
+.netlify

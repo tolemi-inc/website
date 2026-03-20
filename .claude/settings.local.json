@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:tina.io)",
+      "Bash(lsof:*)",
+      "Bash(npx astro:*)",
+      "Bash(ls:*)",
+      "Bash(pip3 list:*)",
+      "Bash(docker compose:*)",
+      "Bash(git -C /Users/silvia/Documents/website log --oneline -15)"
+    ]
+  }
+}

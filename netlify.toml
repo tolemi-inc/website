@@ -1,0 +1,13 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# Environment variables needed at runtime (set these in Netlify UI, not here):
+#   GITHUB_REPO_OWNER   — your GitHub org or username (e.g. "tolemi")
+#   GITHUB_REPO_NAME    — the repo name (e.g. "tolemi-website")
+#   KEYSTATIC_GITHUB_CLIENT_ID     — from your GitHub OAuth App
+#   KEYSTATIC_GITHUB_CLIENT_SECRET — from your GitHub OAuth App
+#   KEYSTATIC_SECRET    — any random 32+ char string (used to sign cookies)
