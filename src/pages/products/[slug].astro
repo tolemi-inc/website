@@ -1,29 +1,40 @@
 ---
 import Base from "../../layouts/Base.astro";
 import PageHero from "../../components/blocks/PageHero.astro";
-import ContentSection from "../../components/blocks/ContentSection.astro";
 import CrossLinkCards from "../../components/blocks/CrossLinkCards.astro";
 import CallToAction from "../../components/blocks/CallToAction.astro";
+import { createReader } from '@keystatic/core/reader';
+import keystaticConfig from '../../../keystatic.config';
+import Markdoc from '@markdoc/markdoc';
 
-import buildingBlocks from "../../../content/products/building-blocks.json";
-import slate from "../../../content/products/slate.json";
-import publicity from "../../../content/products/publicity.json";
+export const prerender = true;
 
-const allProducts = [buildingBlocks, slate, publicity];
+const reader = createReader(process.cwd(), keystaticConfig);
+const allProducts = await reader.collections.products.all();
 
-export function getStaticPaths() {
-  const products = [buildingBlocks, slate, publicity];
-  return products.map((p) => ({ params: { slug: p.slug }, props: { product: p } }));
+export async function getStaticPaths() {
+  const reader = createReader(process.cwd(), keystaticConfig);
+  const slugs = await reader.collections.products.list();
+  return slugs.map((slug) => ({ params: { slug } }));
 }
 
-const { product } = Astro.props;
-const otherProducts = allProducts.filter((p) => p.slug !== product.slug);
+const { slug } = Astro.params;
+const product = await reader.collections.products.read(slug!);
+if (!product) throw new Error(`Product not found: ${slug}`);
+
+const body = await product.body();
+const bodyHtml = Markdoc.renderers.html(Markdoc.transform(body.node));
+const otherProducts = allProducts.filter((p) => p.slug !== slug);
 ---
 
 <Base title={product.title}>
   <PageHero headline={product.headline} subheadline={product.subheadline} />
 
-  <ContentSection body={product.body} />
+  <section class="py-16 md:py-20 px-6">
+    <div class="max-w-3xl mx-auto reveal prose prose-lg text-text-secondary">
+      <Fragment set:html={bodyHtml} />
+    </div>
+  </section>
 
   {product.features && product.features.length > 0 && (
     <section class="py-16 md:py-20 px-6">
@@ -44,7 +55,7 @@ const otherProducts = allProducts.filter((p) => p.slug !== product.slug);
   <CrossLinkCards
     heading="Other Products"
     basePath="/products"
-    items={otherProducts.map((p) => ({ title: p.title, slug: p.slug, subheadline: p.subheadline }))}
+    items={otherProducts.map((p) => ({ title: p.entry.title, slug: p.slug, subheadline: p.entry.subheadline }))}
   />
 
   <CallToAction

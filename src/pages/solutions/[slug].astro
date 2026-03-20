@@ -1,29 +1,40 @@
 ---
 import Base from "../../layouts/Base.astro";
 import PageHero from "../../components/blocks/PageHero.astro";
-import ContentSection from "../../components/blocks/ContentSection.astro";
 import CrossLinkCards from "../../components/blocks/CrossLinkCards.astro";
 import CallToAction from "../../components/blocks/CallToAction.astro";
+import { createReader } from '@keystatic/core/reader';
+import keystaticConfig from '../../../keystatic.config';
+import Markdoc from '@markdoc/markdoc';
 
-import codeEnforcement from "../../../content/solutions/code-enforcement.json";
-import longTermRental from "../../../content/solutions/long-term-rental-registration.json";
-import shortTermRental from "../../../content/solutions/short-term-rental-registration.json";
+export const prerender = true;
 
-const allSolutions = [codeEnforcement, longTermRental, shortTermRental];
+const reader = createReader(process.cwd(), keystaticConfig);
+const allSolutions = await reader.collections.solutions.all();
 
-export function getStaticPaths() {
-  const solutions = [codeEnforcement, longTermRental, shortTermRental];
-  return solutions.map((s) => ({ params: { slug: s.slug }, props: { solution: s } }));
+export async function getStaticPaths() {
+  const reader = createReader(process.cwd(), keystaticConfig);
+  const slugs = await reader.collections.solutions.list();
+  return slugs.map((slug) => ({ params: { slug } }));
 }
 
-const { solution } = Astro.props;
-const otherSolutions = allSolutions.filter((s) => s.slug !== solution.slug);
+const { slug } = Astro.params;
+const solution = await reader.collections.solutions.read(slug!);
+if (!solution) throw new Error(`Solution not found: ${slug}`);
+
+const body = await solution.body();
+const bodyHtml = Markdoc.renderers.html(Markdoc.transform(body.node));
+const otherSolutions = allSolutions.filter((s) => s.slug !== slug);
 ---
 
 <Base title={solution.title}>
   <PageHero headline={solution.headline} subheadline={solution.subheadline} />
 
-  <ContentSection body={solution.body} />
+  <section class="py-16 md:py-20 px-6">
+    <div class="max-w-3xl mx-auto reveal prose prose-lg text-text-secondary">
+      <Fragment set:html={bodyHtml} />
+    </div>
+  </section>
 
   {solution.features && solution.features.length > 0 && (
     <section class="py-16 md:py-20 px-6">
@@ -44,7 +55,7 @@ const otherSolutions = allSolutions.filter((s) => s.slug !== solution.slug);
   <CrossLinkCards
     heading="Other Solutions"
     basePath="/solutions"
-    items={otherSolutions.map((s) => ({ title: s.title, slug: s.slug, subheadline: s.subheadline }))}
+    items={otherSolutions.map((s) => ({ title: s.entry.title, slug: s.slug, subheadline: s.entry.subheadline }))}
   />
 
   <CallToAction
