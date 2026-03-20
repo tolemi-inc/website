@@ -3,10 +3,18 @@ import Base from "../layouts/Base.astro";
 import PageHero from "../components/blocks/PageHero.astro";
 import JobListings from "../components/blocks/JobListings.astro";
 import CallToAction from "../components/blocks/CallToAction.astro";
+import { createReader } from '@keystatic/core/reader';
+import keystaticConfig from '../../keystatic.config';
+import Markdoc from '@markdoc/markdoc';
 
-import careersData from "../../content/careers/careers.json";
+export const prerender = true;
 
-const perks = (careersData as any).perks || [];
+const reader = createReader(process.cwd(), keystaticConfig);
+const careersData = await reader.singletons.careersPage.read();
+if (!careersData) throw new Error('Careers page data not found');
+
+const introHtml = Markdoc.renderers.html(Markdoc.transform(careersData.intro.node));
+const perks = careersData.perks || [];
 ---
 
 <Base title={careersData.title}>
@@ -17,7 +25,9 @@ const perks = (careersData as any).perks || [];
     <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 reveal">
       <div>
         <h2 class="font-heading text-3xl font-bold text-text-primary mb-4">About Tolemi</h2>
-        <p class="text-text-secondary text-lg leading-relaxed">{careersData.intro}</p>
+        <div class="prose prose-lg text-text-secondary">
+          <Fragment set:html={introHtml} />
+        </div>
       </div>
       <div>
         <h2 class="font-heading text-3xl font-bold text-text-primary mb-4">{careersData.cultureHeading}</h2>
@@ -32,7 +42,7 @@ const perks = (careersData as any).perks || [];
       <div class="max-w-5xl mx-auto reveal">
         <h2 class="font-heading text-3xl font-bold text-text-primary mb-10 text-center">Benefits & Perks</h2>
         <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {perks.map((perk: any) => (
+          {perks.map((perk) => (
             <div class="bg-white rounded-2xl border border-black/[0.06] p-6 text-center">
               <h3 class="font-heading text-base font-semibold text-text-primary mb-2">{perk.title}</h3>
               <p class="text-sm text-text-secondary leading-relaxed">{perk.description}</p>

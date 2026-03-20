@@ -1,16 +1,31 @@
 ---
 import Base from "../layouts/Base.astro";
 import PageHero from "../components/blocks/PageHero.astro";
-import ContentSection from "../components/blocks/ContentSection.astro";
 import CallToAction from "../components/blocks/CallToAction.astro";
+import { createReader } from '@keystatic/core/reader';
+import keystaticConfig from '../../keystatic.config';
+import Markdoc from '@markdoc/markdoc';
 
-import aboutData from "../../content/about/about.json";
+export const prerender = true;
+
+const reader = createReader(process.cwd(), keystaticConfig);
+const aboutData = await reader.singletons.aboutPage.read();
+if (!aboutData) throw new Error('About page data not found');
+
+const historyHtml = Markdoc.renderers.html(Markdoc.transform(aboutData.historyBody.node));
 ---
 
 <Base title={aboutData.title}>
   <PageHero headline={aboutData.headline} subheadline={aboutData.subheadline} />
 
-  <ContentSection heading={aboutData.historyHeading} body={aboutData.historyBody} />
+  <section class="py-16 md:py-20 px-6">
+    <div class="max-w-3xl mx-auto reveal">
+      {aboutData.historyHeading && <h2 class="font-heading text-3xl md:text-4xl font-bold text-text-primary mb-6">{aboutData.historyHeading}</h2>}
+      <div class="prose prose-lg text-text-secondary">
+        <Fragment set:html={historyHtml} />
+      </div>
+    </div>
+  </section>
 
   {aboutData.milestones && aboutData.milestones.length > 0 && (
     <section class="py-16 md:py-20 px-6">

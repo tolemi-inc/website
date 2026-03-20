@@ -209,13 +209,13 @@ export default config({
     aboutPage: singleton({
       label: 'About Page',
       path: 'content/about/about',
-      format: { data: 'json' },
+      format: { contentField: 'historyBody' },
       schema: {
         title: fields.text({ label: 'Page Title', validation: { isRequired: true } }),
         headline: fields.text({ label: 'Headline' }),
         subheadline: fields.text({ label: 'Subheadline' }),
         historyHeading: fields.text({ label: 'History Heading' }),
-        historyBody: fields.text({ label: 'History Body', multiline: true }),
+        historyBody: fields.markdoc({ label: 'History Body' }),
         milestones: fields.array(
           fields.object(
             {
@@ -259,12 +259,12 @@ export default config({
     careersPage: singleton({
       label: 'Careers Page',
       path: 'content/careers/careers',
-      format: { data: 'json' },
+      format: { contentField: 'intro' },
       schema: {
         title: fields.text({ label: 'Page Title', validation: { isRequired: true } }),
         headline: fields.text({ label: 'Headline' }),
         subheadline: fields.text({ label: 'Subheadline' }),
-        intro: fields.text({ label: 'Intro', multiline: true }),
+        intro: fields.markdoc({ label: 'Intro' }),
         cultureHeading: fields.text({ label: 'Culture Heading' }),
         cultureBody: fields.text({ label: 'Culture Body', multiline: true }),
         perks: fields.array(
@@ -341,15 +341,14 @@ export default config({
   collections: {
     products: collection({
       label: 'Products',
-      path: 'content/products/*',
-      format: { data: 'json' },
-      slugField: 'slug',
+      path: 'content/products/*/',
+      format: { contentField: 'body' },
+      slugField: 'title',
       schema: {
-        title: fields.text({ label: 'Page Title', validation: { isRequired: true } }),
-        slug: fields.text({ label: 'Slug', validation: { isRequired: true } }),
+        title: fields.slug({ name: { label: 'Page Title' } }),
         headline: fields.text({ label: 'Headline' }),
         subheadline: fields.text({ label: 'Subheadline' }),
-        body: fields.text({ label: 'Body', multiline: true }),
+        body: fields.markdoc({ label: 'Body' }),
         features: fields.array(
           fields.object(
             {
@@ -365,15 +364,14 @@ export default config({
 
     solutions: collection({
       label: 'Solutions',
-      path: 'content/solutions/*',
-      format: { data: 'json' },
-      slugField: 'slug',
+      path: 'content/solutions/*/',
+      format: { contentField: 'body' },
+      slugField: 'title',
       schema: {
-        title: fields.text({ label: 'Page Title', validation: { isRequired: true } }),
-        slug: fields.text({ label: 'Slug', validation: { isRequired: true } }),
+        title: fields.slug({ name: { label: 'Page Title' } }),
         headline: fields.text({ label: 'Headline' }),
         subheadline: fields.text({ label: 'Subheadline' }),
-        body: fields.text({ label: 'Body', multiline: true }),
+        body: fields.markdoc({ label: 'Body' }),
         features: fields.array(
           fields.object(
             {
