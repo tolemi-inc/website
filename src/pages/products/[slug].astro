@@ -22,7 +22,8 @@ const { slug } = Astro.params;
 const product = await reader.collections.products.read(slug!);
 if (!product) throw new Error(`Product not found: ${slug}`);
 
-const bodyHtml = Markdoc.renderers.html(Markdoc.transform(product.body.node));
+const body = await product.body();
+const bodyHtml = Markdoc.renderers.html(Markdoc.transform(body.node));
 const otherProducts = allProducts.filter((p) => p.slug !== slug);
 ---
 

@@ -13,7 +13,8 @@ const reader = createReader(process.cwd(), keystaticConfig);
 const careersData = await reader.singletons.careersPage.read();
 if (!careersData) throw new Error('Careers page data not found');
 
-const introHtml = Markdoc.renderers.html(Markdoc.transform(careersData.intro.node));
+const intro = await careersData.intro();
+const introHtml = Markdoc.renderers.html(Markdoc.transform(intro.node));
 const perks = careersData.perks || [];
 ---
 

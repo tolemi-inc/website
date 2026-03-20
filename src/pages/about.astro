@@ -12,7 +12,8 @@ const reader = createReader(process.cwd(), keystaticConfig);
 const aboutData = await reader.singletons.aboutPage.read();
 if (!aboutData) throw new Error('About page data not found');
 
-const historyHtml = Markdoc.renderers.html(Markdoc.transform(aboutData.historyBody.node));
+const historyBody = await aboutData.historyBody();
+const historyHtml = Markdoc.renderers.html(Markdoc.transform(historyBody.node));
 ---
 
 <Base title={aboutData.title}>

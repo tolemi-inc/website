@@ -22,7 +22,8 @@ const { slug } = Astro.params;
 const solution = await reader.collections.solutions.read(slug!);
 if (!solution) throw new Error(`Solution not found: ${slug}`);
 
-const bodyHtml = Markdoc.renderers.html(Markdoc.transform(solution.body.node));
+const body = await solution.body();
+const bodyHtml = Markdoc.renderers.html(Markdoc.transform(body.node));
 const otherSolutions = allSolutions.filter((s) => s.slug !== slug);
 ---
 
