@@ -36,6 +36,28 @@
           "href": "/products/publicity"
         }
       ]
+    },
+    {
+      "label": "Blog",
+      "href": "/blog",
+      "children": [
+        {
+          "label": "Spotlight",
+          "href": "/blog/spotlight"
+        },
+        {
+          "label": "Case Studies",
+          "href": "/blog/case-studies"
+        },
+        {
+          "label": "Testimonials",
+          "href": "/blog/testimonials"
+        }
+      ]
+    },
+    {
+      "label": "About",
+      "href": "/about"
     }
   ],
   "footerText": "© 2026 Tolemi. All rights reserved.",
