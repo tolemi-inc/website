@@ -1,0 +1,20 @@
+{
+  "title": "Blog",
+  "blocks": [
+    {
+      "heading": "Spotlight ",
+      "subheading": "",
+      "items": [
+        {
+          "title": "Info from last month's spotlight ",
+          "description": "Incorporate Spotlight messaging from monthly email CS sends out . rental , owner insights - compliance automating compliance outreach.  PLI for slate High level components and point to the date when they were sent out "
+        },
+        {
+          "title": "Tolemi In the News",
+          "description": "Columbus OH registry news article. Salinas Rent Stabilization Repeal. Louisville Rental Reg Launch"
+        }
+      ],
+      "_template": "features"
+    }
+  ]
+}
