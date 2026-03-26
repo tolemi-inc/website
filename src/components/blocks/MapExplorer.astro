@@ -4,20 +4,18 @@ import mapData from "../../../content/map-explorer/map-explorer.json";
 const { heading, subheading, cards } = mapData;
 
 // Card geometry: fixed positions for each of the 4 highlight parcels
-// Each entry: parcel rect, card rect position, dot/text positions
+// Using indigo + sky two-tone palette for highlight cards
 const cardSlots = [
   {
-    // Parcel 1 (Block B top-right): green
     parcel: { x: 500, y: 208, w: 72, h: 50 },
     card: { x: 496, y: 262, w: 80, h: 36 },
     dot: { cx: 507, cy: 274 },
     labelPos: { x: 514, y: 278 },
     detailPos: { x: 504, y: 292 },
-    filter: "url(#gGreen)",
-    defaultColor: "green",
+    filter: "url(#gIndigo)",
+    defaultColor: "indigo",
   },
   {
-    // Parcel 2 (Block C top-right): sky
     parcel: { x: 664, y: 208, w: 68, h: 50 },
     card: { x: 660, y: 262, w: 76, h: 36 },
     dot: { cx: 671, cy: 274 },
@@ -27,32 +25,31 @@ const cardSlots = [
     defaultColor: "sky",
   },
   {
-    // Parcel 3 (Block G left): red
     parcel: { x: 588, y: 328, w: 72, h: 104 },
     card: { x: 592, y: 370, w: 64, h: 36 },
     dot: { cx: 603, cy: 382 },
     labelPos: { x: 610, y: 386 },
     detailPos: { x: 600, y: 400 },
-    filter: "url(#gRed)",
-    defaultColor: "red",
+    filter: "url(#gIndigo)",
+    defaultColor: "indigo",
   },
   {
-    // Parcel 4 (Block J wide top): yellow
     parcel: { x: 428, y: 448, w: 144, h: 50 },
     card: { x: 460, y: 502, w: 78, h: 36 },
     dot: { cx: 471, cy: 514 },
     labelPos: { x: 478, y: 518 },
     detailPos: { x: 468, y: 532 },
-    filter: "url(#gYellow)",
-    defaultColor: "yellow",
+    filter: "url(#gSky)",
+    defaultColor: "sky",
   },
 ];
 
 const colorMap: Record<string, { fill: string; stroke: string; labelFill: string }> = {
-  green:  { fill: "#37A04F", stroke: "#37A04F", labelFill: "#37A04F" },
+  green:  { fill: "#6366F1", stroke: "#6366F1", labelFill: "#4f46e5" },
   sky:    { fill: "#4CD5FF", stroke: "#4CD5FF", labelFill: "#0e9bc4" },
-  red:    { fill: "#FF0025", stroke: "#FF0025", labelFill: "#FF0025" },
-  yellow: { fill: "#FFCB1B", stroke: "#FFCB1B", labelFill: "#b38a00" },
+  red:    { fill: "#6366F1", stroke: "#6366F1", labelFill: "#4f46e5" },
+  yellow: { fill: "#4CD5FF", stroke: "#4CD5FF", labelFill: "#0e9bc4" },
+  indigo: { fill: "#6366F1", stroke: "#6366F1", labelFill: "#4f46e5" },
 };
 ---
 
@@ -62,17 +59,11 @@ const colorMap: Record<string, { fill: string; stroke: string; labelFill: string
       <div id="map-container" class="absolute inset-0">
         <svg id="map-svg" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <filter id="gGreen" x="-40%" y="-40%" width="180%" height="180%">
-              <feGaussianBlur stdDeviation="8" result="b"/><feFlood flood-color="#37A04F" flood-opacity="0.5"/><feComposite in2="b" operator="in"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+            <filter id="gIndigo" x="-40%" y="-40%" width="180%" height="180%">
+              <feGaussianBlur stdDeviation="8" result="b"/><feFlood flood-color="#6366F1" flood-opacity="0.5"/><feComposite in2="b" operator="in"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
             </filter>
             <filter id="gSky" x="-40%" y="-40%" width="180%" height="180%">
               <feGaussianBlur stdDeviation="8" result="b"/><feFlood flood-color="#4CD5FF" flood-opacity="0.5"/><feComposite in2="b" operator="in"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
-            </filter>
-            <filter id="gRed" x="-40%" y="-40%" width="180%" height="180%">
-              <feGaussianBlur stdDeviation="8" result="b"/><feFlood flood-color="#FF0025" flood-opacity="0.5"/><feComposite in2="b" operator="in"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
-            </filter>
-            <filter id="gYellow" x="-40%" y="-40%" width="180%" height="180%">
-              <feGaussianBlur stdDeviation="8" result="b"/><feFlood flood-color="#FFCB1B" flood-opacity="0.5"/><feComposite in2="b" operator="in"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
             </filter>
           </defs>
 
@@ -137,9 +128,9 @@ const colorMap: Record<string, { fill: string; stroke: string; labelFill: string
           <rect x="818" y="502" width="74" height="50" rx="2" fill="#e8e7e3" stroke="#222" stroke-width="0.5" stroke-opacity="0.15"/>
 
           <!-- Parks & water -->
-          <ellipse cx="305" cy="270" rx="20" ry="14" fill="#37A04F" opacity="0.1"/>
-          <ellipse cx="850" cy="480" rx="25" ry="18" fill="#37A04F" opacity="0.1"/>
-          <path d="M950,350 Q1000,340 1050,360 Q1100,380 1120,350 L1120,700 L950,700 Z" fill="#4CD5FF" opacity="0.08"/>
+          <ellipse cx="305" cy="270" rx="20" ry="14" fill="#6366F1" opacity="0.06"/>
+          <ellipse cx="850" cy="480" rx="25" ry="18" fill="#6366F1" opacity="0.06"/>
+          <path d="M950,350 Q1000,340 1050,360 Q1100,380 1120,350 L1120,700 L950,700 Z" fill="#4CD5FF" opacity="0.06"/>
 
           <!-- Highlighted parcels with data cards (content from CMS) -->
           {cards.slice(0, 4).map((card, i) => {
@@ -165,8 +156,8 @@ const colorMap: Record<string, { fill: string; stroke: string; labelFill: string
       <!-- Overlay text (also from CMS) -->
       <div class="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
         <div id="map-text" class="text-center transition-opacity duration-300">
-          <h2 class="font-heading text-4xl md:text-5xl font-bold text-text-primary mb-4">{heading}</h2>
-          <p class="text-base text-text-secondary max-w-lg mx-auto">{subheading}</p>
+          <h2 class="font-heading text-3xl md:text-5xl lg:text-6xl font-bold text-text-primary mb-5">{heading}</h2>
+          <p class="text-base md:text-lg text-text-secondary max-w-lg mx-auto leading-relaxed">{subheading}</p>
         </div>
       </div>
     </div>

@@ -32,11 +32,11 @@ const historyHtml = Markdoc.renderers.html(Markdoc.transform(historyBody.node));
     <section class="py-16 md:py-20 px-6">
       <div class="max-w-3xl mx-auto reveal">
         <h2 class="font-heading text-3xl md:text-4xl font-bold text-text-primary mb-10">Milestones</h2>
-        <div class="relative border-l-2 border-tolemi-green/20 pl-8 flex flex-col gap-10">
+        <div class="relative border-l-2 border-tolemi-indigo/20 pl-8 flex flex-col gap-10">
           {aboutData.milestones.map((m) => (
             <div class="relative">
-              <div class="absolute -left-[41px] top-1 w-4 h-4 rounded-full bg-tolemi-green border-4 border-white"></div>
-              <span class="text-sm font-bold text-tolemi-green">{m.year}</span>
+              <div class="absolute -left-[41px] top-1 w-4 h-4 rounded-full bg-tolemi-indigo border-4 border-white"></div>
+              <span class="text-sm font-bold text-tolemi-indigo">{m.year}</span>
               <p class="text-text-secondary mt-1 leading-relaxed">{m.event}</p>
             </div>
           ))}

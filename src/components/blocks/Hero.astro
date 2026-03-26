@@ -68,7 +68,7 @@ const { headline, subheadline, ctaText, ctaLink } = Astro.props;
 
   <!-- Headline only — large and prominent -->
   <div class="relative z-30 flex items-center h-full max-w-7xl mx-auto px-6 w-full pointer-events-none">
-    <h1 class="font-heading text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold tracking-tight text-text-primary leading-[1.05] max-w-4xl animate-fade-in-up">
+    <h1 class="font-heading text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight text-text-primary leading-[1.08] max-w-4xl animate-fade-in-up">
       {headline}
     </h1>
   </div>
@@ -77,10 +77,10 @@ const { headline, subheadline, ctaText, ctaLink } = Astro.props;
 </div><!-- end hero-scroll-wrapper -->
 
 <!-- Sub-hero: subheadline + CTA buttons -->
-<section class="py-16 md:py-20 bg-surface">
+<section class="py-20 md:py-28 bg-surface">
   <div class="max-w-3xl mx-auto px-6 text-center">
     {subheadline && (
-      <p class="text-lg md:text-xl text-text-secondary mb-10 leading-relaxed">
+      <p class="text-lg md:text-xl text-text-secondary mb-12 leading-relaxed">
         {subheadline}
       </p>
     )}
@@ -88,7 +88,7 @@ const { headline, subheadline, ctaText, ctaLink } = Astro.props;
       {ctaText && (
         <a
           href={ctaLink || "#"}
-          class="inline-flex items-center gap-2 bg-tolemi-green text-white font-semibold px-7 py-3.5 rounded-full hover:bg-tolemi-green-600 transition-all hover:shadow-lg hover:shadow-tolemi-green/20"
+          class="inline-flex items-center gap-2 bg-gradient-to-r from-tolemi-indigo to-tolemi-indigo-600 text-white font-semibold px-7 py-3.5 rounded-full hover:shadow-lg hover:shadow-tolemi-indigo/25 transition-all"
         >
           {ctaText}
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>

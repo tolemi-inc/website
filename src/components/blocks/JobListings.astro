@@ -26,13 +26,13 @@ const { jobs } = Astro.props;
               <h3 class="font-heading text-xl font-semibold text-text-primary">{job.title}</h3>
               <div class="flex flex-wrap gap-3 mt-2">
                 {job.department && (
-                  <span class="text-xs font-medium bg-tolemi-green/10 text-tolemi-green px-3 py-1 rounded-full">{job.department}</span>
+                  <span class="text-xs font-medium bg-tolemi-indigo/10 text-tolemi-indigo px-3 py-1 rounded-full">{job.department}</span>
                 )}
                 {job.location && (
                   <span class="text-xs font-medium bg-tolemi-sky/10 text-tolemi-sky-700 px-3 py-1 rounded-full">{job.location}</span>
                 )}
                 {job.type && (
-                  <span class="text-xs font-medium bg-tolemi-yellow/10 text-tolemi-yellow-700 px-3 py-1 rounded-full">{job.type}</span>
+                  <span class="text-xs font-medium bg-tolemi-indigo-100 text-tolemi-indigo-700 px-3 py-1 rounded-full">{job.type}</span>
                 )}
               </div>
               {job.description && <p class="text-text-secondary text-sm mt-4 leading-relaxed">{job.description}</p>}
@@ -42,7 +42,7 @@ const { jobs } = Astro.props;
                 href={job.applyLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="shrink-0 inline-flex items-center gap-2 bg-tolemi-green text-white font-medium text-sm px-5 py-2.5 rounded-full hover:bg-tolemi-green-600 transition-colors"
+                class="shrink-0 inline-flex items-center gap-2 bg-gradient-to-r from-tolemi-indigo to-tolemi-indigo-600 text-white font-medium text-sm px-5 py-2.5 rounded-full hover:shadow-lg hover:shadow-tolemi-indigo/20 transition-all"
               >
                 Apply
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
