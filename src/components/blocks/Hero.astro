@@ -10,102 +10,104 @@ const { headline, subheadline, ctaText, ctaLink } = Astro.props;
 ---
 
 <!-- Outer wrapper: tall enough for sticky scroll (100vh visible + scroll space for overlays) -->
-<div id="hero-scroll-wrapper" class="relative" style="height: 250vh;">
-<section id="hero" class="sticky top-0 h-screen overflow-hidden bg-[#f8f8f6]">
+<div id="hero-scroll-wrapper" class="relative" style="height: 175vh;">
+<section id="hero" class="sticky top-0 min-h-screen overflow-hidden bg-surface flex flex-col">
 
-  <!-- Full-width map background -->
-  <div id="hero-interactive" class="absolute inset-0">
-    <div id="map" class="absolute inset-0 w-full h-full"></div>
+  <!-- Two-column: text left, square map right -->
+  <div class="pt-20 md:pt-24 pb-8 px-6 max-w-7xl mx-auto w-full flex-1 flex flex-col md:flex-row items-center gap-8 md:gap-12 min-h-0">
 
-  </div>
+    <!-- Left: headline + subheadline + CTAs -->
+    <div class="md:flex-1 md:py-12 md:self-center">
+      <h1 class="font-heading text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-text-primary leading-[1.08] max-w-xl animate-fade-in-up">
+        {headline}
+      </h1>
+      {subheadline && (
+        <p class="text-base md:text-lg text-text-secondary mt-5 max-w-md leading-relaxed">
+          {subheadline}
+        </p>
+      )}
+      <div class="flex flex-wrap gap-4 mt-8">
+        {ctaText && (
+          <a
+            href={ctaLink || "#"}
+            class="inline-flex items-center gap-2 bg-tolemi-dark text-white font-semibold px-7 py-3.5 rounded-full hover:shadow-lg hover:shadow-tolemi-dark/25 transition-all"
+          >
+            {ctaText}
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          </a>
+        )}
+        <a
+          href="#features"
+          class="inline-flex items-center gap-2 border border-text-muted/20 text-text-primary font-medium px-7 py-3.5 rounded-full hover:bg-surface-secondary transition-all"
+        >
+          See how it works
+        </a>
+      </div>
+    </div>
 
-  <!-- Readability overlay — fades out on scroll -->
-  <div id="hero-overlay" class="absolute inset-0 z-10 pointer-events-none bg-[#f8f8f6]" style="opacity: 0.55;"></div>
+    <!-- Right: square map with slider overlay -->
+    <div class="w-full md:w-1/2 lg:w-[55%] shrink-0">
+      <div class="relative aspect-[4/5] rounded-2xl overflow-hidden border border-black/[0.06]">
+        <div id="map" class="absolute inset-0 w-full h-full"></div>
 
-  <!-- Large horizontal sliders — overlaid on map area -->
-  <div id="hero-sliders" class="absolute right-8 lg:right-16 xl:right-24 bottom-12 md:bottom-16 lg:bottom-20 z-30 hidden md:block bg-white/70 backdrop-blur-xl rounded-2xl p-4">
-    <svg id="slider-svg" viewBox="0 0 500 300" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-[400px] lg:w-[520px] xl:w-[600px]">
-      <defs>
-        <linearGradient id="trackSkyGrad" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stop-color="#FFCB1B" stop-opacity="0.25"/>
-          <stop offset="100%" stop-color="#4CD5FF" stop-opacity="0.3"/>
-        </linearGradient>
-        <linearGradient id="trackYellowGrad" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stop-color="#FF0025" stop-opacity="0.2"/>
-          <stop offset="100%" stop-color="#FFCB1B" stop-opacity="0.3"/>
-        </linearGradient>
-        <linearGradient id="trackRedGrad" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stop-color="#FF0025" stop-opacity="0.3"/>
-          <stop offset="100%" stop-color="#FF0025" stop-opacity="0.08"/>
-        </linearGradient>
-      </defs>
+        <!-- Slider overlay (desktop only) -->
+        <div id="hero-sliders" class="hidden md:flex absolute bottom-4 right-4 z-10 bg-white/70 backdrop-blur-xl rounded-2xl p-4 shadow-lg">
+          <svg id="slider-svg" viewBox="0 0 230 170" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-[200px] lg:w-[220px]">
+            <defs>
+              <linearGradient id="trackSkyGrad" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#FFCB1B" stop-opacity="0.25"/>
+                <stop offset="100%" stop-color="#4CD5FF" stop-opacity="0.3"/>
+              </linearGradient>
+              <linearGradient id="trackYellowGrad" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#FF0025" stop-opacity="0.2"/>
+                <stop offset="100%" stop-color="#FFCB1B" stop-opacity="0.3"/>
+              </linearGradient>
+              <linearGradient id="trackRedGrad" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#FF0025" stop-opacity="0.3"/>
+                <stop offset="100%" stop-color="#FF0025" stop-opacity="0.08"/>
+              </linearGradient>
+            </defs>
 
-      <!-- Tracks (base) — opaque with black outline to match map -->
-      {[25, 125, 225].map((y) => (
-        <g>
-          <rect x="30" y={y} width="440" height="60" rx="30" fill="#e8e7e3"/>
-          <rect x="30" y={y} width="440" height="60" rx="30" fill="none" stroke="#222222" stroke-width="0.5"/>
-        </g>
-      ))}
+            <!-- Labels -->
+            <text x="8" y="22" fill="#343332" font-size="11" font-weight="600" font-family="Inter, sans-serif" opacity="0.7">Flood Zones</text>
+            <text x="8" y="77" fill="#343332" font-size="11" font-weight="600" font-family="Inter, sans-serif" opacity="0.7">Transit</text>
+            <text x="8" y="132" fill="#343332" font-size="11" font-weight="600" font-family="Inter, sans-serif" opacity="0.7">Heat Islands</text>
 
-      <!-- Colored track overlays (fade in when layer activates) — order: blue, yellow, red -->
-      <g id="track-sky-fill" opacity="0">
-        <rect x="30" y="25" width="440" height="60" rx="30" fill="url(#trackSkyGrad)"/>
-        <rect x="30" y="25" width="440" height="60" rx="30" fill="none" stroke="#4CD5FF" stroke-opacity="0.4" stroke-width="0.5"/>
-      </g>
-      <g id="track-yellow-fill" opacity="0">
-        <rect x="30" y="125" width="440" height="60" rx="30" fill="url(#trackYellowGrad)"/>
-        <rect x="30" y="125" width="440" height="60" rx="30" fill="none" stroke="#FFCB1B" stroke-opacity="0.4" stroke-width="0.5"/>
-      </g>
-      <g id="track-red-fill" opacity="0">
-        <rect x="30" y="225" width="440" height="60" rx="30" fill="url(#trackRedGrad)"/>
-        <rect x="30" y="225" width="440" height="60" rx="30" fill="none" stroke="#FF0025" stroke-opacity="0.4" stroke-width="0.5"/>
-      </g>
+            <!-- Tracks (base) -->
+            {[32, 87, 142].map((y) => (
+              <g>
+                <rect x="8" y={y} width="214" height="24" rx="12" fill="#e8e7e3"/>
+                <rect x="8" y={y} width="214" height="24" rx="12" fill="none" stroke="#222222" stroke-width="0.5"/>
+              </g>
+            ))}
 
-      <!-- Flat circle buttons — sky, indigo, coral (top to bottom) -->
-      <circle id="dot-sky" cx="68" cy="55" r="24" fill="#4CD5FF"/>
-      <circle id="dot-yellow" cx="68" cy="155" r="24" fill="#FFCB1B"/>
-      <circle id="dot-red" cx="68" cy="255" r="24" fill="#FF0025"/>
-    </svg>
-  </div>
+            <!-- Colored track overlays -->
+            <g id="track-sky-fill" opacity="0">
+              <rect x="8" y="32" width="214" height="24" rx="12" fill="url(#trackSkyGrad)"/>
+              <rect x="8" y="32" width="214" height="24" rx="12" fill="none" stroke="#4CD5FF" stroke-opacity="0.4" stroke-width="0.5"/>
+            </g>
+            <g id="track-yellow-fill" opacity="0">
+              <rect x="8" y="87" width="214" height="24" rx="12" fill="url(#trackYellowGrad)"/>
+              <rect x="8" y="87" width="214" height="24" rx="12" fill="none" stroke="#FFCB1B" stroke-opacity="0.4" stroke-width="0.5"/>
+            </g>
+            <g id="track-red-fill" opacity="0">
+              <rect x="8" y="142" width="214" height="24" rx="12" fill="url(#trackRedGrad)"/>
+              <rect x="8" y="142" width="214" height="24" rx="12" fill="none" stroke="#FF0025" stroke-opacity="0.4" stroke-width="0.5"/>
+            </g>
 
-  <!-- Headline only — large and prominent -->
-  <div class="relative z-30 flex items-center h-full max-w-7xl mx-auto px-6 w-full pointer-events-none">
-    <h1 class="font-heading text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight text-text-primary leading-[1.08] max-w-4xl animate-fade-in-up">
-      {headline}
-    </h1>
+            <!-- Dots — sky, yellow, red -->
+            <circle id="dot-sky" cx="20" cy="44" r="10" fill="#4CD5FF"/>
+            <circle id="dot-yellow" cx="20" cy="99" r="10" fill="#FFCB1B"/>
+            <circle id="dot-red" cx="20" cy="154" r="10" fill="#FF0025"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
   </div>
 
 </section>
 </div><!-- end hero-scroll-wrapper -->
-
-<!-- Sub-hero: subheadline + CTA buttons -->
-<section class="py-20 md:py-28 bg-surface">
-  <div class="max-w-3xl mx-auto px-6 text-center">
-    {subheadline && (
-      <p class="text-lg md:text-xl text-text-secondary mb-12 leading-relaxed">
-        {subheadline}
-      </p>
-    )}
-    <div class="flex flex-wrap justify-center gap-4">
-      {ctaText && (
-        <a
-          href={ctaLink || "#"}
-          class="inline-flex items-center gap-2 bg-tolemi-dark text-white font-semibold px-7 py-3.5 rounded-full hover:shadow-lg hover:shadow-tolemi-dark/25 transition-all"
-        >
-          {ctaText}
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-        </a>
-      )}
-      <a
-        href="#features"
-        class="inline-flex items-center gap-2 border border-text-muted/20 text-text-primary font-medium px-7 py-3.5 rounded-full hover:bg-surface-secondary transition-all"
-      >
-        See how it works
-      </a>
-    </div>
-  </div>
-</section>
 
 <script>
   import 'maplibre-gl/dist/maplibre-gl.css';
@@ -243,8 +245,8 @@ const { headline, subheadline, ctaText, ctaLink } = Astro.props;
   const trackYellowFill = document.getElementById('track-yellow-fill');
   const trackRedFill = document.getElementById('track-red-fill');
 
-  const trackLeft = 68;
-  const trackRight = 432;
+  const trackLeft = 20;
+  const trackRight = 210;
 
   // Current positions (what's rendered)
   let skyX = trackLeft;
@@ -315,13 +317,6 @@ const { headline, subheadline, ctaText, ctaLink } = Astro.props;
     if (!manualSky) targetSkyX = trackLeft + skyProgress * (trackRight - trackLeft);
     if (!manualYellow) targetYellowX = trackLeft + yellowProgress * (trackRight - trackLeft);
     if (!manualRed) targetRedX = trackLeft + redProgress * (trackRight - trackLeft);
-
-    // Fade the dimming overlay as user scrolls into the map
-    const heroOverlay = document.getElementById('hero-overlay');
-    if (heroOverlay) {
-      const overlayOpacity = Math.max(0, 0.55 * (1 - scrolled / 0.3));
-      heroOverlay.style.opacity = String(overlayOpacity);
-    }
   }
 
   function animate() {
@@ -352,15 +347,15 @@ const { headline, subheadline, ctaText, ctaLink } = Astro.props;
     const pt = svgPoint(evt);
 
     const dots: [string, number, number][] = [
-      ['sky', skyX, 55],
-      ['yellow', yellowX, 155],
-      ['red', redX, 255],
+      ['sky', skyX, 44],
+      ['yellow', yellowX, 99],
+      ['red', redX, 154],
     ];
 
     for (const [name, cx, cy] of dots) {
       const dx = pt.x - cx;
       const dy = pt.y - cy;
-      if (Math.sqrt(dx * dx + dy * dy) < 44) {
+      if (Math.sqrt(dx * dx + dy * dy) < 22) {
         activeDot = name as 'sky' | 'yellow' | 'red';
         sliderSvg.style.cursor = 'grabbing';
         (evt.target as Element)?.setPointerCapture?.(evt.pointerId);
