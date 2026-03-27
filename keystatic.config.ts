@@ -63,6 +63,7 @@ export default config({
             owner: 'tolemi-inc',
             name: 'website',
           },
+          branchPrefix: 'keystatic-',
         },
 
   // -------------------------------------------------------------------------
@@ -72,6 +73,7 @@ export default config({
     global: singleton({
       label: 'Global Settings',
       path: 'content/global/site',
+      previewUrl: 'https://{branch}--tolemi-mkting.netlify.app/',
       format: { data: 'json' },
       schema: {
         companyName: fields.text({ label: 'Company Name' }),
