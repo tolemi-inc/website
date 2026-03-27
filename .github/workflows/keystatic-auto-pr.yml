@@ -3,7 +3,7 @@ name: Auto-create PR for Keystatic branches
 on:
   push:
     branches:
-      - 'keystatic/**'
+      - 'keystatic-**'
 
 jobs:
   create-pr:
@@ -27,8 +27,8 @@ jobs:
           fi
 
           # Extract a readable title from the branch name
-          # e.g. "keystatic/home-page" -> "Content update: home-page"
-          BRANCH_SUFFIX="${GITHUB_REF_NAME#keystatic/}"
+          # e.g. "keystatic-home-page" -> "Content update: home-page"
+          BRANCH_SUFFIX="${GITHUB_REF_NAME#keystatic-}"
           TITLE="Content update: ${BRANCH_SUFFIX}"
 
           gh pr create \

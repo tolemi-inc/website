@@ -143,6 +143,7 @@ export default config({
     homePage: singleton({
       label: 'Home Page',
       path: 'content/pages/home',
+      previewUrl: 'https://{branch}--tolemi-mkting.netlify.app/',
       format: { data: 'json' },
       schema: {
         title: fields.text({ label: 'Page Title', validation: { isRequired: true } }),
@@ -211,6 +212,7 @@ export default config({
     aboutPage: singleton({
       label: 'About Page',
       path: 'content/about/about',
+      previewUrl: 'https://{branch}--tolemi-mkting.netlify.app/about',
       format: { contentField: 'historyBody' },
       schema: {
         title: fields.text({ label: 'Page Title', validation: { isRequired: true } }),
@@ -234,6 +236,7 @@ export default config({
     teamPage: singleton({
       label: 'Team Page',
       path: 'content/team/team',
+      previewUrl: 'https://{branch}--tolemi-mkting.netlify.app/team',
       format: { data: 'json' },
       schema: {
         title: fields.text({ label: 'Page Title', validation: { isRequired: true } }),
@@ -261,6 +264,7 @@ export default config({
     careersPage: singleton({
       label: 'Careers Page',
       path: 'content/careers/careers',
+      previewUrl: 'https://{branch}--tolemi-mkting.netlify.app/careers',
       format: { contentField: 'intro' },
       schema: {
         title: fields.text({ label: 'Page Title', validation: { isRequired: true } }),
@@ -309,6 +313,7 @@ export default config({
     mapExplorer: singleton({
       label: 'Map Explorer',
       path: 'content/map-explorer/map-explorer',
+      previewUrl: 'https://{branch}--tolemi-mkting.netlify.app/',
       format: { data: 'json' },
       schema: {
         heading: fields.text({ label: 'Heading' }),
@@ -344,6 +349,7 @@ export default config({
     products: collection({
       label: 'Products',
       path: 'content/products/*/',
+      previewUrl: 'https://{branch}--tolemi-mkting.netlify.app/products/{slug}',
       format: { contentField: 'body' },
       slugField: 'title',
       schema: {
@@ -367,6 +373,7 @@ export default config({
     solutions: collection({
       label: 'Solutions',
       path: 'content/solutions/*/',
+      previewUrl: 'https://{branch}--tolemi-mkting.netlify.app/solutions/{slug}',
       format: { contentField: 'body' },
       slugField: 'title',
       schema: {
