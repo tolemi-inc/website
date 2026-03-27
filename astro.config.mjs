@@ -11,6 +11,10 @@ export default defineConfig({
   adapter: netlify(),
   integrations: [react(), keystatic()],
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [tailwindcss()],
+    cacheDir: '/tmp/vite-cache',
+    optimizeDeps: {
+      exclude: ['@keystatic/astro']
+    }
   }
 });

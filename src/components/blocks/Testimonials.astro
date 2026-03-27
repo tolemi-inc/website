@@ -11,22 +11,20 @@ interface Props {
 }
 
 const { heading, items = [] } = Astro.props;
-
-const accentBorders = ["border-l-tolemi-green", "border-l-tolemi-sky", "border-l-tolemi-yellow"];
 ---
 
-<section class="py-24 md:py-32 px-6 bg-surface relative">
+<section class="py-32 md:py-40 px-6 bg-surface relative">
   <div class="max-w-6xl mx-auto">
     {heading && (
-      <h2 class="font-heading text-[2.5rem] md:text-5xl font-bold text-text-primary text-center mb-20 reveal">{heading}</h2>
+      <div class="text-center mb-20 md:mb-24 reveal">
+        <p class="text-xs font-semibold tracking-widest uppercase text-tolemi-sky-600 mb-4">Testimonials</p>
+        <h2 class="font-heading text-3xl md:text-5xl lg:text-6xl font-bold text-text-primary">{heading}</h2>
+      </div>
     )}
     <div class="grid md:grid-cols-2 gap-8">
       {items.map((item, i) => (
-        <blockquote class:list={[
-          "bg-surface-secondary rounded-2xl p-8 md:p-10 border-l-4 reveal",
-          accentBorders[i % accentBorders.length],
-        ]} style={`transition-delay: ${i * 150}ms`}>
-          <p class="text-base text-text-secondary italic mb-6 leading-relaxed">"{item.quote}"</p>
+        <blockquote class:list={["bg-surface-secondary rounded-2xl p-8 md:p-10 border-l-4 reveal", i % 2 === 0 ? "border-l-tolemi-sky/40" : "border-l-tolemi-red/40"]} style={`transition-delay: ${i * 150}ms`}>
+          <p class="text-base md:text-lg text-text-secondary italic mb-6 leading-relaxed">"{item.quote}"</p>
           <footer>
             {item.author && (
               <span class="font-heading font-semibold text-text-primary text-sm">{item.author}</span>

@@ -11,6 +11,8 @@
   --color-tolemi-red: #FF0025;
   --color-tolemi-sky: #4CD5FF;
   --color-tolemi-yellow: #FFCB1B;
+  --color-tolemi-indigo: #6366F1;
+  --color-tolemi-coral: #FB7185;
 
   /* Neutrals */
   --color-tolemi-dark: #343332;
@@ -23,7 +25,7 @@
   --color-text-secondary: #6b7280;
   --color-text-muted: #9ca3af;
 
-  /* Green scale (primary) */
+  /* Green scale */
   --color-tolemi-green-50: #f0faf2;
   --color-tolemi-green-100: #d9f2df;
   --color-tolemi-green-200: #a8e2b5;
@@ -35,7 +37,7 @@
   --color-tolemi-green-800: #1d5629;
   --color-tolemi-green-900: #153f1e;
 
-  /* Sky scale (accent) */
+  /* Sky scale */
   --color-tolemi-sky-50: #eefbff;
   --color-tolemi-sky-100: #d4f4ff;
   --color-tolemi-sky-200: #a8e9ff;
@@ -45,7 +47,29 @@
   --color-tolemi-sky-600: #0e9bc4;
   --color-tolemi-sky-700: #0a7a9e;
 
-  /* Red scale */
+  /* Coral scale (warm accent — paired with indigo for gradient) */
+  --color-tolemi-coral-50: #fff1f2;
+  --color-tolemi-coral-100: #ffe4e6;
+  --color-tolemi-coral-200: #fecdd3;
+  --color-tolemi-coral-300: #fda4af;
+  --color-tolemi-coral-400: #FB7185;
+  --color-tolemi-coral-500: #f43f5e;
+  --color-tolemi-coral-600: #e11d48;
+  --color-tolemi-coral-700: #be123c;
+
+  /* Indigo scale (signature accent — paired with coral for gradient) */
+  --color-tolemi-indigo-50: #eef2ff;
+  --color-tolemi-indigo-100: #e0e7ff;
+  --color-tolemi-indigo-200: #c7d2fe;
+  --color-tolemi-indigo-300: #a5b4fc;
+  --color-tolemi-indigo-400: #818cf8;
+  --color-tolemi-indigo-500: #6366F1;
+  --color-tolemi-indigo-600: #4f46e5;
+  --color-tolemi-indigo-700: #4338ca;
+  --color-tolemi-indigo-800: #3730a3;
+  --color-tolemi-indigo-900: #312e81;
+
+  /* Red scale (data viz only) */
   --color-tolemi-red-50: #fff0f2;
   --color-tolemi-red-100: #ffd6db;
   --color-tolemi-red-200: #ff99a5;
@@ -54,7 +78,7 @@
   --color-tolemi-red-500: #dd0020;
   --color-tolemi-red-600: #b3001a;
 
-  /* Yellow scale */
+  /* Yellow scale (data viz only) */
   --color-tolemi-yellow-50: #fffbeb;
   --color-tolemi-yellow-100: #fff0c2;
   --color-tolemi-yellow-200: #ffe494;

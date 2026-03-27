@@ -31,7 +31,7 @@ const { companyName = "Tolemi", nav = [] } = Astro.props;
           <div class="relative group">
             <button
               type="button"
-              class="font-heading text-sm font-medium text-text-primary hover:text-tolemi-green transition-colors flex items-center gap-1"
+              class="font-heading text-sm font-medium text-text-primary hover:text-tolemi-sky-600 transition-colors flex items-center gap-1"
             >
               {link.label}
               <svg class="w-3.5 h-3.5 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -43,7 +43,7 @@ const { companyName = "Tolemi", nav = [] } = Astro.props;
                 {link.children.map((child) => (
                   <a
                     href={child.href}
-                    class="block px-4 py-2.5 text-sm text-text-primary hover:bg-tolemi-green/5 hover:text-tolemi-green transition-colors"
+                    class="block px-4 py-2.5 text-sm text-text-primary hover:bg-tolemi-sky/5 hover:text-tolemi-sky-600 transition-colors"
                   >
                     {child.label}
                   </a>
@@ -54,7 +54,7 @@ const { companyName = "Tolemi", nav = [] } = Astro.props;
         ) : (
           <a
             href={link.href}
-            class="font-heading text-sm font-medium text-text-primary hover:text-tolemi-green transition-colors"
+            class="font-heading text-sm font-medium text-text-primary hover:text-tolemi-sky-600 transition-colors"
           >
             {link.label}
           </a>
@@ -62,7 +62,7 @@ const { companyName = "Tolemi", nav = [] } = Astro.props;
       )}
       <a
         href="#contact"
-        class="font-heading text-sm font-medium bg-tolemi-green text-white px-5 py-2 rounded-full hover:bg-tolemi-green-600 transition-colors"
+        class="font-heading text-sm font-medium bg-tolemi-dark text-white px-5 py-2 rounded-full hover:shadow-lg hover:shadow-tolemi-dark/20 transition-all"
       >
         Get a Demo
       </a>
@@ -100,7 +100,7 @@ const { companyName = "Tolemi", nav = [] } = Astro.props;
               {link.children.map((child) => (
                 <a
                   href={child.href}
-                  class="block py-2.5 text-sm text-text-secondary hover:text-tolemi-green transition-colors"
+                  class="block py-2.5 text-sm text-text-secondary hover:text-tolemi-sky-600 transition-colors"
                 >
                   {child.label}
                 </a>
@@ -110,7 +110,7 @@ const { companyName = "Tolemi", nav = [] } = Astro.props;
         ) : (
           <a
             href={link.href}
-            class="block py-3 font-heading text-sm font-medium text-text-primary hover:text-tolemi-green transition-colors"
+            class="block py-3 font-heading text-sm font-medium text-text-primary hover:text-tolemi-sky-600 transition-colors"
           >
             {link.label}
           </a>
@@ -118,7 +118,7 @@ const { companyName = "Tolemi", nav = [] } = Astro.props;
       )}
       <a
         href="#contact"
-        class="mt-2 text-center font-heading text-sm font-medium bg-tolemi-green text-white px-5 py-2.5 rounded-full hover:bg-tolemi-green-600 transition-colors"
+        class="mt-2 text-center font-heading text-sm font-medium bg-tolemi-dark text-white px-5 py-2.5 rounded-full hover:shadow-lg hover:shadow-tolemi-dark/20 transition-all"
       >
         Get a Demo
       </a>
