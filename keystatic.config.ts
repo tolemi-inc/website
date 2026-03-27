@@ -1,4 +1,5 @@
 import { config, collection, singleton, fields } from '@keystatic/core';
+import { createElement } from 'react';
 
 // ---------------------------------------------------------------------------
 // Reusable field groups
@@ -51,7 +52,10 @@ const navChild = fields.object(
 
 export default config({
   ui: {
-    brand: { name: 'Tolemi' },
+    brand: {
+      name: 'Tolemi',
+      mark: () => createElement('img', { src: '/tolemi-logo.svg', alt: 'Tolemi', height: 24 }),
+    },
   },
 
   storage:
