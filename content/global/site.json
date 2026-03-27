@@ -57,7 +57,17 @@
     },
     {
       "label": "About",
-      "href": "/about"
+      "href": "/about",
+      "children": [
+        {
+          "label": "Privacy Policy",
+          "href": "/about/privacypolicy"
+        },
+        {
+          "label": "Terms of Service",
+          "href": "/about/termsofservice"
+        }
+      ]
     }
   ],
   "footerText": "© 2026 Tolemi. All rights reserved.",
