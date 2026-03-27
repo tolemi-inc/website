@@ -348,6 +348,11 @@ export default config({
         title: fields.slug({ name: { label: 'Page Title' } }),
         headline: fields.text({ label: 'Headline' }),
         subheadline: fields.text({ label: 'Subheadline' }),
+        image: fields.image({
+          label: 'Image',
+          directory: 'public/uploads/products',
+          publicPath: '/uploads/products/',
+        }),
         body: fields.markdoc({ label: 'Body' }),
         features: fields.array(
           fields.object(
@@ -371,6 +376,11 @@ export default config({
         title: fields.slug({ name: { label: 'Page Title' } }),
         headline: fields.text({ label: 'Headline' }),
         subheadline: fields.text({ label: 'Subheadline' }),
+        image: fields.image({
+          label: 'Image',
+          directory: 'public/uploads/solutions',
+          publicPath: '/uploads/solutions/',
+        }),
         body: fields.markdoc({ label: 'Body' }),
         features: fields.array(
           fields.object(
