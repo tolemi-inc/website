@@ -394,5 +394,63 @@ export default config({
         ),
       },
     }),
+
+    spotlightPosts: collection({
+      label: 'Blog — Spotlight',
+      path: 'content/blog/spotlight/*/',
+      format: { contentField: 'body' },
+      slugField: 'title',
+      schema: {
+        title: fields.slug({ name: { label: 'Title' } }),
+        description: fields.text({ label: 'Description', multiline: true }),
+        image: fields.image({
+          label: 'Cover Image',
+          directory: 'public/uploads/blog',
+          publicPath: '/uploads/blog/',
+        }),
+        publishedDate: fields.date({ label: 'Published Date' }),
+        body: fields.markdoc({ label: 'Body' }),
+      },
+    }),
+
+    caseStudies: collection({
+      label: 'Blog — Case Studies',
+      path: 'content/blog/case-studies/*/',
+      format: { contentField: 'body' },
+      slugField: 'title',
+      schema: {
+        title: fields.slug({ name: { label: 'Title' } }),
+        description: fields.text({ label: 'Description', multiline: true }),
+        image: fields.image({
+          label: 'Cover Image',
+          directory: 'public/uploads/blog',
+          publicPath: '/uploads/blog/',
+        }),
+        client: fields.text({ label: 'Client / Organization' }),
+        publishedDate: fields.date({ label: 'Published Date' }),
+        body: fields.markdoc({ label: 'Body' }),
+      },
+    }),
+
+    testimonials: collection({
+      label: 'Blog — Testimonials',
+      path: 'content/blog/testimonials/*/',
+      format: { contentField: 'body' },
+      slugField: 'title',
+      schema: {
+        title: fields.slug({ name: { label: 'Title' } }),
+        quote: fields.text({ label: 'Quote', multiline: true, validation: { isRequired: true } }),
+        author: fields.text({ label: 'Author Name' }),
+        role: fields.text({ label: 'Author Role' }),
+        organization: fields.text({ label: 'Organization' }),
+        image: fields.image({
+          label: 'Author Photo',
+          directory: 'public/uploads/blog',
+          publicPath: '/uploads/blog/',
+        }),
+        publishedDate: fields.date({ label: 'Published Date' }),
+        body: fields.markdoc({ label: 'Body' }),
+      },
+    }),
   },
 });
