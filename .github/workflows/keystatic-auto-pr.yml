@@ -1,0 +1,38 @@
+name: Auto-create PR for Keystatic branches
+
+on:
+  push:
+    branches:
+      - 'keystatic/**'
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create Pull Request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Check if a PR already exists for this branch
+          EXISTING_PR=$(gh pr list --head "$GITHUB_REF_NAME" --state open --json number --jq '.[0].number')
+          if [ -n "$EXISTING_PR" ]; then
+            echo "PR #$EXISTING_PR already exists for $GITHUB_REF_NAME"
+            exit 0
+          fi
+
+          # Extract a readable title from the branch name
+          # e.g. "keystatic/home-page" -> "Content update: home-page"
+          BRANCH_SUFFIX="${GITHUB_REF_NAME#keystatic/}"
+          TITLE="Content update: ${BRANCH_SUFFIX}"
+
+          gh pr create \
+            --title "$TITLE" \
+            --body "Automated PR for content changes made via Keystatic CMS." \
+            --base main \
+            --head "$GITHUB_REF_NAME"
