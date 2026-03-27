@@ -30,8 +30,8 @@ const cardSlots = [
     dot: { cx: 603, cy: 382 },
     labelPos: { x: 610, y: 386 },
     detailPos: { x: 600, y: 400 },
-    filter: "url(#gIndigo)",
-    defaultColor: "indigo",
+    filter: "url(#gCoral)",
+    defaultColor: "coral",
   },
   {
     parcel: { x: 428, y: 448, w: 144, h: 50 },
@@ -45,11 +45,12 @@ const cardSlots = [
 ];
 
 const colorMap: Record<string, { fill: string; stroke: string; labelFill: string }> = {
-  green:  { fill: "#6366F1", stroke: "#6366F1", labelFill: "#4f46e5" },
+  green:  { fill: "#0e9bc4", stroke: "#0e9bc4", labelFill: "#0a7a9e" },
   sky:    { fill: "#4CD5FF", stroke: "#4CD5FF", labelFill: "#0e9bc4" },
-  red:    { fill: "#6366F1", stroke: "#6366F1", labelFill: "#4f46e5" },
+  red:    { fill: "#FF0025", stroke: "#FF0025", labelFill: "#dd0020" },
   yellow: { fill: "#4CD5FF", stroke: "#4CD5FF", labelFill: "#0e9bc4" },
-  indigo: { fill: "#6366F1", stroke: "#6366F1", labelFill: "#4f46e5" },
+  indigo: { fill: "#0e9bc4", stroke: "#0e9bc4", labelFill: "#0a7a9e" },
+  coral:  { fill: "#FF0025", stroke: "#FF0025", labelFill: "#dd0020" },
 };
 ---
 
@@ -60,10 +61,13 @@ const colorMap: Record<string, { fill: string; stroke: string; labelFill: string
         <svg id="map-svg" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <filter id="gIndigo" x="-40%" y="-40%" width="180%" height="180%">
-              <feGaussianBlur stdDeviation="8" result="b"/><feFlood flood-color="#6366F1" flood-opacity="0.5"/><feComposite in2="b" operator="in"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+              <feGaussianBlur stdDeviation="8" result="b"/><feFlood flood-color="#0e9bc4" flood-opacity="0.5"/><feComposite in2="b" operator="in"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
             </filter>
             <filter id="gSky" x="-40%" y="-40%" width="180%" height="180%">
               <feGaussianBlur stdDeviation="8" result="b"/><feFlood flood-color="#4CD5FF" flood-opacity="0.5"/><feComposite in2="b" operator="in"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+            <filter id="gCoral" x="-40%" y="-40%" width="180%" height="180%">
+              <feGaussianBlur stdDeviation="8" result="b"/><feFlood flood-color="#FF0025" flood-opacity="0.5"/><feComposite in2="b" operator="in"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
             </filter>
           </defs>
 
@@ -128,8 +132,8 @@ const colorMap: Record<string, { fill: string; stroke: string; labelFill: string
           <rect x="818" y="502" width="74" height="50" rx="2" fill="#e8e7e3" stroke="#222" stroke-width="0.5" stroke-opacity="0.15"/>
 
           <!-- Parks & water -->
-          <ellipse cx="305" cy="270" rx="20" ry="14" fill="#6366F1" opacity="0.06"/>
-          <ellipse cx="850" cy="480" rx="25" ry="18" fill="#6366F1" opacity="0.06"/>
+          <ellipse cx="305" cy="270" rx="20" ry="14" fill="#37A04F" opacity="0.06"/>
+          <ellipse cx="850" cy="480" rx="25" ry="18" fill="#37A04F" opacity="0.06"/>
           <path d="M950,350 Q1000,340 1050,360 Q1100,380 1120,350 L1120,700 L950,700 Z" fill="#4CD5FF" opacity="0.06"/>
 
           <!-- Highlighted parcels with data cards (content from CMS) -->
@@ -180,7 +184,7 @@ const colorMap: Record<string, { fill: string; stroke: string; labelFill: string
     const zoom = Math.min(1, p / 0.15);
     const scale = 1 + zoom * 0.5;
     mapSvg.style.transform = `scale(${scale})`;
-    mapSvg.style.transformOrigin = '55% 45%';
+    mapSvg.style.transformOrigin = '50% 50%';
     mapText.style.opacity = String(Math.max(0, 1 - p * 8));
 
     const start = 0.2, end = 0.9, count = 4;

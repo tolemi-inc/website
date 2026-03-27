@@ -21,15 +21,15 @@ const { heading = "Explore More", basePath, items } = Astro.props;
       {items.map((item) => (
         <a
           href={`${basePath}/${item.slug}`}
-          class="group block bg-white rounded-2xl border border-black/[0.06] p-8 hover:shadow-lg hover:shadow-black/[0.06] hover:border-tolemi-indigo/20 transition-all duration-300"
+          class="group block bg-white rounded-2xl border border-black/[0.06] p-8 hover:shadow-lg hover:shadow-black/[0.06] hover:border-tolemi-sky/20 transition-all duration-300"
         >
-          <h3 class="font-heading text-xl font-semibold text-text-primary mb-3 group-hover:text-tolemi-indigo transition-colors">
+          <h3 class="font-heading text-xl font-semibold text-text-primary mb-3 group-hover:text-tolemi-sky-600 transition-colors">
             {item.title}
           </h3>
           {item.subheadline && (
             <p class="text-text-secondary text-sm leading-relaxed">{item.subheadline}</p>
           )}
-          <span class="inline-flex items-center gap-1 mt-4 text-sm font-medium text-tolemi-indigo">
+          <span class="inline-flex items-center gap-1 mt-4 text-sm font-medium text-tolemi-sky-600">
             Learn more
             <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />

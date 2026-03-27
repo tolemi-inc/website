@@ -12,6 +12,7 @@
   --color-tolemi-sky: #4CD5FF;
   --color-tolemi-yellow: #FFCB1B;
   --color-tolemi-indigo: #6366F1;
+  --color-tolemi-coral: #FB7185;
 
   /* Neutrals */
   --color-tolemi-dark: #343332;
@@ -46,7 +47,17 @@
   --color-tolemi-sky-600: #0e9bc4;
   --color-tolemi-sky-700: #0a7a9e;
 
-  /* Indigo scale (signature accent — paired with sky for gradient) */
+  /* Coral scale (warm accent — paired with indigo for gradient) */
+  --color-tolemi-coral-50: #fff1f2;
+  --color-tolemi-coral-100: #ffe4e6;
+  --color-tolemi-coral-200: #fecdd3;
+  --color-tolemi-coral-300: #fda4af;
+  --color-tolemi-coral-400: #FB7185;
+  --color-tolemi-coral-500: #f43f5e;
+  --color-tolemi-coral-600: #e11d48;
+  --color-tolemi-coral-700: #be123c;
+
+  /* Indigo scale (signature accent — paired with coral for gradient) */
   --color-tolemi-indigo-50: #eef2ff;
   --color-tolemi-indigo-100: #e0e7ff;
   --color-tolemi-indigo-200: #c7d2fe;

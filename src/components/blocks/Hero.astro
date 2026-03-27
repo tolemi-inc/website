@@ -19,17 +19,20 @@ const { headline, subheadline, ctaText, ctaLink } = Astro.props;
 
   </div>
 
+  <!-- Readability overlay — fades out on scroll -->
+  <div id="hero-overlay" class="absolute inset-0 z-10 pointer-events-none bg-[#f8f8f6]" style="opacity: 0.55;"></div>
+
   <!-- Large horizontal sliders — overlaid on map area -->
-  <div id="hero-sliders" class="absolute right-8 lg:right-16 xl:right-24 bottom-12 md:bottom-16 lg:bottom-20 z-30 hidden md:block">
+  <div id="hero-sliders" class="absolute right-8 lg:right-16 xl:right-24 bottom-12 md:bottom-16 lg:bottom-20 z-30 hidden md:block bg-white/70 backdrop-blur-xl rounded-2xl p-4">
     <svg id="slider-svg" viewBox="0 0 500 300" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-[400px] lg:w-[520px] xl:w-[600px]">
       <defs>
         <linearGradient id="trackSkyGrad" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stop-color="#4CD5FF" stop-opacity="0.3"/>
-          <stop offset="100%" stop-color="#4CD5FF" stop-opacity="0.08"/>
+          <stop offset="0%" stop-color="#FFCB1B" stop-opacity="0.25"/>
+          <stop offset="100%" stop-color="#4CD5FF" stop-opacity="0.3"/>
         </linearGradient>
         <linearGradient id="trackYellowGrad" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stop-color="#FFCB1B" stop-opacity="0.3"/>
-          <stop offset="100%" stop-color="#FFCB1B" stop-opacity="0.08"/>
+          <stop offset="0%" stop-color="#FF0025" stop-opacity="0.2"/>
+          <stop offset="100%" stop-color="#FFCB1B" stop-opacity="0.3"/>
         </linearGradient>
         <linearGradient id="trackRedGrad" x1="0" y1="0" x2="1" y2="0">
           <stop offset="0%" stop-color="#FF0025" stop-opacity="0.3"/>
@@ -59,7 +62,7 @@ const { headline, subheadline, ctaText, ctaLink } = Astro.props;
         <rect x="30" y="225" width="440" height="60" rx="30" fill="none" stroke="#FF0025" stroke-opacity="0.4" stroke-width="0.5"/>
       </g>
 
-      <!-- Flat circle buttons — order: blue, yellow, red (top to bottom) -->
+      <!-- Flat circle buttons — sky, indigo, coral (top to bottom) -->
       <circle id="dot-sky" cx="68" cy="55" r="24" fill="#4CD5FF"/>
       <circle id="dot-yellow" cx="68" cy="155" r="24" fill="#FFCB1B"/>
       <circle id="dot-red" cx="68" cy="255" r="24" fill="#FF0025"/>
@@ -88,7 +91,7 @@ const { headline, subheadline, ctaText, ctaLink } = Astro.props;
       {ctaText && (
         <a
           href={ctaLink || "#"}
-          class="inline-flex items-center gap-2 bg-gradient-to-r from-tolemi-indigo to-tolemi-indigo-600 text-white font-semibold px-7 py-3.5 rounded-full hover:shadow-lg hover:shadow-tolemi-indigo/25 transition-all"
+          class="inline-flex items-center gap-2 bg-tolemi-dark text-white font-semibold px-7 py-3.5 rounded-full hover:shadow-lg hover:shadow-tolemi-dark/25 transition-all"
         >
           {ctaText}
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
@@ -312,6 +315,13 @@ const { headline, subheadline, ctaText, ctaLink } = Astro.props;
     if (!manualSky) targetSkyX = trackLeft + skyProgress * (trackRight - trackLeft);
     if (!manualYellow) targetYellowX = trackLeft + yellowProgress * (trackRight - trackLeft);
     if (!manualRed) targetRedX = trackLeft + redProgress * (trackRight - trackLeft);
+
+    // Fade the dimming overlay as user scrolls into the map
+    const heroOverlay = document.getElementById('hero-overlay');
+    if (heroOverlay) {
+      const overlayOpacity = Math.max(0, 0.55 * (1 - scrolled / 0.3));
+      heroOverlay.style.opacity = String(overlayOpacity);
+    }
   }
 
   function animate() {
