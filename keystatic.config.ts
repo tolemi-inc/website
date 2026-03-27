@@ -54,7 +54,12 @@ export default config({
   ui: {
     brand: {
       name: 'Tolemi',
-      mark: () => createElement('img', { src: '/tolemi-logo.svg', alt: 'Tolemi', height: 24 }),
+      mark: () =>
+        createElement(
+          'a',
+          { href: '/keystatic', style: { display: 'flex', alignItems: 'center' } },
+          createElement('img', { src: '/tolemi-logo.svg', alt: 'Tolemi', height: 24 })
+        ),
     },
   },
 
