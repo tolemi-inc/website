@@ -8,40 +8,18 @@ import FlowArrow from "./FlowArrow.astro";
 import TolemiLogo from "./TolemiLogo.astro";
 import ProductCards from "./ProductCards.astro";
 import SectionHeader from "../../ui/SectionHeader.astro";
+import pipelineData from "../../../data/pipeline.json";
 
-const ALL_SEAL_IDS = [
-  57, 58, 59, 60, 61, 63, 68, 70, 73, 74, 75, 77, 79, 81, 83, 88, 89, 90, 91,
-  99, 100, 101, 102, 103, 105, 108, 110, 112, 114, 116, 118, 120, 124, 125, 126,
-  127, 128, 130, 131, 132, 133, 134, 135, 136, 137, 139, 140, 143, 144, 145,
-  146, 147, 148, 149, 150, 151, 153, 154, 155, 156, 157, 158, 159, 160, 161,
-  162, 163, 164, 165, 166, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177,
-  178, 179, 180, 181, 182, 183, 184, 186, 187, 188, 189, 190, 191, 192, 193,
-  194, 195, 196, 197, 198, 199, 200, 201, 202, 204, 205, 206, 208, 209, 210,
-  211, 212, 213, 220, 222, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233,
-  234, 235, 236, 237, 238, 239, 240, 254, 258, 259, 260, 261, 262, 263, 264,
-  265, 266, 267, 268, 269, 270, 271, 272,
-];
+const { cityGroups, sourceGroups, allCityIds } = pipelineData;
 
-const DATA_SOURCES = [
-  "ATTOM_LOGO.jpg",
-  "ArcGIS_globe.png",
-  "CKAN_Logo_full_color.png",
-  "Microsoft_Excel-Logo.wine.svg",
-  "Munis-logo.png",
-  "Socrata_Logo.jpg",
-  "Tyler_Technologies_logo.svg",
-  "Springbrook_logo_clear.png",
-  "opengov-logo-may-2025.png",
-  "logo-seeclickfix.png",
-  "ers-logo.svg",
-  "iWorQ.png",
-];
+const pick = <T,>(arr: T[]) => arr[Math.floor(Math.random() * arr.length)];
 
-const shuffledSeals = [...ALL_SEAL_IDS].sort(() => Math.random() - 0.5);
-const displaySeals = shuffledSeals.slice(0, 12);
+const displaySeals = pick(cityGroups);
+const displaySources = pick(sourceGroups);
 
-// For flip-card backs, offset by half so each back is guaranteed different from its front
-const sourceBackOrder = [...DATA_SOURCES.slice(6), ...DATA_SOURCES.slice(0, 6)];
+// For flip-card backs, use a different source group
+const otherSources = sourceGroups.find(g => g !== displaySources) ?? displaySources;
+const sourceBackOrder = otherSources;
 ---
 
 <section
@@ -59,14 +37,14 @@ const sourceBackOrder = [...DATA_SOURCES.slice(6), ...DATA_SOURCES.slice(0, 6)];
     <div class="hidden md:flex items-center justify-center gap-0 reveal">
       <CitySeals
         displaySeals={displaySeals}
-        allSealIds={ALL_SEAL_IDS}
+        allSealIds={allCityIds}
         gridCols={3}
         sealSize="w-9 h-9"
         id="df-seals-grid"
       />
       <FlowArrow direction="horizontal" />
       <DataSourceCards
-        sources={DATA_SOURCES}
+        sources={displaySources}
         backOrder={sourceBackOrder}
         cardClass="w-[110px] h-[26px]"
         layout="vertical"
@@ -109,7 +87,7 @@ const sourceBackOrder = [...DATA_SOURCES.slice(6), ...DATA_SOURCES.slice(0, 6)];
       <div class="mb-1">
         <CitySeals
           displaySeals={displaySeals.slice(0, 24)}
-          allSealIds={ALL_SEAL_IDS}
+          allSealIds={allCityIds}
           gridCols={6}
           sealSize="w-7 h-7"
           id="df-seals-grid-mobile"
@@ -118,7 +96,7 @@ const sourceBackOrder = [...DATA_SOURCES.slice(6), ...DATA_SOURCES.slice(0, 6)];
       <FlowArrow direction="vertical" />
       <div class="mb-1">
         <DataSourceCards
-          sources={DATA_SOURCES}
+          sources={displaySources}
           backOrder={sourceBackOrder}
           cardClass="w-[80px] h-[28px]"
           layout="grid"
@@ -170,34 +148,11 @@ const sourceBackOrder = [...DATA_SOURCES.slice(6), ...DATA_SOURCES.slice(0, 6)];
 </style>
 
 <script>
-  const ALL_SEAL_IDS = [
-    57, 58, 59, 60, 61, 63, 68, 70, 73, 74, 75, 77, 79, 81, 83, 88, 89, 90, 91,
-    99, 100, 101, 102, 103, 105, 108, 110, 112, 114, 116, 118, 120, 124, 125,
-    126, 127, 128, 130, 131, 132, 133, 134, 135, 136, 137, 139, 140, 143, 144,
-    145, 146, 147, 148, 149, 150, 151, 153, 154, 155, 156, 157, 158, 159, 160,
-    161, 162, 163, 164, 165, 166, 168, 169, 170, 171, 172, 173, 174, 175, 176,
-    177, 178, 179, 180, 181, 182, 183, 184, 186, 187, 188, 189, 190, 191, 192,
-    193, 194, 195, 196, 197, 198, 199, 200, 201, 202, 204, 205, 206, 208, 209,
-    210, 211, 212, 213, 220, 222, 224, 225, 226, 227, 228, 229, 230, 231, 232,
-    233, 234, 235, 236, 237, 238, 239, 240, 254, 258, 259, 260, 261, 262, 263,
-    264, 265, 266, 267, 268, 269, 270, 271, 272,
-  ];
-  const DATA_SOURCES = [
-    "ATTOM_LOGO.jpg",
-    "ArcGIS_globe.png",
-    "CKAN_Logo_full_color.png",
-    "Microsoft_Excel-Logo.wine.svg",
-    "Munis-logo.png",
-    "Socrata_Logo.jpg",
-    "Tyler_Technologies_logo.svg",
-    "Springbrook_logo_clear.png",
-    "opengov-logo-may-2025.png",
-    "logo-seeclickfix.png",
-    "ers-logo.svg",
-    "iWorQ.png",
-  ];
+  import pipelineData from "../../../data/pipeline.json";
 
-  function pick(arr: any[]) {
+  const { allCityIds, allSources } = pipelineData;
+
+  function pick<T>(arr: T[]): T {
     return arr[Math.floor(Math.random() * arr.length)];
   }
 
@@ -207,7 +162,7 @@ const sourceBackOrder = [...DATA_SOURCES.slice(6), ...DATA_SOURCES.slice(0, 6)];
     if (!sealCards.length) return;
     const card = pick([...sealCards]) as HTMLElement;
     const back = card.querySelector(".flip-back img") as HTMLImageElement;
-    if (back) back.src = `/city_seals/${pick(ALL_SEAL_IDS)}.png`;
+    if (back) back.src = `/city_seals/${pick(allCityIds)}.png`;
     card.classList.toggle("flipped");
     setTimeout(flipSeal, 2000 + Math.random() * 3000);
   }
@@ -233,8 +188,8 @@ const sourceBackOrder = [...DATA_SOURCES.slice(6), ...DATA_SOURCES.slice(0, 6)];
     const img = card.querySelector(hiddenFace) as HTMLImageElement;
 
     const visibleSet = new Set(sourceState);
-    const available = DATA_SOURCES.filter((s) => !visibleSet.has(s));
-    const next = available.length > 0 ? pick(available) : pick(DATA_SOURCES);
+    const available = allSources.filter((s) => !visibleSet.has(s));
+    const next = available.length > 0 ? pick(available) : pick(allSources);
 
     if (img) img.src = `/data_sources/${next}`;
     card.classList.toggle("flipped");
