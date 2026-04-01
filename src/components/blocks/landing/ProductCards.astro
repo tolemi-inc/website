@@ -53,13 +53,6 @@ const products = [
 ---
 
 <div class="flex flex-col items-center flex-shrink-0">
-  {isDesktop && (
-    <h3
-      class="font-heading text-[10px] font-bold text-text-muted uppercase tracking-widest mb-4"
-    >
-      Products
-    </h3>
-  )}
   <div class={wrapperClass}>
     {
       products.map((p) => (
@@ -96,4 +89,9 @@ const products = [
       ))
     }
   </div>
+  <h3
+    class="font-heading text-[10px] font-bold text-text-muted uppercase tracking-widest mt-4"
+  >
+    Products
+  </h3>
 </div>

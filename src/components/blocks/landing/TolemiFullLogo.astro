@@ -1,0 +1,28 @@
+---
+interface Props {
+  size?: "sm" | "md";
+}
+const { size = "md" } = Astro.props;
+const containerClass =
+  size === "sm"
+    ? "w-20 h-20 rounded-2xl flex items-center justify-center shadow-lg shadow-tolemi-sky/20"
+    : "w-28 h-28 rounded-2xl bg-gradient-to-br from-tolemi-green via-tolemi-sky-600 to-tolemi-sky flex items-center justify-center shadow-lg shadow-tolemi-sky/20";
+const imgClass = size === "sm" ? "w-12 h-12 object-contain" : "w-16 h-16 object-contain";
+---
+
+<div class="flex flex-col items-center flex-shrink-0">
+  {size === "md" && (
+    <h3
+      class="font-heading text-[10px] font-bold text-text-muted uppercase tracking-widest mb-4"
+    >
+      Tolemi
+    </h3>
+  )}
+  <div class={containerClass}>
+    <img
+      src="/logos/light_tolemi_gradient.svg"
+      alt="Tolemi"
+      class={imgClass}
+    />
+  </div>
+</div>

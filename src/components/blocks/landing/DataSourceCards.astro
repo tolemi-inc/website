@@ -1,56 +1,42 @@
 ---
 interface Props {
   sources: string[];
-  backOrder: string[];
   cardClass?: string;
   layout?: "vertical" | "grid";
   id?: string;
 }
 const {
   sources,
-  backOrder,
-  cardClass = "w-[110px] h-[26px]",
+  cardClass = "w-[110px] h-[44px]",
   layout = "vertical",
   id,
 } = Astro.props;
 ---
 
 <div class="flex flex-col items-center flex-shrink-0">
-  <h3
-    class="font-heading text-[10px] font-bold text-text-muted uppercase tracking-widest mb-4"
-  >
-    Data Sources
-  </h3>
   <div
-    class={layout === "grid" ? "grid grid-cols-3 gap-1.5" : "flex flex-col gap-1"}
+    class={`df-source-container transition-opacity duration-500 ${layout === "grid" ? "grid grid-cols-3 gap-1.5" : "flex flex-col gap-1"}`}
     id={id}
   >
     {
-      sources.map((file, i) => (
+      sources.map((file) => (
         <div
-          class={`df-source flip-card ${cardClass} rounded bg-surface border border-text-muted/10 overflow-hidden`}
-          data-src-index={i}
+          class={`df-source ${cardClass} rounded bg-surface border border-text-muted/10 overflow-hidden flex items-center justify-center p-1.5`}
+          style="background: white;"
         >
-          <div class="flip-card-inner">
-            <div class="flip-face flip-front df-source-face">
-              <img
-                src={`/data_sources/${file}`}
-                alt=""
-                class="max-w-full max-h-full object-contain"
-                loading="lazy"
-              />
-            </div>
-            <div class="flip-face flip-back df-source-face">
-              <img
-                src={`/data_sources/${backOrder[i]}`}
-                alt=""
-                class="max-w-full max-h-full object-contain"
-                loading="lazy"
-              />
-            </div>
-          </div>
+          <img
+            src={`/data_sources/${file}`}
+            alt=""
+            class="max-w-full max-h-full object-contain"
+            loading="lazy"
+          />
         </div>
       ))
     }
   </div>
+  <h3
+    class="font-heading text-[10px] font-bold text-text-muted uppercase tracking-widest mt-4"
+  >
+    Data Sources
+  </h3>
 </div>
