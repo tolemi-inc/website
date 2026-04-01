@@ -158,10 +158,10 @@ const parcelMeta = geojson.features.map((f: any, i: number) => ({
     <g id="selection-overlay"></g>
   </svg>
   <!-- Legend -->
-  <div class="absolute bottom-2.5 right-2.5 flex items-center gap-1.5 bg-white/80 backdrop-blur-sm rounded-md px-2.5 py-1.5">
-    <span class="text-[9px] text-text-muted font-medium">{minAcresLabel} ac</span>
-    <div class="w-16 h-2 rounded-sm" style="background: linear-gradient(to right, #4CD5FF, #37A04F, #FFCB1B, #FF0025)"></div>
-    <span class="text-[9px] text-text-muted font-medium">{maxAcresLabel} ac</span>
+  <div class="absolute bottom-2.5 left-2.5 right-2.5 flex items-center gap-2 bg-white/80 backdrop-blur-sm rounded-md px-3 py-1.5">
+    <span class="text-[9px] text-text-muted font-medium shrink-0">{minAcresLabel} ac</span>
+    <div class="flex-1 h-2 rounded-sm" style="background: linear-gradient(to right, #4CD5FF, #37A04F, #FFCB1B, #FF0025)"></div>
+    <span class="text-[9px] text-text-muted font-medium shrink-0">{maxAcresLabel} ac</span>
   </div>
   <script is:inline type="application/json" data-parcel-meta set:html={JSON.stringify(parcelMeta)} />
 </div>
