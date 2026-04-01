@@ -1,112 +1,325 @@
 ---
-// Insights — Tolemi Insights typewriter queries + interactive map
+// Insights — scroll-driven property filter + heatmap + details
 import SectionHeader from "../../ui/SectionHeader.astro";
 import InsightsPanel from "./InsightsPanel.astro";
-import MapPlaceholder from "./MapPlaceholder.astro";
+import InsightsMap from "./InsightsMap.astro";
 ---
 
-<section
-  class="py-20 md:py-28 px-6 bg-surface relative overflow-hidden"
->
-  <SectionHeader
-    eyebrow="Tolemi Insights"
-    heading="Actionable Insights, Instantly."
-    subtitle="Type common questions about a property and see Tolemi's insights come to life — highlighting relevant data points on the map in real time."
-  />
-  <div class="max-w-5xl mx-auto">
-    <div
-      id="insights-stage"
-      class="grid md:grid-cols-2 gap-8 md:gap-12 items-start"
-    >
-      <InsightsPanel />
-      <MapPlaceholder id="insights-map" />
+<section class="relative bg-surface" data-insights>
+  <!-- Extra height for scroll-driven filtering -->
+  <div class="h-[300vh]">
+    <div class="sticky top-0 min-h-screen flex items-center">
+      <div class="w-full py-20 md:py-28 px-6">
+        <SectionHeader
+          eyebrow="Tolemi Insights"
+          heading="Actionable Insights, Instantly."
+          subtitle="Filter properties by sale price, date, occupancy, and more — see matching parcels highlight on the map in real time."
+        />
+        <div class="max-w-7xl mx-auto">
+          <div
+            id="insights-stage"
+            class="grid gap-6 items-start lg:grid-cols-[260px_1fr_260px] md:grid-cols-[240px_1fr]"
+          >
+            <InsightsPanel />
+            <InsightsMap id="insights-map" />
+            <!-- Details card -->
+            <div
+              id="parcel-details"
+              class="opacity-0 pointer-events-none transition-all duration-300 md:col-span-2 lg:col-span-1"
+            >
+              <div class="bg-surface rounded-xl border border-text-muted/10 shadow-sm p-5 md:p-6">
+                <div class="flex items-center gap-2 mb-4">
+                  <div class="w-2 h-2 rounded-full bg-tolemi-indigo animate-pulse"></div>
+                  <span class="text-xs font-semibold text-text-muted uppercase tracking-widest">
+                    Property Details
+                  </span>
+                </div>
+                <h3
+                  id="detail-address"
+                  class="font-heading text-base font-bold text-text-primary mb-4 leading-tight"
+                ></h3>
+                <div class="space-y-2.5 text-sm">
+                  <div class="flex justify-between">
+                    <span class="text-text-muted">Sale Price</span>
+                    <span id="detail-price" class="font-semibold text-text-primary tabular-nums"></span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-text-muted">Assessed Value</span>
+                    <span id="detail-assessed" class="font-semibold text-text-primary tabular-nums"></span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-text-muted">Last Sale</span>
+                    <span id="detail-date" class="font-semibold text-text-primary"></span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-text-muted">Zoning</span>
+                    <span id="detail-zoning" class="font-semibold text-text-primary"></span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-text-muted">Lot Size</span>
+                    <span id="detail-acres" class="font-semibold text-text-primary tabular-nums"></span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-text-muted">Permits (total)</span>
+                    <span id="detail-permits" class="font-semibold text-text-primary tabular-nums"></span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-text-muted">Permits (6 mo)</span>
+                    <span id="detail-permits-recent" class="font-semibold text-text-primary tabular-nums"></span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-text-muted">Police Calls (6 mo)</span>
+                    <span id="detail-calls" class="font-semibold text-text-primary tabular-nums"></span>
+                  </div>
+                </div>
+                <div id="detail-tags" class="flex flex-wrap gap-1.5 mt-4 pt-3 border-t border-text-muted/10"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
 <script>
-  const stage = document.getElementById("insights-stage");
-  const mapParcels = document.querySelectorAll("#map-parcels rect");
-  const textEl = document.getElementById("typewriter-text");
-  const answerEl = document.getElementById("typewriter-answer");
-  const answerTextEl = document.getElementById("typewriter-answer-text");
+  function initInsights() {
+    const section = document.querySelector<HTMLElement>("[data-insights]");
+    if (!section) return;
 
-  const QUESTIONS = [
-    {
-      q: "Is this property vacant?",
-      a: "Vacant — no utility activity since Jan 2025",
-      parcels: [0, 3, 10],
-    },
-    {
-      q: "Is it owner-occupied?",
-      a: "Owner-occupied — deed matches utility account",
-      parcels: [1, 4, 7],
-    },
-    {
-      q: "Is this a rental?",
-      a: "Rental — registered, license expires Nov 2026",
-      parcels: [2, 5, 8],
-    },
-    {
-      q: "Who owns this parcel?",
-      a: "PDJM LLC — 12 properties in portfolio",
-      parcels: [6, 9, 11],
-    },
-    {
-      q: "Are there open violations?",
-      a: "2 open violations — last inspected Mar 2026",
-      parcels: [0, 5, 9],
-    },
-    {
-      q: "What's the assessed value trend?",
-      a: "Up 18% over 3 years — $586,600 current",
-      parcels: [1, 7, 10],
-    },
-  ];
+    const mapContainer = document.getElementById("insights-map");
+    const mapParcels = document.querySelectorAll("#insights-map path[data-idx]");
+    const metaScript = mapContainer?.querySelector("[data-parcel-meta]");
+    const parcelMeta: any[] = metaScript ? JSON.parse(metaScript.textContent || "[]") : [];
 
-  let qIndex = 0;
+    const priceMin = document.getElementById("price-min") as HTMLInputElement;
+    const priceMax = document.getElementById("price-max") as HTMLInputElement;
+    const dateMin = document.getElementById("date-min") as HTMLInputElement;
+    const dateMax = document.getElementById("date-max") as HTMLInputElement;
+    const priceMinLabel = document.getElementById("price-min-label")!;
+    const priceMaxLabel = document.getElementById("price-max-label")!;
+    const dateMinLabel = document.getElementById("date-min-label")!;
+    const dateMaxLabel = document.getElementById("date-max-label")!;
+    const priceRangeFill = document.getElementById("price-range-fill")!;
+    const dateRangeFill = document.getElementById("date-range-fill")!;
+    const filterRental = document.getElementById("filter-rental") as HTMLInputElement;
+    const filterOwner = document.getElementById("filter-owner") as HTMLInputElement;
+    const filterVacant = document.getElementById("filter-vacant") as HTMLInputElement;
+    const filterCount = document.getElementById("filter-count")!;
+    const detailsPanel = document.getElementById("parcel-details")!;
+    const selectionOverlay = document.getElementById("selection-overlay")!;
 
-  function highlightParcels(indices: number[]) {
-    mapParcels.forEach((p, i) => {
-      const el = p as SVGElement;
-      el.style.transition = "opacity 0.4s ease";
-      el.setAttribute("opacity", indices.includes(i) ? "0.5" : "0.08");
-    });
-  }
+    if (!priceMin || !mapParcels.length || !parcelMeta.length) return;
 
-  async function typeQuestion() {
-    if (!textEl || !answerEl || !answerTextEl) return;
-    const { q, a, parcels } = QUESTIONS[qIndex];
+    let selectedIdx = -1;
+    let userTookOverCheckboxes = false;
 
-    answerEl.style.opacity = "0";
-    highlightParcels([]);
+    function lerp(a: number, b: number, t: number) { return a + (b - a) * t; }
+    function clamp01(t: number) { return Math.max(0, Math.min(1, t)); }
 
-    textEl.textContent = "";
-    for (let i = 0; i < q.length; i++) {
-      textEl.textContent = q.slice(0, i + 1);
-      await new Promise((r) => setTimeout(r, 35 + Math.random() * 25));
+    function formatPrice(v: number): string {
+      if (v >= 1_000_000) return `$${(v / 1_000_000).toFixed(1)}M`;
+      return `$${Math.round(v / 1000)}k`;
     }
 
-    highlightParcels(parcels);
-    await new Promise((r) => setTimeout(r, 400));
-    answerTextEl.textContent = a;
-    answerEl.style.opacity = "1";
+    function updateRangeFill(
+      minInput: HTMLInputElement,
+      maxInput: HTMLInputElement,
+      fillEl: HTMLElement,
+    ) {
+      const min = Number(minInput.min);
+      const max = Number(minInput.max);
+      const lo = Number(minInput.value);
+      const hi = Number(maxInput.value);
+      const leftPct = ((lo - min) / (max - min)) * 100;
+      const rightPct = ((hi - min) / (max - min)) * 100;
+      fillEl.style.left = leftPct + "%";
+      fillEl.style.width = (rightPct - leftPct) + "%";
+    }
 
-    await new Promise((r) => setTimeout(r, 3000));
-    qIndex = (qIndex + 1) % QUESTIONS.length;
-    typeQuestion();
-  }
+    function applyFilters() {
+      const pMinVal = Number(priceMin.value);
+      const pMaxVal = Number(priceMax.value);
+      const dMinVal = Number(dateMin.value);
+      const dMaxVal = Number(dateMax.value);
 
-  if (stage && textEl) {
-    const obs = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          obs.disconnect();
-          typeQuestion();
+      const checkRental = filterRental.checked;
+      const checkOwner = filterOwner.checked;
+      const checkVacant = filterVacant.checked;
+      const anyCheckbox = checkRental || checkOwner || checkVacant;
+
+      priceMinLabel.textContent = formatPrice(pMinVal);
+      priceMaxLabel.textContent = formatPrice(pMaxVal);
+      dateMinLabel.textContent = dateMin.value;
+      dateMaxLabel.textContent = dateMax.value;
+
+      updateRangeFill(priceMin, priceMax, priceRangeFill);
+      updateRangeFill(dateMin, dateMax, dateRangeFill);
+
+      let matchCount = 0;
+      let lastMatch = -1;
+
+      mapParcels.forEach((el, i) => {
+        const p = parcelMeta[i];
+        if (!p) return;
+
+        const saleYear = new Date(p.last_sale_date).getFullYear();
+        const inPrice = p.property_value >= pMinVal && p.property_value <= pMaxVal;
+        const inDate = saleYear >= dMinVal && saleYear <= dMaxVal;
+
+        let inCheckbox = true;
+        if (anyCheckbox) {
+          inCheckbox = (checkRental && p.is_rental) ||
+                       (checkOwner && p.is_owner_occupied) ||
+                       (checkVacant && p.is_vacant);
         }
-      },
-      { threshold: 0.3 },
-    );
-    obs.observe(stage);
+
+        const match = inPrice && inDate && inCheckbox;
+        const svgEl = el as SVGElement;
+        const isSelected = i === selectedIdx;
+
+        if (match) {
+          matchCount++;
+          lastMatch = i;
+          svgEl.setAttribute("fill-opacity", isSelected ? "1" : "0.75");
+        } else {
+          svgEl.setAttribute("fill-opacity", "0.08");
+        }
+      });
+
+      filterCount.textContent = `${matchCount} of ${parcelMeta.length}`;
+
+      // Auto-select when narrowed to a small set
+      if (matchCount > 0 && matchCount <= 3 && selectedIdx < 0) {
+        selectParcel(lastMatch);
+      } else if (matchCount > 3 && selectedIdx >= 0) {
+        // Check if current selection still matches
+        const p = parcelMeta[selectedIdx];
+        if (p) {
+          const yr = new Date(p.last_sale_date).getFullYear();
+          const still = p.property_value >= pMinVal && p.property_value <= pMaxVal &&
+                        yr >= dMinVal && yr <= dMaxVal &&
+                        (!anyCheckbox || (checkRental && p.is_rental) || (checkOwner && p.is_owner_occupied) || (checkVacant && p.is_vacant));
+          if (!still) selectParcel(-1);
+        }
+      } else if (matchCount === 0) {
+        selectParcel(-1);
+      }
+    }
+
+    function selectParcel(idx: number) {
+      selectedIdx = idx;
+      selectionOverlay.innerHTML = "";
+
+      if (idx >= 0 && mapParcels[idx]) {
+        const ring = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        ring.setAttribute("d", mapParcels[idx].getAttribute("d")!);
+        ring.setAttribute("fill", "none");
+        ring.setAttribute("stroke", "white");
+        ring.setAttribute("stroke-width", "1.5");
+        selectionOverlay.appendChild(ring);
+        showDetails(idx);
+      } else {
+        hideDetails();
+      }
+    }
+
+    function showDetails(idx: number) {
+      const p = parcelMeta[idx];
+      if (!p) return;
+
+      document.getElementById("detail-address")!.textContent = p.street_address;
+      document.getElementById("detail-price")!.textContent = formatPrice(p.property_value);
+      document.getElementById("detail-assessed")!.textContent = formatPrice(p.assessed_value);
+      document.getElementById("detail-date")!.textContent = p.last_sale_date;
+      document.getElementById("detail-zoning")!.textContent = p.zoning;
+      document.getElementById("detail-acres")!.textContent = p.acres < 0.01 ? "<0.01 ac" : p.acres.toFixed(2) + " ac";
+      document.getElementById("detail-permits")!.textContent = String(p.building_permits);
+      document.getElementById("detail-permits-recent")!.textContent = String(p.count_permits_last_six_months);
+      document.getElementById("detail-calls")!.textContent = String(p.count_police_calls_last_six_months);
+
+      const tagsEl = document.getElementById("detail-tags")!;
+      tagsEl.innerHTML = "";
+      const tagClass = "text-[11px] font-semibold px-2 py-0.5 rounded-full";
+      if (p.is_rental) {
+        tagsEl.innerHTML += `<span class="${tagClass} bg-tolemi-indigo/10 text-tolemi-indigo-600">Rental</span>`;
+      }
+      if (p.is_owner_occupied) {
+        tagsEl.innerHTML += `<span class="${tagClass} bg-tolemi-sky/10 text-tolemi-sky-700">Owner Occupied</span>`;
+      }
+      if (p.is_vacant) {
+        tagsEl.innerHTML += `<span class="${tagClass} bg-tolemi-red/10 text-tolemi-red-500">Vacant</span>`;
+      }
+
+      detailsPanel.classList.remove("opacity-0", "pointer-events-none");
+      detailsPanel.classList.add("opacity-100");
+    }
+
+    function hideDetails() {
+      detailsPanel.classList.add("opacity-0", "pointer-events-none");
+      detailsPanel.classList.remove("opacity-100");
+    }
+
+    // Checkbox interaction — user takes over from scroll
+    [filterRental, filterOwner, filterVacant].forEach((input) => {
+      input.addEventListener("change", () => {
+        userTookOverCheckboxes = true;
+        applyFilters();
+      });
+    });
+
+    // Click parcels to select
+    mapParcels.forEach((el, i) => {
+      el.addEventListener("click", () => {
+        selectParcel(i === selectedIdx ? -1 : i);
+        applyFilters();
+      });
+    });
+
+    // Scroll-driven filtering
+    // Progress 0→1 maps to progressively narrower filters
+    function onScroll() {
+      const rect = section!.getBoundingClientRect();
+      const sectionHeight = section!.offsetHeight;
+      const viewportH = window.innerHeight;
+
+      const scrolled = -rect.top;
+      const scrollRange = sectionHeight - viewportH;
+      const progress = Math.max(0, Math.min(1, scrolled / scrollRange));
+
+      // Phase 1 (0–0.12): price min rises
+      const pMinBase = lerp(200000, 900000, clamp01(progress / 0.12));
+      // Phase 2 (0.12–0.25): price max drops
+      const pMaxBase = lerp(4000000, 1500000, clamp01((progress - 0.12) / 0.13));
+      // Phase 3 (0.25–0.40): date min rises
+      const dMinBase = lerp(1890, 2010, clamp01((progress - 0.25) / 0.15));
+      // Phase 4 (0.40–0.55): date max drops
+      const dMaxBase = lerp(2026, 2022, clamp01((progress - 0.40) / 0.15));
+      // Phase 5 (0.55–0.65): rental checkbox (only if user hasn't taken over)
+      if (!userTookOverCheckboxes) {
+        filterRental.checked = progress > 0.60;
+        filterOwner.checked = false;
+        filterVacant.checked = false;
+      }
+      // Phase 6 (0.65–0.85): final tightening
+      const tighten = clamp01((progress - 0.65) / 0.20);
+      priceMin.value = String(Math.round(lerp(pMinBase, 1000000, tighten)));
+      priceMax.value = String(Math.round(lerp(pMaxBase, 1200000, tighten)));
+      dateMin.value = String(Math.round(lerp(dMinBase, 2018, tighten)));
+      dateMax.value = String(Math.round(lerp(dMaxBase, 2020, tighten)));
+
+      // Reset selection when scrolling back to wide filters
+      if (progress < 0.55 && selectedIdx >= 0) {
+        selectParcel(-1);
+      }
+
+      applyFilters();
+    }
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
   }
+
+  initInsights();
+  document.addEventListener("astro:page-load", initInsights);
 </script>
