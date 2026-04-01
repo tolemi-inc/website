@@ -1,11 +1,6 @@
 ---
 import Base from "../layouts/Base.astro";
-import Hero from "../components/blocks/Hero.astro";
-import Features from "../components/blocks/Features.astro";
-import MapExplorer from "../components/blocks/MapExplorer.astro";
-import CityLogos from "../components/blocks/CityLogos.astro";
-import Stats from "../components/blocks/Stats.astro";
-import CallToAction from "../components/blocks/CallToAction.astro";
+import LandingBody from "../components/blocks/LandingBody.astro";
 
 import homeData from "../../content/pages/home.json";
 
@@ -13,25 +8,16 @@ import homeData from "../../content/pages/home.json";
 const heroBlock = (homeData.blocks.find((b: any) => b.discriminant === "hero") as any)?.value;
 const featuresBlock = (homeData.blocks.find((b: any) => b.discriminant === "features") as any)?.value;
 const statsBlock = (homeData.blocks.find((b: any) => b.discriminant === "stats") as any)?.value;
+const testimonialsBlock = (homeData.blocks.find((b: any) => b.discriminant === "testimonials") as any)?.value;
 const ctaBlock = (homeData.blocks.find((b: any) => b.discriminant === "cta") as any)?.value;
 ---
 
 <Base title={homeData.title}>
-  {/* Hero + sub-hero CTA */}
-  {heroBlock && <Hero {...heroBlock} />}
-
-  {/* Interactive map explorer (zoom) */}
-  <MapExplorer />
-
-  {/* City logos - Trusted by Cities Nationwide */}
-  <CityLogos />
-
-  {/* Features - Why City Leaders Choose Tolemi */}
-  {featuresBlock && <Features {...featuresBlock} />}
-
-  {/* Stats - Trusted by Growing Cities */}
-  {statsBlock && <Stats {...statsBlock} />}
-
-  {/* CTA - Ready to Transform Your Data? */}
-  {ctaBlock && <CallToAction {...ctaBlock} />}
+  <LandingBody
+    hero={heroBlock}
+    features={featuresBlock}
+    stats={statsBlock}
+    testimonials={testimonialsBlock}
+    cta={ctaBlock}
+  />
 </Base>

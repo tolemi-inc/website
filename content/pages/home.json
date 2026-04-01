@@ -37,12 +37,12 @@
     {
       "discriminant": "stats",
       "value": {
-        "heading": "Trusted by Growing Cities",
+        "heading": "Real Impact, Real Numbers",
         "items": [
+          { "value": "1.2M+", "label": "Properties Tracked" },
           { "value": "100+", "label": "Municipal Partners" },
-          { "value": "3", "label": "States" },
-          { "value": "35%", "label": "Faster Decision-Making" },
-          { "value": "99.9%", "label": "Platform Uptime" }
+          { "value": "50K+", "label": "Permits Processed" },
+          { "value": "$12M+", "label": "Payments Collected" }
         ]
       }
     },

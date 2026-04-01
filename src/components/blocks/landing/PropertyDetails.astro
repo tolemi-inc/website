@@ -1,0 +1,22 @@
+---
+// PropertyDetails — "Every Property. Every Detail." map + detail cards
+import MapPlaceholder from "./MapPlaceholder.astro";
+import DetailCards from "./DetailCards.astro";
+import SectionHeader from "../../ui/SectionHeader.astro";
+---
+
+<section
+  class="py-20 md:py-28 px-6 bg-surface relative overflow-hidden"
+>
+  <div class="max-w-7xl mx-auto">
+    <SectionHeader
+      eyebrow="Property Details"
+      heading="Every Property. Every Detail."
+      subtitle="Explore comprehensive information about each property in our integrated real estate database."
+    />
+    <div class="grid md:grid-cols-2 gap-8 md:gap-12 items-start">
+      <MapPlaceholder />
+      <DetailCards />
+    </div>
+  </div>
+</section>

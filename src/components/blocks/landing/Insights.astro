@@ -1,0 +1,112 @@
+---
+// Insights — Tolemi Insights typewriter queries + interactive map
+import SectionHeader from "../../ui/SectionHeader.astro";
+import InsightsPanel from "./InsightsPanel.astro";
+import MapPlaceholder from "./MapPlaceholder.astro";
+---
+
+<section
+  class="py-20 md:py-28 px-6 bg-surface relative overflow-hidden"
+>
+  <SectionHeader
+    eyebrow="Tolemi Insights"
+    heading="Actionable Insights, Instantly."
+    subtitle="Type common questions about a property and see Tolemi's insights come to life — highlighting relevant data points on the map in real time."
+  />
+  <div class="max-w-5xl mx-auto">
+    <div
+      id="insights-stage"
+      class="grid md:grid-cols-2 gap-8 md:gap-12 items-start"
+    >
+      <InsightsPanel />
+      <MapPlaceholder id="insights-map" />
+    </div>
+  </div>
+</section>
+
+<script>
+  const stage = document.getElementById("insights-stage");
+  const mapParcels = document.querySelectorAll("#map-parcels rect");
+  const textEl = document.getElementById("typewriter-text");
+  const answerEl = document.getElementById("typewriter-answer");
+  const answerTextEl = document.getElementById("typewriter-answer-text");
+
+  const QUESTIONS = [
+    {
+      q: "Is this property vacant?",
+      a: "Vacant — no utility activity since Jan 2025",
+      parcels: [0, 3, 10],
+    },
+    {
+      q: "Is it owner-occupied?",
+      a: "Owner-occupied — deed matches utility account",
+      parcels: [1, 4, 7],
+    },
+    {
+      q: "Is this a rental?",
+      a: "Rental — registered, license expires Nov 2026",
+      parcels: [2, 5, 8],
+    },
+    {
+      q: "Who owns this parcel?",
+      a: "PDJM LLC — 12 properties in portfolio",
+      parcels: [6, 9, 11],
+    },
+    {
+      q: "Are there open violations?",
+      a: "2 open violations — last inspected Mar 2026",
+      parcels: [0, 5, 9],
+    },
+    {
+      q: "What's the assessed value trend?",
+      a: "Up 18% over 3 years — $586,600 current",
+      parcels: [1, 7, 10],
+    },
+  ];
+
+  let qIndex = 0;
+
+  function highlightParcels(indices: number[]) {
+    mapParcels.forEach((p, i) => {
+      const el = p as SVGElement;
+      el.style.transition = "opacity 0.4s ease";
+      el.setAttribute("opacity", indices.includes(i) ? "0.5" : "0.08");
+    });
+  }
+
+  async function typeQuestion() {
+    if (!textEl || !answerEl || !answerTextEl) return;
+    const { q, a, parcels } = QUESTIONS[qIndex];
+
+    answerEl.style.opacity = "0";
+    highlightParcels([]);
+
+    textEl.textContent = "";
+    for (let i = 0; i < q.length; i++) {
+      textEl.textContent = q.slice(0, i + 1);
+      await new Promise((r) => setTimeout(r, 35 + Math.random() * 25));
+    }
+
+    highlightParcels(parcels);
+    await new Promise((r) => setTimeout(r, 400));
+    answerTextEl.textContent = a;
+    answerEl.style.opacity = "1";
+
+    await new Promise((r) => setTimeout(r, 3000));
+    qIndex = (qIndex + 1) % QUESTIONS.length;
+    typeQuestion();
+  }
+
+  if (stage && textEl) {
+    const obs = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          obs.disconnect();
+          typeQuestion();
+        }
+      },
+      { threshold: 0.3 },
+    );
+    obs.observe(stage);
+  }
+</script>

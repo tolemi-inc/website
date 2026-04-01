@@ -1,0 +1,246 @@
+---
+// Pipeline — "Your Data, Unified" diagram
+// Cities → Data Sources → Tolemi → Products flow
+
+import CitySeals from "./CitySeals.astro";
+import DataSourceCards from "./DataSourceCards.astro";
+import FlowArrow from "./FlowArrow.astro";
+import TolemiLogo from "./TolemiLogo.astro";
+import ProductCards from "./ProductCards.astro";
+import SectionHeader from "../../ui/SectionHeader.astro";
+
+const ALL_SEAL_IDS = [
+  57, 58, 59, 60, 61, 63, 68, 70, 73, 74, 75, 77, 79, 81, 83, 88, 89, 90, 91,
+  99, 100, 101, 102, 103, 105, 108, 110, 112, 114, 116, 118, 120, 124, 125, 126,
+  127, 128, 130, 131, 132, 133, 134, 135, 136, 137, 139, 140, 143, 144, 145,
+  146, 147, 148, 149, 150, 151, 153, 154, 155, 156, 157, 158, 159, 160, 161,
+  162, 163, 164, 165, 166, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177,
+  178, 179, 180, 181, 182, 183, 184, 186, 187, 188, 189, 190, 191, 192, 193,
+  194, 195, 196, 197, 198, 199, 200, 201, 202, 204, 205, 206, 208, 209, 210,
+  211, 212, 213, 220, 222, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233,
+  234, 235, 236, 237, 238, 239, 240, 254, 258, 259, 260, 261, 262, 263, 264,
+  265, 266, 267, 268, 269, 270, 271, 272,
+];
+
+const DATA_SOURCES = [
+  "ATTOM_LOGO.jpg",
+  "ArcGIS_globe.png",
+  "CKAN_Logo_full_color.png",
+  "Microsoft_Excel-Logo.wine.svg",
+  "Munis-logo.png",
+  "Socrata_Logo.jpg",
+  "Tyler_Technologies_logo.svg",
+  "Springbrook_logo_clear.png",
+  "opengov-logo-may-2025.png",
+  "logo-seeclickfix.png",
+  "ers-logo.svg",
+  "iWorQ.png",
+];
+
+const shuffledSeals = [...ALL_SEAL_IDS].sort(() => Math.random() - 0.5);
+const displaySeals = shuffledSeals.slice(0, 12);
+
+// For flip-card backs, offset by half so each back is guaranteed different from its front
+const sourceBackOrder = [...DATA_SOURCES.slice(6), ...DATA_SOURCES.slice(0, 6)];
+---
+
+<section
+  id="pipeline"
+  class="py-20 md:py-28 px-6 bg-surface relative overflow-hidden"
+>
+  <div class="max-w-7xl mx-auto">
+    <SectionHeader
+      eyebrow="How it works"
+      heading="Your Data, Unified"
+      subtitle="Tolemi connects to your city's existing data sources and transforms them into a single, intelligent platform."
+    />
+
+    {/* ===== DESKTOP: single-row horizontal flow ===== */}
+    <div class="hidden md:flex items-center justify-center gap-0 reveal">
+      <CitySeals
+        displaySeals={displaySeals}
+        allSealIds={ALL_SEAL_IDS}
+        gridCols={3}
+        sealSize="w-9 h-9"
+        id="df-seals-grid"
+      />
+      <FlowArrow direction="horizontal" />
+      <DataSourceCards
+        sources={DATA_SOURCES}
+        backOrder={sourceBackOrder}
+        cardClass="w-[110px] h-[26px]"
+        layout="vertical"
+        id="df-sources"
+      />
+      <FlowArrow direction="horizontal" />
+      <TolemiLogo size="md" />
+      <FlowArrow direction="horizontal" />
+      <ProductCards variant="desktop" />
+    </div>
+
+    {/* Feedback loop arrow — desktop only */}
+    <div class="hidden md:flex justify-center mt-6 reveal">
+      <svg
+        width="90%"
+        height="36"
+        viewBox="0 0 800 36"
+        fill="none"
+        preserveAspectRatio="xMidYMid meet"
+        class="text-tolemi-sky/25 max-w-3xl"
+      >
+        <path
+          d="M750 4 Q 790 4 790 14 L 790 20 Q 790 30 750 30 L 50 30 Q 10 30 10 20 L 10 16"
+          stroke="currentColor"
+          stroke-width="1.5"
+          fill="none"
+          stroke-dasharray="6 3"></path>
+        <path
+          d="M6 20l4-6 4 6"
+          stroke="currentColor"
+          stroke-width="1.5"
+          fill="none"
+          stroke-linecap="round"
+          stroke-linejoin="round"></path>
+      </svg>
+    </div>
+
+    {/* ===== MOBILE: vertical stacked flow ===== */}
+    <div class="md:hidden reveal">
+      <div class="mb-1">
+        <CitySeals
+          displaySeals={displaySeals.slice(0, 24)}
+          allSealIds={ALL_SEAL_IDS}
+          gridCols={6}
+          sealSize="w-7 h-7"
+          id="df-seals-grid-mobile"
+        />
+      </div>
+      <FlowArrow direction="vertical" />
+      <div class="mb-1">
+        <DataSourceCards
+          sources={DATA_SOURCES}
+          backOrder={sourceBackOrder}
+          cardClass="w-[80px] h-[28px]"
+          layout="grid"
+          id="df-sources-mobile"
+        />
+      </div>
+      <FlowArrow direction="vertical" />
+      <div class="flex justify-center mb-1">
+        <TolemiLogo size="sm" />
+      </div>
+      <FlowArrow direction="vertical" />
+      <ProductCards variant="mobile" />
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .flip-card {
+    perspective: 300px;
+  }
+  .flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+  }
+  .flip-card.flipped .flip-card-inner {
+    transform: rotateY(180deg);
+  }
+  .flip-face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    border-radius: inherit;
+    overflow: hidden;
+  }
+  .flip-back {
+    transform: rotateY(180deg);
+  }
+  .df-source-face {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 4px;
+    background: white;
+  }
+</style>
+
+<script>
+  const ALL_SEAL_IDS = [
+    57, 58, 59, 60, 61, 63, 68, 70, 73, 74, 75, 77, 79, 81, 83, 88, 89, 90, 91,
+    99, 100, 101, 102, 103, 105, 108, 110, 112, 114, 116, 118, 120, 124, 125,
+    126, 127, 128, 130, 131, 132, 133, 134, 135, 136, 137, 139, 140, 143, 144,
+    145, 146, 147, 148, 149, 150, 151, 153, 154, 155, 156, 157, 158, 159, 160,
+    161, 162, 163, 164, 165, 166, 168, 169, 170, 171, 172, 173, 174, 175, 176,
+    177, 178, 179, 180, 181, 182, 183, 184, 186, 187, 188, 189, 190, 191, 192,
+    193, 194, 195, 196, 197, 198, 199, 200, 201, 202, 204, 205, 206, 208, 209,
+    210, 211, 212, 213, 220, 222, 224, 225, 226, 227, 228, 229, 230, 231, 232,
+    233, 234, 235, 236, 237, 238, 239, 240, 254, 258, 259, 260, 261, 262, 263,
+    264, 265, 266, 267, 268, 269, 270, 271, 272,
+  ];
+  const DATA_SOURCES = [
+    "ATTOM_LOGO.jpg",
+    "ArcGIS_globe.png",
+    "CKAN_Logo_full_color.png",
+    "Microsoft_Excel-Logo.wine.svg",
+    "Munis-logo.png",
+    "Socrata_Logo.jpg",
+    "Tyler_Technologies_logo.svg",
+    "Springbrook_logo_clear.png",
+    "opengov-logo-may-2025.png",
+    "logo-seeclickfix.png",
+    "ers-logo.svg",
+    "iWorQ.png",
+  ];
+
+  function pick(arr: any[]) {
+    return arr[Math.floor(Math.random() * arr.length)];
+  }
+
+  // Seal flips
+  const sealCards = document.querySelectorAll(".df-seal");
+  function flipSeal() {
+    if (!sealCards.length) return;
+    const card = pick([...sealCards]) as HTMLElement;
+    const back = card.querySelector(".flip-back img") as HTMLImageElement;
+    if (back) back.src = `/city_seals/${pick(ALL_SEAL_IDS)}.png`;
+    card.classList.toggle("flipped");
+    setTimeout(flipSeal, 2000 + Math.random() * 3000);
+  }
+  if (sealCards.length) setTimeout(flipSeal, 1500);
+
+  // Source flips — track what each card currently shows to avoid duplicates
+  const sourceCards = document.querySelectorAll(".df-source");
+  const sourceState: string[] = [];
+  sourceCards.forEach((card) => {
+    const isFlipped = card.classList.contains("flipped");
+    const face = isFlipped ? ".flip-back img" : ".flip-front img";
+    const img = card.querySelector(face) as HTMLImageElement;
+    const src = img?.src?.split("/data_sources/")[1] || "";
+    sourceState.push(decodeURIComponent(src));
+  });
+
+  function flipSource() {
+    if (!sourceCards.length) return;
+    const idx = Math.floor(Math.random() * sourceCards.length);
+    const card = sourceCards[idx] as HTMLElement;
+    const isFlipped = card.classList.contains("flipped");
+    const hiddenFace = isFlipped ? ".flip-front img" : ".flip-back img";
+    const img = card.querySelector(hiddenFace) as HTMLImageElement;
+
+    const visibleSet = new Set(sourceState);
+    const available = DATA_SOURCES.filter((s) => !visibleSet.has(s));
+    const next = available.length > 0 ? pick(available) : pick(DATA_SOURCES);
+
+    if (img) img.src = `/data_sources/${next}`;
+    card.classList.toggle("flipped");
+    sourceState[idx] = next;
+
+    setTimeout(flipSource, 3000 + Math.random() * 4000);
+  }
+  if (sourceCards.length) setTimeout(flipSource, 2500);
+</script>

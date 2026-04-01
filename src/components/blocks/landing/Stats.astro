@@ -1,4 +1,6 @@
 ---
+import StatCard from "../../ui/StatCard.tsx";
+
 interface StatItem {
   value: string;
   label: string;
@@ -12,7 +14,7 @@ interface Props {
 const { heading, items = [] } = Astro.props;
 ---
 
-<section class="py-32 md:py-40 px-6 relative overflow-hidden bg-surface-secondary">
+<section class="py-32 md:py-40 px-6 relative overflow-hidden bg-surface">
   <div class="max-w-7xl mx-auto relative z-10">
     {heading && (
       <div class="text-center mb-20 md:mb-24 reveal">
@@ -22,15 +24,7 @@ const { heading, items = [] } = Astro.props;
     )}
     <div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
       {items.map((item, i) => (
-        <div
-          class="text-center p-8 md:p-10 rounded-2xl border border-tolemi-yellow/20 backdrop-blur-sm reveal bg-gradient-to-br from-tolemi-yellow/10 via-tolemi-sky/10 to-transparent"
-          style={`transition-delay: ${i * 100}ms`}
-        >
-          <div class="font-heading text-4xl md:text-5xl font-bold mb-3 text-text-primary">
-            {item.value}
-          </div>
-          <div class="text-sm text-text-secondary">{item.label}</div>
-        </div>
+        <StatCard value={item.value} label={item.label} index={i} />
       ))}
     </div>
   </div>

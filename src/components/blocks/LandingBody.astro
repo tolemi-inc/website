@@ -1,0 +1,100 @@
+---
+// LandingBody — all sections on the landing page
+
+import Hero from "./Hero.astro";
+import Products from "./landing/Products.astro";
+import Pipeline from "./landing/Pipeline.astro";
+import PropertyDetails from "./landing/PropertyDetails.astro";
+import Insights from "./landing/Insights.astro";
+import CityLogos from "./CityLogos.astro";
+import Features from "./Features.astro";
+import FeatureSlide from "../ui/FeatureSlide.astro";
+import LocationMockup from "./landing/LocationMockup.astro";
+import OwnershipMockup from "./landing/OwnershipMockup.astro";
+import AssessmentMockup from "./landing/AssessmentMockup.astro";
+import Stats from "./landing/Stats.astro";
+import Testimonials from "./Testimonials.astro";
+import Investors from "./Investors.astro";
+import CallToAction from "./CallToAction.astro";
+
+interface Props {
+  hero?: { headline: string; subheadline?: string; ctaText?: string; ctaLink?: string };
+  features?: { heading?: string; subheading?: string; items?: any[] };
+  stats?: { heading?: string; items?: any[] };
+  testimonials?: { heading?: string; items?: any[] };
+  cta?: { heading: string; text?: string; buttonText?: string; buttonLink?: string };
+}
+
+const { hero, features, stats, testimonials, cta } = Astro.props;
+const featureItems = features?.items ?? [];
+---
+
+{/* Hero */}
+{hero && <Hero {...hero} />}
+
+{/* Products — What is Tolemi? */}
+<Products />
+
+{/* Pipeline — Your Data, Unified */}
+<Pipeline />
+
+{/* Property Details — Every Property. Every Detail. */}
+<PropertyDetails />
+
+{/* Insights — Tolemi Insights typewriter */}
+<Insights />
+
+{/* City logos — Trusted by Cities Nationwide */}
+<CityLogos />
+
+{/* Features header */}
+{features && <Features heading={features.heading} subheading={features.subheading} />}
+
+{/* Feature slides */}
+{featureItems[0] && (
+  <FeatureSlide
+    title={featureItems[0].title}
+    description={featureItems[0].description}
+    accentGradient="from-tolemi-sky-600 to-tolemi-sky"
+    bgGradient="bg-gradient-to-br from-tolemi-sky-50/60 via-white to-tolemi-yellow-50/40"
+    dividerColor="via-tolemi-sky/20"
+  >
+    <LocationMockup />
+  </FeatureSlide>
+)}
+
+{featureItems[1] && (
+  <FeatureSlide
+    title={featureItems[1].title}
+    description={featureItems[1].description}
+    accentGradient="from-tolemi-red to-tolemi-yellow"
+    bgGradient="bg-gradient-to-bl from-tolemi-red-50/50 via-white to-tolemi-red-100/20"
+    dividerColor="via-tolemi-red/20"
+    reverse
+  >
+    <OwnershipMockup />
+  </FeatureSlide>
+)}
+
+{featureItems[2] && (
+  <FeatureSlide
+    title={featureItems[2].title}
+    description={featureItems[2].description}
+    accentGradient="from-tolemi-yellow to-tolemi-sky"
+    bgGradient="bg-gradient-to-br from-tolemi-sky-50/40 via-white to-tolemi-yellow-50/30"
+  >
+    <AssessmentMockup />
+  </FeatureSlide>
+)}
+
+{/* Stats — Trusted by Growing Cities */}
+{stats && <Stats {...stats} />}
+
+{/* Testimonials */}
+{testimonials && <Testimonials {...testimonials} />}
+
+{/* Investors */}
+<Investors />
+
+{/* CTA — Ready to Transform Your Data? */}
+{cta && <CallToAction {...cta} />}
