@@ -150,11 +150,12 @@ const parcelMeta = geojson.features.map((f: any, i: number) => ({
           fill-opacity="0.75"
           data-idx={i}
           data-fill={areaToColor(p.acres)}
-          class="cursor-pointer"
+          class=""
           style="transition: fill-opacity 0.3s;"
         />
       ))}
     </g>
+    <g id="hover-overlay"></g>
     <g id="selection-overlay"></g>
   </svg>
   <!-- Legend -->

@@ -107,13 +107,16 @@ import InsightsMap from "./InsightsMap.astro";
     const filterVacant = document.getElementById("filter-vacant") as HTMLInputElement;
     const filterCount = document.getElementById("filter-count")!;
     const detailsPanel = document.getElementById("parcel-details")!;
+    const hoverOverlay = document.getElementById("hover-overlay")!;
     const selectionOverlay = document.getElementById("selection-overlay")!;
 
     if (!priceMin || !mapParcels.length || !parcelMeta.length) return;
 
     let selectedIdx = -1;
+    let hoveredIdx = -1;
     let userTookOverCheckboxes = false;
     let scrollAutoSelect = true; // scroll-driven auto-select vs user click
+    const matchedParcels = new Set<number>();
 
     function lerp(a: number, b: number, t: number) { return a + (b - a) * t; }
     function clamp01(t: number) { return Math.max(0, Math.min(1, t)); }
@@ -159,6 +162,7 @@ import InsightsMap from "./InsightsMap.astro";
 
       let matchCount = 0;
       let lastMatch = -1;
+      matchedParcels.clear();
 
       mapParcels.forEach((el, i) => {
         const p = parcelMeta[i];
@@ -182,11 +186,19 @@ import InsightsMap from "./InsightsMap.astro";
         if (match) {
           matchCount++;
           lastMatch = i;
+          matchedParcels.add(i);
           svgEl.setAttribute("fill-opacity", isSelected ? "1" : "0.75");
+          svgEl.style.cursor = "pointer";
         } else {
           svgEl.setAttribute("fill-opacity", "0.08");
+          svgEl.style.cursor = "default";
         }
       });
+
+      // Clear hover if hovered parcel is no longer matched
+      if (hoveredIdx >= 0 && !matchedParcels.has(hoveredIdx)) {
+        setHover(-1);
+      }
 
       filterCount.textContent = `${matchCount} of ${parcelMeta.length}`;
 
@@ -269,12 +281,32 @@ import InsightsMap from "./InsightsMap.astro";
       });
     });
 
+    // Hover glow on matched parcels only
+    function setHover(idx: number) {
+      if (idx === hoveredIdx) return;
+      hoveredIdx = idx;
+      hoverOverlay.innerHTML = "";
+      if (idx < 0 || !mapParcels[idx] || !matchedParcels.has(idx)) return;
+      const glow = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      glow.setAttribute("d", mapParcels[idx].getAttribute("d")!);
+      glow.setAttribute("fill", "white");
+      glow.setAttribute("fill-opacity", "0.25");
+      glow.setAttribute("stroke", "white");
+      glow.setAttribute("stroke-width", "0.8");
+      glow.setAttribute("pointer-events", "none");
+      hoverOverlay.appendChild(glow);
+    }
+
+    mapParcels.forEach((el, i) => {
+      el.addEventListener("mouseenter", () => setHover(i));
+      el.addEventListener("mouseleave", () => setHover(-1));
+    });
+
     // Click parcels to select — user takes control
     mapParcels.forEach((el, i) => {
       el.addEventListener("click", () => {
-        // Only select parcels that are currently visible (matching filters)
-        const opacity = (el as SVGElement).getAttribute("fill-opacity");
-        if (opacity && parseFloat(opacity) < 0.2) return;
+        // Only select parcels that currently match the filters
+        if (!matchedParcels.has(i)) return;
 
         scrollAutoSelect = false;
         if (i === selectedIdx) {
