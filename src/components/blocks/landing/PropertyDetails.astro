@@ -77,13 +77,14 @@ import SectionHeader from "../../ui/SectionHeader.astro";
 
     const svg = section.querySelector("svg");
     const labelsGroup = svg?.querySelector<SVGGElement>("[data-labels]");
+    const hoverOverlay = svg?.querySelector<SVGGElement>("[data-hover-overlay]");
     const paths = svg?.querySelectorAll<SVGPathElement>("path[data-idx]");
     const cards = section.querySelectorAll<HTMLElement>("[data-card]");
     const parcelMeta: any[] = JSON.parse(
       section.querySelector<HTMLScriptElement>("[data-parcel-meta]")?.textContent || "[]"
     );
 
-    if (!svg || !paths || !cards.length || !parcelMeta.length || !labelsGroup) return;
+    if (!svg || !paths || !cards.length || !parcelMeta.length || !labelsGroup || !hoverOverlay) return;
 
     const LABEL_FIT_W = 28;
     const LABEL_FIT_H = 12;
@@ -91,9 +92,21 @@ import SectionHeader from "../../ui/SectionHeader.astro";
 
     let activeCard = -1;
     let featuredParcel = -1;
+    let hoveredIdx = -1;
     let currentColorFn: ((meta: any) => string) | null = null;
 
     const STORAGE_KEY = "tolemi-featured-parcel";
+
+    // Compute faint base colors from assessed_value
+    const assessedValues = parcelMeta.map((m) => m.assessed_value);
+    const avMin = Math.min(...assessedValues);
+    const avMax = Math.max(...assessedValues);
+    const avRange = avMax - avMin || 1;
+    const baseColors = parcelMeta.map((m) => {
+      const t = (m.assessed_value - avMin) / avRange;
+      return heatmapColor(t);
+    });
+    const BASE_OPACITY = "0.15";
 
     // Restore from session or fall back to the largest parcel
     const largest = parcelMeta.reduce((best, m, i) =>
@@ -102,11 +115,38 @@ import SectionHeader from "../../ui/SectionHeader.astro";
     let selectedParcel = stored !== null && Number(stored) < parcelMeta.length
       ? Number(stored) : largest;
 
+    function applyBaseColors() {
+      paths!.forEach((p, i) => {
+        p.setAttribute("fill", baseColors[i]);
+        p.setAttribute("fill-opacity", BASE_OPACITY);
+        p.setAttribute("stroke", "#cbd5e1");
+        p.removeAttribute("filter");
+      });
+    }
+
+    // Apply faint base colors initially
+    applyBaseColors();
+
+    function setHover(idx: number) {
+      if (idx === hoveredIdx) return;
+      hoveredIdx = idx;
+      hoverOverlay!.innerHTML = "";
+      if (idx < 0 || !paths![idx]) return;
+      const glow = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      glow.setAttribute("d", paths![idx].getAttribute("d")!);
+      glow.setAttribute("fill", "white");
+      glow.setAttribute("fill-opacity", "0.3");
+      glow.setAttribute("stroke", "white");
+      glow.setAttribute("stroke-width", "0.8");
+      glow.setAttribute("pointer-events", "none");
+      hoverOverlay!.appendChild(glow);
+    }
+
     function featureParcel(idx: number) {
-      // Reset previous featured parcel
+      // Reset previous featured parcel to base color
       if (featuredParcel >= 0 && paths![featuredParcel]) {
-        paths![featuredParcel].setAttribute("fill", "#f1f5f9");
-        paths![featuredParcel].setAttribute("fill-opacity", "1");
+        paths![featuredParcel].setAttribute("fill", baseColors[featuredParcel]);
+        paths![featuredParcel].setAttribute("fill-opacity", BASE_OPACITY);
         paths![featuredParcel].setAttribute("stroke", "#cbd5e1");
         paths![featuredParcel].removeAttribute("filter");
       }
@@ -119,20 +159,25 @@ import SectionHeader from "../../ui/SectionHeader.astro";
         sessionStorage.setItem(STORAGE_KEY, String(idx));
       }
 
-      if (idx < 0 || activeCard < 0) return;
+      if (idx < 0) return;
 
-      const config = CARD_CONFIG[activeCard];
+      // Determine color: use card-specific color if a card is active, else assessed_value base
       const meta = parcelMeta[idx];
-      const color = currentColorFn ? currentColorFn(meta) : "#334155";
+      const color = (activeCard >= 0 && currentColorFn)
+        ? currentColorFn(meta)
+        : baseColors[idx];
 
-      // Color only the featured parcel
+      // Color the featured parcel
       const path = paths![idx];
       path.setAttribute("fill", color);
       path.setAttribute("fill-opacity", "0.85");
       path.setAttribute("stroke", color);
       path.setAttribute("filter", "url(#parcel-glow)");
 
-      // Label
+      // Only show label when a card is active
+      if (activeCard < 0) return;
+
+      const config = CARD_CONFIG[activeCard];
       const label = config.format(meta[config.key]);
       const fitsInside = meta.w >= LABEL_FIT_W && meta.h >= LABEL_FIT_H;
 
@@ -193,13 +238,8 @@ import SectionHeader from "../../ui/SectionHeader.astro";
       if (index === activeCard) return;
       activeCard = index;
 
-      // Reset all parcels to neutral
-      paths!.forEach((p) => {
-        p.setAttribute("fill", "#f1f5f9");
-        p.setAttribute("fill-opacity", "1");
-        p.setAttribute("stroke", "#cbd5e1");
-        p.removeAttribute("filter");
-      });
+      // Reset all parcels to faint base colors
+      applyBaseColors();
 
       labelsGroup!.innerHTML = "";
       featuredParcel = -1;
@@ -212,7 +252,11 @@ import SectionHeader from "../../ui/SectionHeader.astro";
         c.style.transform = "";
       });
 
-      if (index < 0 || index >= CARD_CONFIG.length) return;
+      if (index < 0 || index >= CARD_CONFIG.length) {
+        // No card active — still feature the selected parcel with base color
+        featureParcel(selectedParcel);
+        return;
+      }
 
       const config = CARD_CONFIG[index];
 
@@ -247,18 +291,27 @@ import SectionHeader from "../../ui/SectionHeader.astro";
       card.style.transform = "scale(1.02)";
     }
 
-    // Hover moves the highlight
+    // Hover — always works
     paths.forEach((p, i) => {
       p.style.cursor = "pointer";
       p.addEventListener("mouseenter", () => {
-        if (activeCard < 0) return;
+        setHover(i);
+        featureParcel(i);
+      });
+    });
+
+    // Click — always changes selected parcel
+    paths.forEach((p, i) => {
+      p.addEventListener("click", () => {
+        selectedParcel = i;
+        sessionStorage.setItem(STORAGE_KEY, String(i));
         featureParcel(i);
       });
     });
 
     // Restore default when mouse leaves the map
     svg.addEventListener("mouseleave", () => {
-      if (activeCard < 0) return;
+      setHover(-1);
       featureParcel(selectedParcel);
     });
 
