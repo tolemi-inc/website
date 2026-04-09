@@ -1,0 +1,40 @@
+---
+title: City of Lakewood, WA
+---
+# **Replacing a Homegrown System and Building for the Future**
+
+Use Case: Rent Licensing and Stabilization Products: BuildingBlocks and Slate City Size: ~75,000 residents, Pierce County, Washington
+
+### **The Challenge**
+
+Lakewood, Washington had a rental housing safety program that predated most cities' interest in the space. They had inspections, a registration requirement, certificates of compliance, a fee structure, and a process for handling non-compliant properties. What they didn't have was software capable of holding it all together reliably.
+
+The city had been running its rental housing database on a homegrown Microsoft Access system. When that system became the suspected entry point for a malware attack, leadership decided it was time to replace it and to think bigger about what a modern system could do. Beyond just migrating the registry, they wanted to identify unregistered rentals across the city, understand who was controlling their rental market, surface problem properties for code enforcement, and eventually make that information publicly accessible so tenants could look up the properties they were renting.
+
+### **What Lakewood Built**
+
+Tolemi came in as both a migration partner and a new platform, with Slate replacing the legacy Access system for rental registration and inspections, and BuildingBlocks providing the analytical and transparency layer that hadn't existed before.
+
+The rental registration workflow in Slate was configured to match Lakewood's existing program structure: annual registration with a March 31 deadline, $12 per unit, and certificates of compliance issued on a five-year inspection cycle. For properties due for inspection, inspectors could schedule appointments, run through a structured checklist distinguishing between 10-day priority violations and 60-day non-critical items, generate certificates of compliance on pass, and trigger reinspection workflows with customizable fees when properties failed. The workflow also distinguished between single family and duplex properties, which followed a different inspection track than larger multifamily buildings where inspectors sample a percentage of units rather than inspecting every one.
+
+Connecting Slate to Lakewood's payment systems, Pierce County's permitting database, and county assessor data was a significant part of the technical implementation, requiring coordination across multiple county departments and data systems to get ownership, permit, and assessment data flowing automatically.
+
+BuildingBlocks gave Lakewood something it had never had: a way to see its full suspected rental universe against its registered properties. Staff could filter for non-owner-occupied residential properties, identify which ones had no active registration, visualize where unregistered rentals clustered by code enforcement area, and export targeted outreach lists for inspectors to work from. Corporate ownership analysis let the city see which LLCs and property management companies controlled the most units and where they were concentrated geographically.
+
+The most ambitious piece of the work was a rental scoring system that Lakewood built in collaboration with Tolemi. The score rates every registered rental property on three factors: whether it has an active current registration, how many inspection stages it has required in its most recent inspection cycle, and the number of failed checklist items relative to units. Those property scores roll up into owner and manager scores, with grace periods applied to new owners and managers to avoid penalizing people for inheriting problems. As Jeff put it, the goal was a carrot and stick situation: rewarding compliant landlords while giving the city defensible data to act on the worst actors. The city modeled their approach on Rochester, NY's public-facing landlord rating system, and Lakewood's intent has always been to make the scores publicly accessible so tenants can look up a property or landlord before signing a lease.
+
+### **What It's Achieved**
+
+As of early 2025, the program had 1,788 registered rental properties representing 11,553 units, against a suspected rental universe of roughly 12,500 to 13,000 units citywide. The scoring system was in active development and refinement, with the city working through how to standardize inspection data entry across inspectors before publishing scores publicly.
+
+The program has also shown its resilience. When the city transitioned to a new city manager and lost its full-time inspector in late 2025, the Slate infrastructure made it possible to pivot to a self-certification model without rebuilding from scratch. Property owners can now self-certify compliance annually, with audits conducted by approved private inspectors who log results directly into the system. That kind of adaptability would have been impossible with the legacy Access database.
+
+### **Why Lakewood's Approach Stands Out**
+
+Lakewood came in with a real program that needed better infrastructure. What they built goes well beyond a data migration. The combination of a structured inspection and compliance workflow, suspected rental identification, corporate ownership analysis, and a public-facing landlord scoring system represents one of the more comprehensive rental housing data programs among cities Tolemi works with.
+
+The scoring system in particular is worth calling out. Most cities are still working to get landlords registered at all. Lakewood is building the infrastructure to publicly rank them.
+
+*[PLACEHOLDER: Client quote, Jeff or Heather could be worth reaching out to]*
+
+Tags: Rental Registry, Inspections, Landlord Scoring, Transparency, Washington, Slate, BuildingBlocks, Compliance, Pierce County
