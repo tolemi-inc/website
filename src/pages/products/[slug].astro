@@ -1,6 +1,7 @@
 ---
 import Base from "../../layouts/Base.astro";
 import PageHero from "../../components/blocks/PageHero.astro";
+import FeatureBlock from "../../components/blocks/FeatureBlock.astro";
 import CrossLinkCards from "../../components/blocks/CrossLinkCards.astro";
 import CallToAction from "../../components/blocks/CallToAction.astro";
 import { createReader } from '@keystatic/core/reader';
@@ -25,6 +26,12 @@ if (!product) throw new Error(`Product not found: ${slug}`);
 const body = await product.body();
 const bodyHtml = Markdoc.renderers.html(Markdoc.transform(body.node));
 const otherProducts = allProducts.filter((p) => p.slug !== slug);
+
+const features = (product.features || []).map((f) => ({
+  title: f.title,
+  bodyHtml: Markdoc.renderers.html(Markdoc.transform(f.body.node)),
+  images: f.images,
+}));
 ---
 
 <Base title={product.title}>
@@ -36,16 +43,13 @@ const otherProducts = allProducts.filter((p) => p.slug !== slug);
     </div>
   </section>
 
-  {product.features && product.features.length > 0 && (
+  {features.length > 0 && (
     <section class="py-16 md:py-20 px-6">
-      <div class="max-w-5xl mx-auto reveal">
-        <h2 class="font-heading text-3xl md:text-4xl font-bold text-text-primary mb-10 text-center">Key Features</h2>
-        <div class="grid md:grid-cols-2 gap-6">
-          {product.features.map((f) => (
-            <div class="bg-white rounded-2xl border border-black/[0.06] p-8">
-              <h3 class="font-heading text-lg font-semibold text-text-primary mb-2">{f.title}</h3>
-              <p class="text-text-secondary text-sm leading-relaxed">{f.description}</p>
-            </div>
+      <div class="max-w-6xl mx-auto">
+        <h2 class="font-heading text-3xl md:text-4xl font-bold text-text-primary mb-14 md:mb-20 text-center reveal">Key Features</h2>
+        <div class="flex flex-col gap-20 md:gap-28">
+          {features.map((f, i) => (
+            <FeatureBlock title={f.title} bodyHtml={f.bodyHtml} images={f.images} reverse={i % 2 === 1} />
           ))}
         </div>
       </div>
