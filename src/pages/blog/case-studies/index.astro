@@ -20,6 +20,7 @@ const items = posts
     image: p.entry.image,
     publishedDate: p.entry.publishedDate,
     meta: p.entry.client,
+    tags: p.entry.tags,
   }))
   .sort((a, b) => (b.publishedDate || "").localeCompare(a.publishedDate || ""));
 ---

@@ -438,6 +438,18 @@ export default config({
         }),
         client: fields.text({ label: 'Client / Organization' }),
         publishedDate: fields.date({ label: 'Published Date' }),
+        tags: fields.array(fields.text({ label: 'Tag' }), {
+          label: 'Tags',
+          itemLabel: (props) => props.value || 'Tag',
+        }),
+        relatedSolutions: fields.array(
+          fields.relationship({ label: 'Solution', collection: 'solutions' }),
+          { label: 'Related Solutions', itemLabel: (props) => props.value || 'Solution' }
+        ),
+        relatedProducts: fields.array(
+          fields.relationship({ label: 'Product', collection: 'products' }),
+          { label: 'Related Products', itemLabel: (props) => props.value || 'Product' }
+        ),
         body: fields.markdoc({
           label: 'Body',
           options: {

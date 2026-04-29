@@ -2,6 +2,8 @@
 import Base from "../../../layouts/Base.astro";
 import PageHero from "../../../components/blocks/PageHero.astro";
 import BlogList from "../../../components/blocks/BlogList.astro";
+import LearnMoreSection from "../../../components/blocks/LearnMoreSection.astro";
+import TagPills from "../../../components/ui/TagPills.astro";
 import CallToAction from "../../../components/blocks/CallToAction.astro";
 import { createReader } from '@keystatic/core/reader';
 import keystaticConfig from '../../../../keystatic.config';
@@ -29,6 +31,39 @@ const formattedDate = post.publishedDate
   ? new Date(post.publishedDate).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
   : "";
 
+const relatedSolutionSlugs = (post.relatedSolutions || []).filter(
+  (s): s is string => typeof s === "string"
+);
+const relatedProductSlugs = (post.relatedProducts || []).filter(
+  (s): s is string => typeof s === "string"
+);
+
+const relatedSolutionEntries = await Promise.all(
+  relatedSolutionSlugs.map(async (s) => ({ slug: s, entry: await reader.collections.solutions.read(s) }))
+);
+const relatedProductEntries = await Promise.all(
+  relatedProductSlugs.map(async (s) => ({ slug: s, entry: await reader.collections.products.read(s) }))
+);
+
+const learnMoreItems = [
+  ...relatedSolutionEntries
+    .filter((r) => r.entry)
+    .map((r) => ({
+      title: r.entry!.headline || r.slug,
+      slug: r.slug,
+      subheadline: r.entry!.subheadline,
+      basePath: "/solutions",
+    })),
+  ...relatedProductEntries
+    .filter((r) => r.entry)
+    .map((r) => ({
+      title: r.entry!.headline || r.slug,
+      slug: r.slug,
+      subheadline: r.entry!.subheadline,
+      basePath: "/products",
+    })),
+];
+
 const otherPosts = allPosts
   .filter((p) => p.slug !== slug)
   .sort((a, b) => (b.entry.publishedDate || "").localeCompare(a.entry.publishedDate || ""))
@@ -41,6 +76,7 @@ const otherPosts = allPosts
     image: p.entry.image,
     publishedDate: p.entry.publishedDate,
     meta: p.entry.client,
+    tags: p.entry.tags,
   }));
 ---
 
@@ -65,8 +101,15 @@ const otherPosts = allPosts
       <div class="prose prose-lg text-text-secondary">
         <Fragment set:html={bodyHtml} />
       </div>
+      {post.tags && post.tags.length > 0 && (
+        <div class="mt-12 pt-8 border-t border-black/[0.08]">
+          <TagPills tags={post.tags} />
+        </div>
+      )}
     </div>
   </section>
+
+  <LearnMoreSection items={learnMoreItems} />
 
   {otherPosts.length > 0 && (
     <section class="py-16 md:py-20 px-6 bg-surface-muted/50">

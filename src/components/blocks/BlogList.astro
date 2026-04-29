@@ -1,4 +1,6 @@
 ---
+import TagPills from "../ui/TagPills.astro";
+
 interface BlogItem {
   title: string;
   subtitle?: string;
@@ -7,6 +9,7 @@ interface BlogItem {
   image?: string | null;
   publishedDate?: string | null;
   meta?: string;
+  tags?: readonly string[];
 }
 
 interface Props {
@@ -66,6 +69,11 @@ const formatDate = (iso?: string | null) => {
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
               </span>
+              {item.tags && item.tags.length > 0 && (
+                <div class="mt-5 pt-5 border-t border-black/[0.05]">
+                  <TagPills tags={item.tags} size="sm" />
+                </div>
+              )}
             </div>
           </a>
         ))}
