@@ -310,6 +310,32 @@ export default config({
       },
     }),
 
+    privacyPolicy: singleton({
+      label: 'Privacy Policy',
+      path: 'content/about/privacy-policy',
+      previewUrl: 'https://{branch}--tolemi.netlify.app/about/privacypolicy',
+      format: { contentField: 'body' },
+      schema: {
+        title: fields.text({ label: 'Page Title', validation: { isRequired: true } }),
+        headline: fields.text({ label: 'Headline' }),
+        lastUpdated: fields.date({ label: 'Last Updated' }),
+        body: fields.markdoc({ label: 'Body' }),
+      },
+    }),
+
+    termsOfService: singleton({
+      label: 'Terms of Service',
+      path: 'content/about/terms-of-service',
+      previewUrl: 'https://{branch}--tolemi.netlify.app/about/termsofservice',
+      format: { contentField: 'body' },
+      schema: {
+        title: fields.text({ label: 'Page Title', validation: { isRequired: true } }),
+        headline: fields.text({ label: 'Headline' }),
+        lastUpdated: fields.date({ label: 'Last Updated' }),
+        body: fields.markdoc({ label: 'Body' }),
+      },
+    }),
+
     mapExplorer: singleton({
       label: 'Map Explorer',
       path: 'content/map-explorer/map-explorer',
