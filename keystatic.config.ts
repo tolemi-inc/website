@@ -45,6 +45,34 @@ const navChild = fields.object(
   { label: 'Nav Child Link' }
 );
 
+const featureBlock = fields.object(
+  {
+    title: fields.text({ label: 'Title', validation: { isRequired: true } }),
+    body: fields.markdoc.inline({
+      label: 'Body',
+      options: {
+        bold: true,
+        italic: true,
+        strikethrough: true,
+        link: true,
+        orderedList: true,
+        unorderedList: true,
+        blockquote: true,
+        code: true,
+      },
+    }),
+    images: fields.array(
+      fields.image({
+        label: 'Image',
+        directory: 'public/uploads/features',
+        publicPath: '/uploads/features/',
+      }),
+      { label: 'Images', itemLabel: (props) => props.value?.filename || 'Image' }
+    ),
+  },
+  { label: 'Feature' }
+);
+
 // ---------------------------------------------------------------------------
 // Config
 // ---------------------------------------------------------------------------
@@ -388,16 +416,10 @@ export default config({
           publicPath: '/uploads/products/',
         }),
         body: fields.markdoc({ label: 'Body' }),
-        features: fields.array(
-          fields.object(
-            {
-              title: fields.text({ label: 'Title', validation: { isRequired: true } }),
-              description: fields.text({ label: 'Description', multiline: true }),
-            },
-            { label: 'Feature' }
-          ),
-          { label: 'Features', itemLabel: (props) => props.fields.title.value || 'Feature' }
-        ),
+        features: fields.array(featureBlock, {
+          label: 'Features',
+          itemLabel: (props) => props.fields.title.value || 'Feature',
+        }),
       },
     }),
 
@@ -417,16 +439,10 @@ export default config({
           publicPath: '/uploads/solutions/',
         }),
         body: fields.markdoc({ label: 'Body' }),
-        features: fields.array(
-          fields.object(
-            {
-              title: fields.text({ label: 'Title', validation: { isRequired: true } }),
-              description: fields.text({ label: 'Description', multiline: true }),
-            },
-            { label: 'Feature' }
-          ),
-          { label: 'Features', itemLabel: (props) => props.fields.title.value || 'Feature' }
-        ),
+        features: fields.array(featureBlock, {
+          label: 'Features',
+          itemLabel: (props) => props.fields.title.value || 'Feature',
+        }),
       },
     }),
 
