@@ -429,6 +429,7 @@ export default config({
       slugField: 'title',
       schema: {
         title: fields.slug({ name: { label: 'Title' } }),
+        subtitle: fields.text({ label: 'Subtitle (e.g. City, State)' }),
         description: fields.text({ label: 'Description', multiline: true }),
         image: fields.image({
           label: 'Cover Image',
@@ -437,28 +438,15 @@ export default config({
         }),
         client: fields.text({ label: 'Client / Organization' }),
         publishedDate: fields.date({ label: 'Published Date' }),
-        body: fields.markdoc({ label: 'Body' }),
-      },
-    }),
-
-    testimonials: collection({
-      label: 'Blog — Testimonials',
-      path: 'content/blog/testimonials/*/',
-      format: { contentField: 'body' },
-      slugField: 'title',
-      schema: {
-        title: fields.slug({ name: { label: 'Title' } }),
-        quote: fields.text({ label: 'Quote', multiline: true, validation: { isRequired: true } }),
-        author: fields.text({ label: 'Author Name' }),
-        role: fields.text({ label: 'Author Role' }),
-        organization: fields.text({ label: 'Organization' }),
-        image: fields.image({
-          label: 'Author Photo',
-          directory: 'public/uploads/blog',
-          publicPath: '/uploads/blog/',
+        body: fields.markdoc({
+          label: 'Body',
+          options: {
+            image: {
+              directory: 'public/uploads/blog',
+              publicPath: '/uploads/blog/',
+            },
+          },
         }),
-        publishedDate: fields.date({ label: 'Published Date' }),
-        body: fields.markdoc({ label: 'Body' }),
       },
     }),
   },

@@ -1,0 +1,75 @@
+---
+interface BlogItem {
+  title: string;
+  subtitle?: string;
+  slug: string;
+  description?: string;
+  image?: string | null;
+  publishedDate?: string | null;
+  meta?: string;
+}
+
+interface Props {
+  basePath: string;
+  items: BlogItem[];
+  emptyMessage?: string;
+}
+
+const { basePath, items, emptyMessage = "No posts yet — check back soon." } = Astro.props;
+
+const formatDate = (iso?: string | null) => {
+  if (!iso) return "";
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return "";
+  return d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+};
+---
+
+<section class="py-16 md:py-20 px-6">
+  <div class="max-w-6xl mx-auto reveal">
+    {items.length === 0 ? (
+      <p class="text-center text-text-secondary">{emptyMessage}</p>
+    ) : (
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {items.map((item) => (
+          <a
+            href={`${basePath}/${item.slug}`}
+            class="group flex flex-col bg-white rounded-2xl border border-black/[0.06] overflow-hidden hover:shadow-lg hover:shadow-black/[0.06] hover:border-tolemi-sky/20 transition-all duration-300"
+          >
+            {item.image && (
+              <div class="aspect-[16/9] overflow-hidden bg-surface-secondary">
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+            )}
+            <div class="p-8 flex flex-col flex-1">
+              {(item.publishedDate || item.meta) && (
+                <p class="text-xs font-semibold tracking-widest uppercase text-tolemi-sky-600 mb-3">
+                  {item.meta || formatDate(item.publishedDate)}
+                </p>
+              )}
+              <h3 class="font-heading text-xl font-semibold text-text-primary mb-1 group-hover:text-tolemi-sky-600 transition-colors">
+                {item.title}
+              </h3>
+              {item.subtitle && (
+                <p class="text-sm font-medium text-text-secondary mb-3">{item.subtitle}</p>
+              )}
+              {item.description && (
+                <p class="text-text-secondary text-sm leading-relaxed flex-1">{item.description}</p>
+              )}
+              <span class="inline-flex items-center gap-1 mt-4 text-sm font-medium text-tolemi-sky-600">
+                Read more
+                <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </span>
+            </div>
+          </a>
+        ))}
+      </div>
+    )}
+  </div>
+</section>
