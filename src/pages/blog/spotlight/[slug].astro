@@ -1,0 +1,82 @@
+---
+import Base from "../../../layouts/Base.astro";
+import PageHero from "../../../components/blocks/PageHero.astro";
+import BlogList from "../../../components/blocks/BlogList.astro";
+import CallToAction from "../../../components/blocks/CallToAction.astro";
+import { createReader } from '@keystatic/core/reader';
+import keystaticConfig from '../../../../keystatic.config';
+import Markdoc from '@markdoc/markdoc';
+
+export const prerender = true;
+
+const reader = createReader(process.cwd(), keystaticConfig);
+const allPosts = await reader.collections.spotlightPosts.all();
+
+export async function getStaticPaths() {
+  const reader = createReader(process.cwd(), keystaticConfig);
+  const slugs = await reader.collections.spotlightPosts.list();
+  return slugs.map((slug) => ({ params: { slug } }));
+}
+
+const { slug } = Astro.params;
+const post = await reader.collections.spotlightPosts.read(slug!);
+if (!post) throw new Error(`Spotlight post not found: ${slug}`);
+
+const body = await post.body();
+const bodyHtml = Markdoc.renderers.html(Markdoc.transform(body.node));
+
+const formattedDate = post.publishedDate
+  ? new Date(post.publishedDate).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
+  : "";
+
+const otherPosts = allPosts
+  .filter((p) => p.slug !== slug)
+  .sort((a, b) => (b.entry.publishedDate || "").localeCompare(a.entry.publishedDate || ""))
+  .slice(0, 3)
+  .map((p) => ({
+    title: p.entry.title,
+    slug: p.slug,
+    description: p.entry.description,
+    image: p.entry.image,
+    publishedDate: p.entry.publishedDate,
+  }));
+---
+
+<Base title={post.title}>
+  <PageHero headline={post.title} subheadline={post.description} />
+
+  {post.image && (
+    <section class="px-6">
+      <div class="max-w-4xl mx-auto reveal -mt-8">
+        <img src={post.image} alt={post.title} class="w-full rounded-2xl border border-black/[0.06]" />
+      </div>
+    </section>
+  )}
+
+  <section class="py-16 md:py-20 px-6">
+    <div class="max-w-3xl mx-auto reveal">
+      {formattedDate && (
+        <p class="text-xs font-semibold tracking-widest uppercase text-tolemi-sky-600 mb-6">{formattedDate}</p>
+      )}
+      <div class="prose prose-lg text-text-secondary">
+        <Fragment set:html={bodyHtml} />
+      </div>
+    </div>
+  </section>
+
+  {otherPosts.length > 0 && (
+    <section class="py-16 md:py-20 px-6 bg-surface-muted/50">
+      <div class="max-w-6xl mx-auto reveal">
+        <h2 class="font-heading text-3xl md:text-4xl font-bold text-text-primary mb-10 text-center">More Spotlight</h2>
+      </div>
+      <BlogList basePath="/blog/spotlight" items={otherPosts} />
+    </section>
+  )}
+
+  <CallToAction
+    heading="See It in Action"
+    text="Schedule a demo to see how Tolemi can help your city."
+    buttonText="Get a Demo"
+    buttonLink="#contact"
+  />
+</Base>
