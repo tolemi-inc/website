@@ -10,6 +10,8 @@ interface NavLink {
   children?: NavChild[];
 }
 
+import DemoButton from "../ui/DemoButton.astro";
+
 interface Props {
   companyName?: string;
   nav?: NavLink[];
@@ -60,12 +62,7 @@ const { companyName = "Tolemi", nav = [] } = Astro.props;
           </a>
         )
       )}
-      <a
-        href="#contact"
-        class="font-heading text-sm font-medium bg-tolemi-dark text-white px-5 py-2 rounded-full hover:shadow-lg hover:shadow-tolemi-dark/20 transition-all"
-      >
-        Get a Demo
-      </a>
+      <DemoButton href="#contact" size="sm">Get a Demo</DemoButton>
     </nav>
 
     {/* Mobile hamburger */}
@@ -116,12 +113,7 @@ const { companyName = "Tolemi", nav = [] } = Astro.props;
           </a>
         )
       )}
-      <a
-        href="#contact"
-        class="mt-2 text-center font-heading text-sm font-medium bg-tolemi-dark text-white px-5 py-2.5 rounded-full hover:shadow-lg hover:shadow-tolemi-dark/20 transition-all"
-      >
-        Get a Demo
-      </a>
+      <DemoButton href="#contact" size="sm" class="mt-2">Get a Demo</DemoButton>
     </nav>
   </div>
 </header>
