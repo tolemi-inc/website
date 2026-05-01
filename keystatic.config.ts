@@ -152,6 +152,16 @@ export default config({
               ),
               { label: 'Company Links', itemLabel: (props) => props.fields.label.value || 'Link' }
             ),
+            legal: fields.array(
+              fields.object(
+                {
+                  label: fields.text({ label: 'Label', validation: { isRequired: true } }),
+                  href: fields.text({ label: 'URL', validation: { isRequired: true } }),
+                },
+                { label: 'Link' }
+              ),
+              { label: 'Legal Links', itemLabel: (props) => props.fields.label.value || 'Link' }
+            ),
           },
           { label: 'Footer Links' }
         ),

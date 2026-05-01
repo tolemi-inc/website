@@ -13,6 +13,7 @@ interface FooterLinks {
   solutions?: LinkItem[];
   products?: LinkItem[];
   company?: LinkItem[];
+  legal?: LinkItem[];
 }
 
 interface Props {
@@ -95,7 +96,12 @@ const { footerText, socialLinks = [], footerLinks } = Astro.props;
     <!-- Bottom bar -->
     <div class="border-t border-white/10 pt-6 flex flex-col md:flex-row items-center justify-between gap-4">
       {footerText && <p class="text-xs text-white/40">{footerText}</p>}
-      <a href="#contact" class="text-xs text-white/40 hover:text-white transition-colors">Request a Demo</a>
+      <div class="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-white/40">
+        {footerLinks?.legal?.map((link) => (
+          <a href={link.href} class="hover:text-white transition-colors">{link.label}</a>
+        ))}
+        <a href="#contact" class="hover:text-white transition-colors">Request a Demo</a>
+      </div>
     </div>
   </div>
 </footer>

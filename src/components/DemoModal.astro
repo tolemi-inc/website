@@ -1,3 +1,7 @@
+---
+import DemoButton from "./ui/DemoButton.astro";
+---
+
 <!-- Demo Request Modal — triggered by any element with data-demo-trigger -->
 <div id="demo-modal" class="fixed inset-0 z-[100] hidden">
   <!-- Backdrop -->
@@ -44,10 +48,9 @@
               placeholder="Tell us what you're looking for..."></textarea>
           </div>
           <div id="demo-error" class="hidden text-sm text-red-600"></div>
-          <button type="submit" id="demo-submit"
-            class="mt-1 w-full bg-tolemi-dark text-white font-semibold py-3 rounded-full hover:shadow-lg hover:shadow-tolemi-dark/20 transition-all text-sm">
+          <DemoButton type="submit" id="demo-submit" size="md" fullWidth class="mt-1">
             Request a Demo
-          </button>
+          </DemoButton>
         </form>
       </div>
 

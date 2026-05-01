@@ -1,4 +1,6 @@
 ---
+import DemoButton from "../ui/DemoButton.astro";
+
 interface Props {
   headline: string;
   subheadline?: string;
@@ -34,29 +36,7 @@ const { headline, subheadline, ctaText, ctaLink } = Astro.props;
           )
         }
         <div class="flex flex-wrap gap-4 mt-8">
-          {
-            ctaText && (
-              <a
-                href={ctaLink || "#"}
-                class="inline-flex items-center gap-2 bg-tolemi-dark text-white font-semibold px-7 py-3.5 rounded-full hover:shadow-lg hover:shadow-tolemi-dark/25 transition-all"
-              >
-                {ctaText}
-                <svg
-                  class="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M17 8l4 4m0 0l-4 4m4-4H3"
-                  />
-                </svg>
-              </a>
-            )
-          }
+          {ctaText && <DemoButton href={ctaLink || "#"} size="md" arrow>{ctaText}</DemoButton>}
           <a
             href="#features"
             class="inline-flex items-center gap-2 border border-text-muted/20 text-text-primary font-medium px-7 py-3.5 rounded-full hover:bg-surface-secondary transition-all"

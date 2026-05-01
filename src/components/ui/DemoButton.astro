@@ -1,0 +1,59 @@
+---
+interface Props {
+  href?: string;
+  type?: "button" | "submit";
+  id?: string;
+  size?: "sm" | "md" | "lg";
+  arrow?: boolean;
+  fullWidth?: boolean;
+  class?: string;
+}
+
+const {
+  href,
+  type = "button",
+  id,
+  size = "md",
+  arrow = false,
+  fullWidth = false,
+  class: classAttr = "",
+} = Astro.props;
+
+const sizeClasses = {
+  sm: "font-heading text-sm font-medium px-5 py-2",
+  md: "font-semibold px-7 py-3.5",
+  lg: "font-semibold px-8 py-4 text-base",
+}[size];
+
+const baseClasses = [
+  "inline-flex items-center justify-center",
+  arrow && "gap-2",
+  fullWidth && "w-full",
+  sizeClasses,
+  "bg-tolemi-dark hover:bg-tolemi-indigo text-white rounded-full",
+  "hover:shadow-lg hover:shadow-tolemi-indigo/30 transition-all",
+  classAttr,
+]
+  .filter(Boolean)
+  .join(" ");
+---
+
+{href ? (
+  <a href={href} class={baseClasses}>
+    <slot />
+    {arrow && (
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+      </svg>
+    )}
+  </a>
+) : (
+  <button type={type} id={id} class={baseClasses}>
+    <slot />
+    {arrow && (
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+      </svg>
+    )}
+  </button>
+)}
