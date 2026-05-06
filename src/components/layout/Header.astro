@@ -15,9 +15,10 @@ import DemoButton from "../ui/DemoButton.astro";
 interface Props {
   companyName?: string;
   nav?: NavLink[];
+  demoBookingUrl?: string;
 }
 
-const { companyName = "Tolemi", nav = [] } = Astro.props;
+const { companyName = "Tolemi", nav = [], demoBookingUrl = "#" } = Astro.props;
 ---
 
 <header id="site-header" class="fixed top-0 w-full z-50 backdrop-blur-2xl border-b transition-colors duration-300" style="background: linear-gradient(180deg, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0.7) 100%); box-shadow: 0 4px 30px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.15); border-color: rgba(0,0,0,0.06);">
@@ -62,7 +63,7 @@ const { companyName = "Tolemi", nav = [] } = Astro.props;
           </a>
         )
       )}
-      <DemoButton href="#contact" size="sm">Get a Demo</DemoButton>
+      <DemoButton href={demoBookingUrl} size="sm">Get a Demo</DemoButton>
     </nav>
 
     {/* Mobile hamburger */}
@@ -113,7 +114,7 @@ const { companyName = "Tolemi", nav = [] } = Astro.props;
           </a>
         )
       )}
-      <DemoButton href="#contact" size="sm" class="mt-2">Get a Demo</DemoButton>
+      <DemoButton href={demoBookingUrl} size="sm" class="mt-2">Get a Demo</DemoButton>
     </nav>
   </div>
 </header>
