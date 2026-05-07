@@ -6,7 +6,7 @@ interface BlogItem {
   subtitle?: string;
   slug: string;
   description?: string;
-  image?: string | null;
+  image?: { src: string | null; alt?: string } | null;
   publishedDate?: string | null;
   meta?: string;
   tags?: readonly (string | TagItem)[];
@@ -40,11 +40,11 @@ const formatDate = (iso?: string | null) => {
             class="blog-card group relative flex flex-col bg-white rounded-2xl border border-black/[0.06] overflow-hidden hover:shadow-lg hover:shadow-black/[0.06] hover:border-tolemi-sky/20 transition-all duration-300"
             data-tags={item.filterTags ? item.filterTags.join(" ") : undefined}
           >
-            {item.image && (
+            {item.image?.src && (
               <div class="aspect-[16/9] overflow-hidden bg-surface-secondary">
                 <img
-                  src={item.image}
-                  alt={item.title}
+                  src={item.image.src}
+                  alt={item.image.alt?.trim() ? item.image.alt : item.title}
                   class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
               </div>

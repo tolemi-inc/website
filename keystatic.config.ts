@@ -36,6 +36,25 @@ const navChild = fields.object(
   { label: 'Nav Child Link' }
 );
 
+// Image with required alt text. Use `imageWithAlt({ directory, publicPath })`
+// anywhere you'd previously have used `fields.image()` directly.
+const imageWithAlt = (opts: { label?: string; directory: string; publicPath: string }) =>
+  fields.object(
+    {
+      src: fields.image({
+        label: 'Image',
+        directory: opts.directory,
+        publicPath: opts.publicPath,
+      }),
+      alt: fields.text({
+        label: 'Alt text',
+        description:
+          'Describe the image for screen readers and SEO. Leave blank only if the image is purely decorative.',
+      }),
+    },
+    { label: opts.label || 'Image' }
+  );
+
 const featureBlock = fields.object(
   {
     title: fields.text({ label: 'Title', validation: { isRequired: true } }),
@@ -53,12 +72,11 @@ const featureBlock = fields.object(
       },
     }),
     images: fields.array(
-      fields.image({
-        label: 'Image',
+      imageWithAlt({
         directory: 'public/uploads/features',
         publicPath: '/uploads/features/',
       }),
-      { label: 'Images', itemLabel: (props) => props.value?.filename || 'Image' }
+      { label: 'Images', itemLabel: (props) => props.fields.src.value?.filename || 'Image' }
     ),
   },
   { label: 'Feature' }
@@ -242,7 +260,15 @@ export default config({
         headline: fields.text({ label: 'Headline' }),
         subheadline: fields.text({ label: 'Subheadline' }),
         historyHeading: fields.text({ label: 'History Heading' }),
-        historyBody: fields.markdoc({ label: 'History Body' }),
+        historyBody: fields.markdoc({
+          label: 'History Body',
+          options: {
+            image: {
+              directory: 'public/uploads/about',
+              publicPath: '/uploads/about/',
+            },
+          },
+        }),
         milestones: fields.array(
           fields.object(
             {
@@ -271,7 +297,7 @@ export default config({
               name: fields.text({ label: 'Name', validation: { isRequired: true } }),
               title: fields.text({ label: 'Title' }),
               bio: fields.text({ label: 'Bio', multiline: true }),
-              photo: fields.image({
+              photo: imageWithAlt({
                 label: 'Photo',
                 directory: 'public/uploads',
                 publicPath: '/uploads/',
@@ -293,7 +319,15 @@ export default config({
         title: fields.text({ label: 'Page Title', validation: { isRequired: true } }),
         headline: fields.text({ label: 'Headline' }),
         subheadline: fields.text({ label: 'Subheadline' }),
-        intro: fields.markdoc({ label: 'Intro' }),
+        intro: fields.markdoc({
+          label: 'Intro',
+          options: {
+            image: {
+              directory: 'public/uploads/careers',
+              publicPath: '/uploads/careers/',
+            },
+          },
+        }),
         cultureHeading: fields.text({ label: 'Culture Heading' }),
         cultureBody: fields.text({ label: 'Culture Body', multiline: true }),
         perks: fields.array(
@@ -405,12 +439,20 @@ export default config({
         title: fields.slug({ name: { label: 'Page Title' } }),
         headline: fields.text({ label: 'Headline' }),
         subheadline: fields.text({ label: 'Subheadline' }),
-        image: fields.image({
-          label: 'Image',
+        image: imageWithAlt({
+          label: 'Header Image',
           directory: 'public/uploads/products',
           publicPath: '/uploads/products/',
         }),
-        body: fields.markdoc({ label: 'Body' }),
+        body: fields.markdoc({
+          label: 'Body',
+          options: {
+            image: {
+              directory: 'public/uploads/products',
+              publicPath: '/uploads/products/',
+            },
+          },
+        }),
         features: fields.array(featureBlock, {
           label: 'Features',
           itemLabel: (props) => props.fields.title.value || 'Feature',
@@ -428,12 +470,20 @@ export default config({
         title: fields.slug({ name: { label: 'Page Title' } }),
         headline: fields.text({ label: 'Headline' }),
         subheadline: fields.text({ label: 'Subheadline' }),
-        image: fields.image({
-          label: 'Image',
+        image: imageWithAlt({
+          label: 'Header Image',
           directory: 'public/uploads/solutions',
           publicPath: '/uploads/solutions/',
         }),
-        body: fields.markdoc({ label: 'Body' }),
+        body: fields.markdoc({
+          label: 'Body',
+          options: {
+            image: {
+              directory: 'public/uploads/solutions',
+              publicPath: '/uploads/solutions/',
+            },
+          },
+        }),
         features: fields.array(featureBlock, {
           label: 'Features',
           itemLabel: (props) => props.fields.title.value || 'Feature',
@@ -449,7 +499,7 @@ export default config({
       schema: {
         title: fields.slug({ name: { label: 'Title' } }),
         description: fields.text({ label: 'Description', multiline: true }),
-        image: fields.image({
+        image: imageWithAlt({
           label: 'Cover Image',
           directory: 'public/uploads/blog',
           publicPath: '/uploads/blog/',
@@ -463,7 +513,15 @@ export default config({
             itemLabel: (props) => props.value || 'Use Case',
           }
         ),
-        body: fields.markdoc({ label: 'Body' }),
+        body: fields.markdoc({
+          label: 'Body',
+          options: {
+            image: {
+              directory: 'public/uploads/blog',
+              publicPath: '/uploads/blog/',
+            },
+          },
+        }),
       },
     }),
 
@@ -476,7 +534,7 @@ export default config({
         title: fields.slug({ name: { label: 'Title' } }),
         subtitle: fields.text({ label: 'Subtitle (e.g. City, State)' }),
         description: fields.text({ label: 'Description', multiline: true }),
-        image: fields.image({
+        image: imageWithAlt({
           label: 'Cover Image',
           directory: 'public/uploads/blog',
           publicPath: '/uploads/blog/',

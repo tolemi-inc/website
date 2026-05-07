@@ -1,15 +1,22 @@
 ---
 import ImageCarousel from "../ui/ImageCarousel.astro";
 
+interface FeatureImage {
+  src: string | null;
+  alt?: string;
+}
+
 interface Props {
   title: string;
   bodyHtml: string;
-  images?: readonly (string | null)[] | null;
+  images?: readonly (FeatureImage | null)[] | null;
   reverse?: boolean;
 }
 
 const { title, bodyHtml, images, reverse = false } = Astro.props;
-const validImages = (images || []).filter((s): s is string => typeof s === "string" && s.length > 0);
+const validImages = (images || [])
+  .filter((img): img is FeatureImage => !!img && typeof img.src === "string" && img.src.length > 0)
+  .map((img) => ({ src: img.src as string, alt: img.alt ?? "" }));
 const hasImages = validImages.length > 0;
 
 const textOrder = reverse ? "md:order-2" : "md:order-1";
@@ -21,18 +28,18 @@ const mediaOrder = reverse ? "md:order-1" : "md:order-2";
     <div class="grid md:grid-cols-2 gap-10 md:gap-14 items-center">
       <div class={textOrder}>
         <h3 class="font-heading text-2xl md:text-3xl font-semibold text-text-primary mb-4">{title}</h3>
-        <div class="prose prose-lg text-text-secondary max-w-none">
+        <div class="richtext max-w-none">
           <Fragment set:html={bodyHtml} />
         </div>
       </div>
       <div class={mediaOrder}>
-        <ImageCarousel images={validImages} alt={title} />
+        <ImageCarousel images={validImages} fallbackAlt={title} />
       </div>
     </div>
   ) : (
     <div class="max-w-3xl mx-auto">
       <h3 class="font-heading text-2xl md:text-3xl font-semibold text-text-primary mb-4">{title}</h3>
-      <div class="prose prose-lg text-text-secondary max-w-none">
+      <div class="richtext max-w-none">
         <Fragment set:html={bodyHtml} />
       </div>
     </div>
