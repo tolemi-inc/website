@@ -25,7 +25,7 @@ export default function StatCard({ value, label, index }: StatCardProps) {
       >
         {value}
       </div>
-      <div className="mt-3 text-sm md:text-base font-semibold uppercase tracking-wider text-white/70">
+      <div className="mt-3 text-xs md:text-sm font-semibold uppercase tracking-wider text-white/95">
         {label}
       </div>
     </div>
