@@ -1,5 +1,5 @@
 ---
-import TagPills from "../ui/TagPills.astro";
+import TagPills, { type TagItem } from "../ui/TagPills.astro";
 
 interface BlogItem {
   title: string;
@@ -9,7 +9,8 @@ interface BlogItem {
   image?: { src: string | null; alt?: string } | null;
   publishedDate?: string | null;
   meta?: string;
-  tags?: readonly string[];
+  tags?: readonly (string | TagItem)[];
+  filterTags?: readonly string[];
 }
 
 interface Props {
@@ -35,9 +36,9 @@ const formatDate = (iso?: string | null) => {
     ) : (
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {items.map((item) => (
-          <a
-            href={`${basePath}/${item.slug}`}
-            class="group flex flex-col bg-white rounded-2xl border border-black/[0.06] overflow-hidden hover:shadow-lg hover:shadow-black/[0.06] hover:border-tolemi-sky/20 transition-all duration-300"
+          <article
+            class="blog-card group relative flex flex-col bg-white rounded-2xl border border-black/[0.06] overflow-hidden hover:shadow-lg hover:shadow-black/[0.06] hover:border-tolemi-sky/20 transition-all duration-300"
+            data-tags={item.filterTags ? item.filterTags.join(" ") : undefined}
           >
             {item.image?.src && (
               <div class="aspect-[16/9] overflow-hidden bg-surface-secondary">
@@ -55,7 +56,12 @@ const formatDate = (iso?: string | null) => {
                 </p>
               )}
               <h3 class="font-heading text-xl font-semibold text-text-primary mb-1 group-hover:text-tolemi-sky-600 transition-colors">
-                {item.title}
+                <a
+                  href={`${basePath}/${item.slug}`}
+                  class="before:absolute before:inset-0 before:content-[''] before:z-0"
+                >
+                  {item.title}
+                </a>
               </h3>
               {item.subtitle && (
                 <p class="text-sm font-medium text-text-secondary mb-3">{item.subtitle}</p>
@@ -70,12 +76,12 @@ const formatDate = (iso?: string | null) => {
                 </svg>
               </span>
               {item.tags && item.tags.length > 0 && (
-                <div class="mt-5 pt-5 border-t border-black/[0.05]">
+                <div class="mt-5 pt-5 border-t border-black/[0.05] relative z-10">
                   <TagPills tags={item.tags} size="sm" />
                 </div>
               )}
             </div>
-          </a>
+          </article>
         ))}
       </div>
     )}

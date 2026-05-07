@@ -1,0 +1,115 @@
+---
+import {
+  useCaseColorClasses,
+  useCaseActiveClasses,
+  type UseCaseColor,
+} from "../../lib/useCaseColors";
+
+interface FilterOption {
+  slug: string;
+  label: string;
+  color: UseCaseColor;
+}
+
+interface Props {
+  basePath: string;
+  options: FilterOption[];
+}
+
+const { basePath, options } = Astro.props;
+---
+
+{options.length > 0 && (
+  <section class="relative z-10 px-6 -mt-4">
+    <div
+      class="max-w-6xl mx-auto flex flex-wrap items-center justify-center gap-2"
+      data-filter-bar
+      data-base-path={basePath}
+    >
+      <a
+        href={basePath}
+        data-filter=""
+        class="filter-pill text-xs px-3 py-1.5 rounded-full border font-medium tracking-wide transition-colors bg-white text-text-secondary border-black/10 hover:bg-tolemi-light"
+        data-inactive-class="bg-white text-text-secondary border-black/10 hover:bg-tolemi-light"
+        data-active-class="bg-tolemi-dark text-white border-tolemi-dark"
+      >
+        All
+      </a>
+      {options.map((opt) => (
+        <a
+          href={`${basePath}?tag=${encodeURIComponent(opt.slug)}`}
+          data-filter={opt.slug}
+          class={`filter-pill text-xs px-3 py-1.5 rounded-full border font-medium tracking-wide transition-colors ${useCaseColorClasses[opt.color]}`}
+          data-inactive-class={useCaseColorClasses[opt.color]}
+          data-active-class={useCaseActiveClasses[opt.color]}
+        >
+          {opt.label}
+        </a>
+      ))}
+    </div>
+  </section>
+)}
+
+<script>
+  const filterBar = document.querySelector<HTMLElement>("[data-filter-bar]");
+  if (filterBar) {
+    const basePath = filterBar.dataset.basePath ?? "/";
+    const cards = document.querySelectorAll<HTMLElement>(".blog-card");
+
+    function applyFilter(active: string) {
+      document.querySelectorAll<HTMLElement>(".filter-pill").forEach((el) => {
+        const slug = el.dataset.filter ?? "";
+        const isActive = slug === active;
+        const activeClasses = (el.dataset.activeClass ?? "").split(" ").filter(Boolean);
+        const inactiveClasses = (el.dataset.inactiveClass ?? "").split(" ").filter(Boolean);
+        if (isActive) {
+          el.classList.remove(...inactiveClasses);
+          el.classList.add(...activeClasses);
+          el.setAttribute("aria-current", "true");
+        } else {
+          el.classList.remove(...activeClasses);
+          el.classList.add(...inactiveClasses);
+          el.removeAttribute("aria-current");
+        }
+      });
+
+      cards.forEach((card) => {
+        const tags = (card.dataset.tags ?? "").split(" ").filter(Boolean);
+        const matches = !active || tags.includes(active);
+        card.style.display = matches ? "" : "none";
+      });
+    }
+
+    function readActiveFromUrl(): string {
+      const params = new URLSearchParams(window.location.search);
+      return params.get("tag") ?? "";
+    }
+
+    applyFilter(readActiveFromUrl());
+
+    filterBar.addEventListener("click", (e) => {
+      const link = (e.target as HTMLElement).closest<HTMLAnchorElement>("a[data-filter]");
+      if (!link) return;
+      e.preventDefault();
+      const next = link.dataset.filter ?? "";
+      const url = next ? `${basePath}?tag=${encodeURIComponent(next)}` : basePath;
+      window.history.pushState({}, "", url);
+      applyFilter(next);
+    });
+
+    document.addEventListener("click", (e) => {
+      const tagLink = (e.target as HTMLElement).closest<HTMLAnchorElement>("a[data-use-case-tag]");
+      if (!tagLink) return;
+      const url = new URL(tagLink.href, window.location.origin);
+      if (url.pathname !== basePath) return;
+      e.preventDefault();
+      e.stopPropagation();
+      const slug = url.searchParams.get("tag") ?? "";
+      const nextUrl = slug ? `${basePath}?tag=${encodeURIComponent(slug)}` : basePath;
+      window.history.pushState({}, "", nextUrl);
+      applyFilter(slug);
+    });
+
+    window.addEventListener("popstate", () => applyFilter(readActiveFromUrl()));
+  }
+</script>
