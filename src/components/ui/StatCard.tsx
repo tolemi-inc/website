@@ -1,8 +1,8 @@
 const cardStyles = [
-  { border: 'border-tolemi-sky/25', bg: 'bg-gradient-to-br from-tolemi-sky/10 via-transparent to-transparent', accent: 'text-tolemi-sky-600' },
-  { border: 'border-tolemi-green/25', bg: 'bg-gradient-to-br from-tolemi-green/10 via-transparent to-transparent', accent: 'text-tolemi-green' },
-  { border: 'border-tolemi-red/25', bg: 'bg-gradient-to-br from-tolemi-red/10 via-transparent to-transparent', accent: 'text-tolemi-red' },
-  { border: 'border-tolemi-yellow/25', bg: 'bg-gradient-to-br from-tolemi-yellow/10 via-transparent to-transparent', accent: 'text-tolemi-yellow-600' },
+  { accent: 'text-tolemi-sky-600', bar: 'bg-tolemi-sky-600' },
+  { accent: 'text-tolemi-green', bar: 'bg-tolemi-green' },
+  { accent: 'text-tolemi-red', bar: 'bg-tolemi-red' },
+  { accent: 'text-tolemi-yellow-600', bar: 'bg-tolemi-yellow-500' },
 ];
 
 interface StatCardProps {
@@ -16,13 +16,16 @@ export default function StatCard({ value, label, index }: StatCardProps) {
 
   return (
     <div
-      className={`text-center p-8 md:p-10 rounded-2xl border backdrop-blur-sm reveal ${style.border} ${style.bg}`}
+      className="text-center reveal"
       style={{ transitionDelay: `${index * 100}ms` }}
     >
-      <div className={`font-heading text-4xl md:text-5xl font-bold mb-3 ${style.accent}`}>
+      <div className={`mx-auto h-1 w-10 rounded-full mb-6 ${style.bar}`} />
+      <div className={`font-heading text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight ${style.accent}`}>
         {value}
       </div>
-      <div className="text-sm text-text-secondary">{label}</div>
+      <div className="mt-3 text-sm md:text-base font-semibold uppercase tracking-wider text-text-secondary">
+        {label}
+      </div>
     </div>
   );
 }
