@@ -5,7 +5,7 @@ import BlogList from "../../../components/blocks/BlogList.astro";
 import CallToAction from "../../../components/blocks/CallToAction.astro";
 import { createReader } from '@keystatic/core/reader';
 import keystaticConfig from '../../../../keystatic.config';
-import Markdoc from '@markdoc/markdoc';
+import { renderRichtext } from '../../../lib/richtext';
 
 export const prerender = true;
 
@@ -23,7 +23,7 @@ const post = await reader.collections.spotlightPosts.read(slug!);
 if (!post) throw new Error(`Spotlight post not found: ${slug}`);
 
 const body = await post.body();
-const bodyHtml = Markdoc.renderers.html(Markdoc.transform(body.node));
+const bodyHtml = renderRichtext(body.node);
 
 const formattedDate = post.publishedDate
   ? new Date(post.publishedDate).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
@@ -57,10 +57,10 @@ const otherPosts = allPosts
     </section>
   )}
 
-  <section class="py-16 md:py-20 px-6">
+  <section class="pt-6 pb-16 md:pt-8 md:pb-20 px-6">
     <div class="max-w-3xl mx-auto reveal">
       {formattedDate && (
-        <p class="text-xs font-semibold tracking-widest uppercase text-tolemi-sky-600 mb-6">{formattedDate}</p>
+        <p class="text-xs font-semibold tracking-widest uppercase text-tolemi-sky-600 mb-3">{formattedDate}</p>
       )}
       <div class="richtext richtext-lead">
         <Fragment set:html={bodyHtml} />

@@ -5,7 +5,7 @@ import JobListings from "../components/blocks/JobListings.astro";
 import CallToAction from "../components/blocks/CallToAction.astro";
 import { createReader } from '@keystatic/core/reader';
 import keystaticConfig from '../../keystatic.config';
-import Markdoc from '@markdoc/markdoc';
+import { renderRichtext } from '../lib/richtext';
 
 export const prerender = true;
 
@@ -14,7 +14,7 @@ const careersData = await reader.singletons.careersPage.read();
 if (!careersData) throw new Error('Careers page data not found');
 
 const intro = await careersData.intro();
-const introHtml = Markdoc.renderers.html(Markdoc.transform(intro.node));
+const introHtml = renderRichtext(intro.node);
 const perks = careersData.perks || [];
 ---
 

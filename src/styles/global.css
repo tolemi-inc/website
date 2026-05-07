@@ -180,6 +180,7 @@ html {
 .richtext h3 { font-size: 1.625rem; margin-top: 1.5em; margin-bottom: 0.65em; }
 .richtext h4 { font-size: 1.25rem; margin-top: 1.25em; margin-bottom: 0.6em; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-tolemi-indigo-700); }
 
+.richtext > h1:first-child,
 .richtext > h2:first-child,
 .richtext > h3:first-child,
 .richtext > h4:first-child,
