@@ -28,15 +28,6 @@ const statItem = fields.object(
   { label: 'Stat Item' }
 );
 
-const testimonialItem = fields.object(
-  {
-    quote: fields.text({ label: 'Quote', multiline: true, validation: { isRequired: true } }),
-    author: fields.text({ label: 'Author Name' }),
-    role: fields.text({ label: 'Author Role' }),
-  },
-  { label: 'Testimonial' }
-);
-
 const navChild = fields.object(
   {
     label: fields.text({ label: 'Label', validation: { isRequired: true } }),
@@ -198,7 +189,6 @@ export default config({
                 { label: 'Hero', value: 'hero' },
                 { label: 'Features', value: 'features' },
                 { label: 'Stats', value: 'stats' },
-                { label: 'Testimonials', value: 'testimonials' },
                 { label: 'Call to Action', value: 'cta' },
               ],
               defaultValue: 'hero',
@@ -225,16 +215,6 @@ export default config({
                   }),
                 },
                 { label: 'Stats' }
-              ),
-              testimonials: fields.object(
-                {
-                  heading: fields.text({ label: 'Section Heading' }),
-                  items: fields.array(testimonialItem, {
-                    label: 'Testimonials',
-                    itemLabel: (props) => props.fields.author.value || 'Testimonial',
-                  }),
-                },
-                { label: 'Testimonials' }
               ),
               cta: fields.object(
                 {
