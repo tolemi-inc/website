@@ -140,34 +140,29 @@ html {
 /* Feature slide-up: cards rise from below and stack */
 .feature-slide {
   opacity: 0;
-  transform: translateY(80px);
-  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(160px);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
 }
 .feature-slide.visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* Alternating slide directions for inner panels */
-.feature-slide-left {
-  opacity: 0;
-  transform: translateX(-60px);
-  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.15s,
-              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.15s;
-}
-.feature-slide-left.visible {
-  opacity: 1;
-  transform: translateX(0);
-}
-
+/* Inner panels rise with a slight stagger after the parent card */
+.feature-slide-left,
 .feature-slide-right {
   opacity: 0;
-  transform: translateX(60px);
-  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.15s,
-              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.15s;
+  transform: translateY(60px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.2s,
+              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.2s;
 }
-.feature-slide-right.visible {
+.feature-slide-right {
+  transition-delay: 0.35s;
+}
+.feature-slide.visible .feature-slide-left,
+.feature-slide.visible .feature-slide-right {
   opacity: 1;
-  transform: translateX(0);
+  transform: translateY(0);
 }
