@@ -36,7 +36,8 @@
     },
     {
       "label": "About Tolemi",
-      "href": "/about"
+      "href": "/about",
+      "children": []
     }
   ],
   "footerText": "© 2026 Tolemi. All rights reserved.",
@@ -57,7 +58,7 @@
     ],
     "products": [
       {
-        "label": "Building Blocks",
+        "label": "BuildingBlocks",
         "href": "/products/building-blocks"
       },
       {
