@@ -44,7 +44,7 @@ const { title = siteData.companyName } = Astro.props;
         },
         { threshold: 0.1 }
       );
-      document.querySelectorAll('.reveal, .feature-slide, .feature-slide-left, .feature-slide-right').forEach((el) => observer.observe(el));
+      document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
     </script>
   </body>
 </html>

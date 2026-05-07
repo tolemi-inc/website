@@ -137,32 +137,14 @@ html {
   transform: translateY(0);
 }
 
-/* Feature slide-up: cards rise from below and stack */
-.feature-slide {
-  opacity: 0;
-  transform: translateY(160px);
-  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: transform, opacity;
+/* Feature cards stack: each card is sticky and the next slides up to cover it */
+.feature-cards-stack {
+  /* No overflow clipping — sticky needs to reach viewport edges */
 }
-.feature-slide.visible {
-  opacity: 1;
-  transform: translateY(0);
+.feature-cards-stack > .feature-card {
+  /* Soft drop shadow on the top edge so the rising card reads as a layered surface */
+  box-shadow: 0 -12px 30px -12px rgba(52, 51, 50, 0.12);
 }
-
-/* Inner panels rise with a slight stagger after the parent card */
-.feature-slide-left,
-.feature-slide-right {
-  opacity: 0;
-  transform: translateY(60px);
-  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.2s,
-              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.2s;
-}
-.feature-slide-right {
-  transition-delay: 0.35s;
-}
-.feature-slide.visible .feature-slide-left,
-.feature-slide.visible .feature-slide-right {
-  opacity: 1;
-  transform: translateY(0);
+.feature-cards-stack > .feature-card:first-child {
+  box-shadow: none;
 }
