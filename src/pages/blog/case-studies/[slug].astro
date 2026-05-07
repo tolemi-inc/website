@@ -98,7 +98,7 @@ const otherPosts = allPosts
           {[post.client, formattedDate].filter(Boolean).join(" • ")}
         </p>
       )}
-      <div class="prose prose-lg text-text-secondary">
+      <div class="richtext richtext-lead">
         <Fragment set:html={bodyHtml} />
       </div>
       {post.tags && post.tags.length > 0 && (

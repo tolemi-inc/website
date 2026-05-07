@@ -137,6 +137,202 @@ html {
   transform: translateY(0);
 }
 
+/* ---------------------------------------------------------------------------
+   Rich text (CMS-rendered Markdoc HTML)
+   ---------------------------------------------------------------------------
+   Magazine-style typography. Apply `.richtext` to any container that wraps
+   HTML produced from a Markdoc field. Add `.richtext-lead` for the lead body
+   on a page (solutions, products, blog) — it adds a drop cap on the first
+   paragraph for a more editorial feel.
+*/
+.richtext {
+  font-family: var(--font-sans);
+  color: var(--color-text-secondary);
+  font-size: 1.125rem;
+  line-height: 1.75;
+}
+
+.richtext > * + * {
+  margin-top: 1.25em;
+}
+
+.richtext h1,
+.richtext h2,
+.richtext h3,
+.richtext h4 {
+  font-family: var(--font-heading);
+  color: var(--color-text-primary);
+  font-weight: 600;
+  font-style: normal;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.richtext h1 em, .richtext h1 strong em, .richtext h1 em strong,
+.richtext h2 em, .richtext h2 strong em, .richtext h2 em strong,
+.richtext h3 em, .richtext h3 strong em, .richtext h3 em strong,
+.richtext h4 em, .richtext h4 strong em, .richtext h4 em strong {
+  font-style: normal;
+}
+
+.richtext h1 { font-size: 2.75rem; margin-top: 2em; margin-bottom: 0.7em; }
+.richtext h2 { font-size: 2.125rem; margin-top: 1.75em; margin-bottom: 0.7em; }
+.richtext h3 { font-size: 1.625rem; margin-top: 1.5em; margin-bottom: 0.65em; }
+.richtext h4 { font-size: 1.25rem; margin-top: 1.25em; margin-bottom: 0.6em; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-tolemi-indigo-700); }
+
+.richtext > h2:first-child,
+.richtext > h3:first-child,
+.richtext > h4:first-child,
+.richtext > p:first-child { margin-top: 0; }
+
+.richtext p {
+  font-size: 1.125rem;
+  line-height: 1.75;
+  text-indent: 1.5em;
+}
+
+/* No indent for the first paragraph of a section (after headings, at the
+   top of the container, or inside lists/blockquotes where indent would read
+   as a layout mistake). */
+.richtext > p:first-of-type,
+.richtext > p:first-child,
+.richtext h1 + p,
+.richtext h2 + p,
+.richtext h3 + p,
+.richtext h4 + p,
+.richtext blockquote p,
+.richtext li p {
+  text-indent: 0;
+}
+
+.richtext strong { color: var(--color-text-primary); font-weight: 600; }
+.richtext em { font-style: italic; }
+
+.richtext a {
+  color: var(--color-tolemi-sky-700);
+  text-decoration: underline;
+  text-decoration-color: var(--color-tolemi-sky-300);
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 1px;
+  transition: color 0.2s ease, text-decoration-color 0.2s ease;
+}
+.richtext a:hover {
+  color: var(--color-tolemi-indigo-600);
+  text-decoration-color: var(--color-tolemi-indigo-400);
+}
+
+.richtext ul,
+.richtext ol {
+  padding-left: 1.5em;
+}
+.richtext ul { list-style: disc; }
+.richtext ol { list-style: decimal; }
+.richtext li { margin-top: 0.4em; padding-left: 0.25em; }
+.richtext li::marker { color: var(--color-tolemi-indigo-400); }
+.richtext li > p { margin: 0; }
+
+.richtext blockquote {
+  border-left: 3px solid var(--color-tolemi-indigo-500);
+  padding: 0.25em 0 0.25em 1.5rem;
+  margin-top: 2em;
+  margin-bottom: 2em;
+  font-family: var(--font-heading);
+  font-size: 1.375rem;
+  line-height: 1.5;
+  color: var(--color-text-primary);
+  font-style: italic;
+  font-weight: 400;
+}
+.richtext blockquote p { font-size: inherit; line-height: inherit; margin: 0; }
+.richtext blockquote p + p { margin-top: 0.75em; }
+
+.richtext img {
+  width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+  margin-top: 2.5em;
+  margin-bottom: 2.5em;
+  box-shadow: 0 12px 32px -16px rgba(52, 51, 50, 0.25);
+}
+
+.richtext figure {
+  margin-top: 2.5em;
+  margin-bottom: 2.5em;
+}
+.richtext figure img {
+  margin: 0;
+}
+.richtext figcaption {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  text-align: center;
+  margin-top: 0.75rem;
+  font-style: italic;
+}
+
+.richtext hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--color-tolemi-light), transparent);
+  margin: 3em auto;
+  width: 60%;
+}
+
+.richtext code {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+  background: var(--color-surface-secondary);
+  padding: 0.15em 0.4em;
+  border-radius: 0.3em;
+  font-size: 0.9em;
+  color: var(--color-text-primary);
+}
+
+.richtext pre {
+  background: var(--color-tolemi-dark);
+  color: var(--color-tolemi-light);
+  padding: 1rem 1.25rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+.richtext pre code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+}
+
+.richtext table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 2em;
+  margin-bottom: 2em;
+  font-size: 0.95rem;
+}
+.richtext th,
+.richtext td {
+  text-align: left;
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid var(--color-tolemi-light);
+}
+.richtext th {
+  font-family: var(--font-heading);
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+
+/* Magazine drop cap on the lead body's first paragraph */
+.richtext-lead > p:first-of-type::first-letter {
+  font-family: var(--font-heading);
+  float: left;
+  font-size: 4.25rem;
+  line-height: 0.9;
+  font-weight: 600;
+  margin-right: 0.5rem;
+  margin-top: 0.35rem;
+  color: var(--color-tolemi-indigo-600);
+}
+
 /* Feature cards stack: each card is sticky and the next slides up to cover it */
 .feature-cards-stack {
   /* No overflow clipping — sticky needs to reach viewport edges */

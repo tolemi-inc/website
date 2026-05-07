@@ -242,7 +242,15 @@ export default config({
         headline: fields.text({ label: 'Headline' }),
         subheadline: fields.text({ label: 'Subheadline' }),
         historyHeading: fields.text({ label: 'History Heading' }),
-        historyBody: fields.markdoc({ label: 'History Body' }),
+        historyBody: fields.markdoc({
+          label: 'History Body',
+          options: {
+            image: {
+              directory: 'public/uploads/about',
+              publicPath: '/uploads/about/',
+            },
+          },
+        }),
         milestones: fields.array(
           fields.object(
             {
@@ -293,7 +301,15 @@ export default config({
         title: fields.text({ label: 'Page Title', validation: { isRequired: true } }),
         headline: fields.text({ label: 'Headline' }),
         subheadline: fields.text({ label: 'Subheadline' }),
-        intro: fields.markdoc({ label: 'Intro' }),
+        intro: fields.markdoc({
+          label: 'Intro',
+          options: {
+            image: {
+              directory: 'public/uploads/careers',
+              publicPath: '/uploads/careers/',
+            },
+          },
+        }),
         cultureHeading: fields.text({ label: 'Culture Heading' }),
         cultureBody: fields.text({ label: 'Culture Body', multiline: true }),
         perks: fields.array(
@@ -410,7 +426,15 @@ export default config({
           directory: 'public/uploads/products',
           publicPath: '/uploads/products/',
         }),
-        body: fields.markdoc({ label: 'Body' }),
+        body: fields.markdoc({
+          label: 'Body',
+          options: {
+            image: {
+              directory: 'public/uploads/products',
+              publicPath: '/uploads/products/',
+            },
+          },
+        }),
         features: fields.array(featureBlock, {
           label: 'Features',
           itemLabel: (props) => props.fields.title.value || 'Feature',
@@ -433,7 +457,15 @@ export default config({
           directory: 'public/uploads/solutions',
           publicPath: '/uploads/solutions/',
         }),
-        body: fields.markdoc({ label: 'Body' }),
+        body: fields.markdoc({
+          label: 'Body',
+          options: {
+            image: {
+              directory: 'public/uploads/solutions',
+              publicPath: '/uploads/solutions/',
+            },
+          },
+        }),
         features: fields.array(featureBlock, {
           label: 'Features',
           itemLabel: (props) => props.fields.title.value || 'Feature',
@@ -455,7 +487,15 @@ export default config({
           publicPath: '/uploads/blog/',
         }),
         publishedDate: fields.date({ label: 'Published Date' }),
-        body: fields.markdoc({ label: 'Body' }),
+        body: fields.markdoc({
+          label: 'Body',
+          options: {
+            image: {
+              directory: 'public/uploads/blog',
+              publicPath: '/uploads/blog/',
+            },
+          },
+        }),
       },
     }),
 
