@@ -141,9 +141,7 @@ html {
    Rich text (CMS-rendered Markdoc HTML)
    ---------------------------------------------------------------------------
    Magazine-style typography. Apply `.richtext` to any container that wraps
-   HTML produced from a Markdoc field. Add `.richtext-lead` for the lead body
-   on a page (solutions, products, blog) — it adds a drop cap on the first
-   paragraph for a more editorial feel.
+   HTML produced from a Markdoc field.
 */
 .richtext {
   font-family: var(--font-sans);
@@ -175,10 +173,10 @@ html {
   font-style: normal;
 }
 
-.richtext h1 { font-size: 2.75rem; margin-top: 2em; margin-bottom: 0.7em; }
-.richtext h2 { font-size: 2.125rem; margin-top: 1.75em; margin-bottom: 0.7em; }
-.richtext h3 { font-size: 1.625rem; margin-top: 1.5em; margin-bottom: 0.65em; }
-.richtext h4 { font-size: 1.25rem; margin-top: 1.25em; margin-bottom: 0.6em; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-tolemi-indigo-700); }
+.richtext h1 { font-size: 3rem; margin-top: 2em; margin-bottom: 0.7em; }
+.richtext h2 { font-size: 2.375rem; margin-top: 1.75em; margin-bottom: 0.7em; }
+.richtext h3 { font-size: 1.875rem; margin-top: 1.5em; margin-bottom: 0.65em; }
+.richtext h4 { font-size: 1.375rem; margin-top: 1.25em; margin-bottom: 0.6em; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-tolemi-indigo-700); }
 
 .richtext > h1:first-child,
 .richtext > h2:first-child,
@@ -224,12 +222,21 @@ html {
 
 .richtext ul,
 .richtext ol {
-  padding-left: 1.5em;
+  padding-left: 1.75em;
 }
 .richtext ul { list-style: disc; }
 .richtext ol { list-style: decimal; }
-.richtext li { margin-top: 0.4em; padding-left: 0.25em; }
-.richtext li::marker { color: var(--color-tolemi-indigo-400); }
+.richtext li { margin-top: 0.4em; padding-left: 0.4em; }
+.richtext li::marker {
+  font-size: 2em;
+  line-height: 0;
+  font-weight: 700;
+}
+.richtext ol > li::marker { font-size: 1.1em; color: var(--color-tolemi-indigo-500); }
+.richtext ul > li:nth-child(4n+1)::marker { color: var(--color-tolemi-indigo-500); }
+.richtext ul > li:nth-child(4n+2)::marker { color: var(--color-tolemi-sky-500); }
+.richtext ul > li:nth-child(4n+3)::marker { color: var(--color-tolemi-coral-500); }
+.richtext ul > li:nth-child(4n)::marker   { color: var(--color-tolemi-green-500); }
 .richtext li > p { margin: 0; }
 
 .richtext blockquote {
@@ -320,18 +327,6 @@ html {
   font-family: var(--font-heading);
   color: var(--color-text-primary);
   font-weight: 600;
-}
-
-/* Magazine drop cap on the lead body's first paragraph */
-.richtext-lead > p:first-of-type::first-letter {
-  font-family: var(--font-heading);
-  float: left;
-  font-size: 4.25rem;
-  line-height: 0.9;
-  font-weight: 600;
-  margin-right: 0.5rem;
-  margin-top: 0.35rem;
-  color: var(--color-tolemi-indigo-600);
 }
 
 /* Feature cards stack: each card is sticky and the next slides up to cover it */
