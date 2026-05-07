@@ -41,7 +41,7 @@ const normalized = (tags || []).map((t) =>
             <a
               href={tag.href}
               class={`${baseClasses} transition-colors`}
-              data-use-case-tag={tag.href.includes("tag=") ? tag.href.split("tag=")[1] : undefined}
+              data-use-case-tag
             >
               {tag.label}
             </a>

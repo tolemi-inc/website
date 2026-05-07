@@ -5,6 +5,7 @@ import BlogList from "../../../components/blocks/BlogList.astro";
 import LearnMoreSection from "../../../components/blocks/LearnMoreSection.astro";
 import TagPills from "../../../components/ui/TagPills.astro";
 import CallToAction from "../../../components/blocks/CallToAction.astro";
+import { colorForUseCase } from "../../../lib/useCaseColors";
 import { createReader } from '@keystatic/core/reader';
 import keystaticConfig from '../../../../keystatic.config';
 import Markdoc from '@markdoc/markdoc';
@@ -13,6 +14,18 @@ export const prerender = true;
 
 const reader = createReader(process.cwd(), keystaticConfig);
 const allPosts = await reader.collections.caseStudies.all();
+const solutions = await reader.collections.solutions.all();
+const solutionMap = new Map(
+  solutions.map((s) => [s.slug, s.entry.title || s.slug])
+);
+
+function buildUseCaseTags(useCases: readonly string[]) {
+  return useCases.map((slug) => ({
+    label: solutionMap.get(slug) || slug,
+    href: `/blog/case-studies?tag=${encodeURIComponent(slug)}`,
+    color: colorForUseCase(slug),
+  }));
+}
 
 export async function getStaticPaths() {
   const reader = createReader(process.cwd(), keystaticConfig);
@@ -64,20 +77,28 @@ const learnMoreItems = [
     })),
 ];
 
+const postUseCaseTags = buildUseCaseTags(relatedSolutionSlugs);
+
 const otherPosts = allPosts
   .filter((p) => p.slug !== slug)
   .sort((a, b) => (b.entry.publishedDate || "").localeCompare(a.entry.publishedDate || ""))
   .slice(0, 3)
-  .map((p) => ({
-    title: p.entry.title,
-    subtitle: p.entry.subtitle,
-    slug: p.slug,
-    description: p.entry.description,
-    image: p.entry.image,
-    publishedDate: p.entry.publishedDate,
-    meta: p.entry.client,
-    tags: p.entry.tags,
-  }));
+  .map((p) => {
+    const ucs = (p.entry.relatedSolutions || []).filter(
+      (s): s is string => typeof s === "string"
+    );
+    return {
+      title: p.entry.title,
+      subtitle: p.entry.subtitle,
+      slug: p.slug,
+      description: p.entry.description,
+      image: p.entry.image,
+      publishedDate: p.entry.publishedDate,
+      meta: p.entry.client,
+      filterTags: ucs,
+      tags: buildUseCaseTags(ucs),
+    };
+  });
 ---
 
 <Base title={post.title}>
@@ -101,9 +122,9 @@ const otherPosts = allPosts
       <div class="prose prose-lg text-text-secondary">
         <Fragment set:html={bodyHtml} />
       </div>
-      {post.tags && post.tags.length > 0 && (
+      {postUseCaseTags.length > 0 && (
         <div class="mt-12 pt-8 border-t border-black/[0.08]">
-          <TagPills tags={post.tags} />
+          <TagPills tags={postUseCaseTags} />
         </div>
       )}
     </div>

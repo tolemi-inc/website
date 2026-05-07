@@ -3,11 +3,8 @@ import Base from "../../../layouts/Base.astro";
 import PageHero from "../../../components/blocks/PageHero.astro";
 import BlogList from "../../../components/blocks/BlogList.astro";
 import CallToAction from "../../../components/blocks/CallToAction.astro";
-import {
-  colorForUseCase,
-  useCaseColorClasses,
-  useCaseActiveClasses,
-} from "../../../lib/useCaseColors";
+import UseCaseFilterBar from "../../../components/blocks/UseCaseFilterBar.astro";
+import { colorForUseCase } from "../../../lib/useCaseColors";
 import { createReader } from '@keystatic/core/reader';
 import keystaticConfig from '../../../../keystatic.config';
 
@@ -59,35 +56,7 @@ const filterOptions = Array.from(
     subheadline="Product updates, launches, and what's new at Tolemi."
   />
 
-  {filterOptions.length > 0 && (
-    <section class="px-6 -mt-4">
-      <div
-        class="max-w-6xl mx-auto flex flex-wrap items-center justify-center gap-2"
-        data-filter-bar
-      >
-        <a
-          href="/blog/spotlight"
-          data-filter=""
-          class="filter-pill text-xs px-3 py-1.5 rounded-full border font-medium tracking-wide transition-colors bg-white text-text-secondary border-black/10 hover:bg-tolemi-light"
-          data-inactive-class="bg-white text-text-secondary border-black/10 hover:bg-tolemi-light"
-          data-active-class="bg-tolemi-dark text-white border-tolemi-dark"
-        >
-          All
-        </a>
-        {filterOptions.map((opt) => (
-          <a
-            href={`/blog/spotlight?tag=${encodeURIComponent(opt.slug)}`}
-            data-filter={opt.slug}
-            class={`filter-pill text-xs px-3 py-1.5 rounded-full border font-medium tracking-wide transition-colors ${useCaseColorClasses[opt.color]}`}
-            data-inactive-class={useCaseColorClasses[opt.color]}
-            data-active-class={useCaseActiveClasses[opt.color]}
-          >
-            {opt.label}
-          </a>
-        ))}
-      </div>
-    </section>
-  )}
+  <UseCaseFilterBar basePath="/blog/spotlight" options={filterOptions} />
 
   <BlogList basePath="/blog/spotlight" items={items} />
 
@@ -98,71 +67,3 @@ const filterOptions = Array.from(
     buttonLink="https://calendar.app.google/ADWYkErAkBkvTd9C6"
   />
 </Base>
-
-<script>
-  const filterBar = document.querySelector<HTMLElement>("[data-filter-bar]");
-  const cards = document.querySelectorAll<HTMLElement>(".blog-card");
-
-  function applyFilter(active: string) {
-    document.querySelectorAll<HTMLElement>(".filter-pill").forEach((el) => {
-      const slug = el.dataset.filter ?? "";
-      const isActive = slug === active;
-      const activeClasses = (el.dataset.activeClass ?? "").split(" ").filter(Boolean);
-      const inactiveClasses = (el.dataset.inactiveClass ?? "").split(" ").filter(Boolean);
-      if (isActive) {
-        el.classList.remove(...inactiveClasses);
-        el.classList.add(...activeClasses);
-        el.setAttribute("aria-current", "true");
-      } else {
-        el.classList.remove(...activeClasses);
-        el.classList.add(...inactiveClasses);
-        el.removeAttribute("aria-current");
-      }
-    });
-
-    cards.forEach((card) => {
-      const tags = (card.dataset.tags ?? "").split(" ").filter(Boolean);
-      const matches = !active || tags.includes(active);
-      card.style.display = matches ? "" : "none";
-    });
-  }
-
-  function readActiveFromUrl(): string {
-    const params = new URLSearchParams(window.location.search);
-    return params.get("tag") ?? "";
-  }
-
-  applyFilter(readActiveFromUrl());
-
-  filterBar?.addEventListener("click", (e) => {
-    const link = (e.target as HTMLElement).closest<HTMLAnchorElement>("a[data-filter]");
-    if (!link) return;
-    e.preventDefault();
-    const next = link.dataset.filter ?? "";
-    const url = next
-      ? `/blog/spotlight?tag=${encodeURIComponent(next)}`
-      : "/blog/spotlight";
-    window.history.pushState({}, "", url);
-    applyFilter(next);
-  });
-
-  document.addEventListener("click", (e) => {
-    const tagLink = (e.target as HTMLElement).closest<HTMLAnchorElement>("a[data-use-case-tag]");
-    if (!tagLink) return;
-    if (!tagLink.href.includes("/blog/spotlight")) return;
-    e.preventDefault();
-    e.stopPropagation();
-    const slug = tagLink.dataset.useCaseTag ?? "";
-    const url = slug
-      ? `/blog/spotlight?tag=${slug}`
-      : "/blog/spotlight";
-    if (window.location.pathname === "/blog/spotlight") {
-      window.history.pushState({}, "", url);
-      applyFilter(decodeURIComponent(slug));
-    } else {
-      window.location.href = url;
-    }
-  });
-
-  window.addEventListener("popstate", () => applyFilter(readActiveFromUrl()));
-</script>

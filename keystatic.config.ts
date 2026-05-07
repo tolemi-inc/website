@@ -483,13 +483,13 @@ export default config({
         }),
         client: fields.text({ label: 'Client / Organization' }),
         publishedDate: fields.date({ label: 'Published Date' }),
-        tags: fields.array(fields.text({ label: 'Tag' }), {
-          label: 'Tags',
-          itemLabel: (props) => props.value || 'Tag',
-        }),
         relatedSolutions: fields.array(
-          fields.relationship({ label: 'Solution', collection: 'solutions' }),
-          { label: 'Related Solutions', itemLabel: (props) => props.value || 'Solution' }
+          fields.relationship({ label: 'Use Case', collection: 'solutions' }),
+          {
+            label: 'Use Cases',
+            description: 'Tag this case study with the use cases it relates to. These are the only tags shown on case study cards and drive filtering.',
+            itemLabel: (props) => props.value || 'Use Case',
+          }
         ),
         relatedProducts: fields.array(
           fields.relationship({ label: 'Product', collection: 'products' }),
