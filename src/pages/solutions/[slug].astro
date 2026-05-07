@@ -35,7 +35,12 @@ const features = (solution.features || []).map((f) => ({
 ---
 
 <Base title={solution.title}>
-  <PageHero headline={solution.headline} subheadline={solution.subheadline} />
+  <PageHero
+    headline={solution.headline}
+    subheadline={solution.subheadline}
+    image={solution.image}
+    imageAlt={solution.title}
+  />
 
   <section class="py-16 md:py-20 px-6">
     <div class="max-w-3xl mx-auto reveal prose prose-lg text-text-secondary">

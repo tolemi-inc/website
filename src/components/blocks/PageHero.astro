@@ -2,9 +2,11 @@
 interface Props {
   headline: string;
   subheadline?: string;
+  image?: string | null;
+  imageAlt?: string;
 }
 
-const { headline, subheadline } = Astro.props;
+const { headline, subheadline, image, imageAlt } = Astro.props;
 ---
 
 <section class="relative pt-44 pb-20 md:pt-52 md:pb-28 px-6 overflow-hidden z-0">
@@ -15,4 +17,13 @@ const { headline, subheadline } = Astro.props;
       <p class="text-lg md:text-xl text-text-secondary max-w-2xl mx-auto leading-relaxed">{subheadline}</p>
     )}
   </div>
+  {image && (
+    <div class="relative mt-14 md:mt-20 max-w-5xl mx-auto reveal">
+      <img
+        src={image}
+        alt={imageAlt ?? headline}
+        class="w-full h-auto rounded-2xl shadow-xl shadow-tolemi-dark/10 border border-text-muted/10"
+      />
+    </div>
+  )}
 </section>
