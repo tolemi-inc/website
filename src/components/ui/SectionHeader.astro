@@ -1,19 +1,15 @@
 ---
 interface Props {
-  eyebrow?: string;
   heading: string;
   subtitle?: string;
-  eyebrowColor?: string;
   headingColor?: string;
   subtitleColor?: string;
   align?: "center" | "left";
   size?: "lg" | "md";
 }
 const {
-  eyebrow,
   heading,
   subtitle,
-  eyebrowColor = "text-tolemi-sky-600",
   headingColor = "text-text-primary",
   subtitleColor = "text-text-secondary",
   align = "center",
@@ -30,11 +26,6 @@ const subtitleMaxW =
 ---
 
 <div class={`${alignClass} mb-14 md:mb-20 reveal`}>
-  {eyebrow && (
-    <p class={`text-xs font-semibold tracking-widest uppercase ${eyebrowColor} mb-4`}>
-      {eyebrow}
-    </p>
-  )}
   <h2
     class={`font-heading ${headingSize} font-bold ${headingColor} tracking-tight mb-5`}
   >
