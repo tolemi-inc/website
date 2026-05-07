@@ -21,18 +21,14 @@
       ]
     },
     {
-      "label": "Blog",
-      "href": "/blog",
-      "children": [
-        {
-          "label": "Spotlight",
-          "href": "/blog/spotlight"
-        },
-        {
-          "label": "Case Studies",
-          "href": "/blog/case-studies"
-        }
-      ]
+      "label": "Spotlight",
+      "href": "/blog/spotlight",
+      "children": []
+    },
+    {
+      "label": "Case Studies",
+      "href": "/blog/case-studies",
+      "children": []
     },
     {
       "label": "About Tolemi",

@@ -11,7 +11,6 @@ import InsightsMap from "./InsightsMap.astro";
     <div class="sticky top-0 min-h-screen flex items-center">
       <div class="w-full py-20 md:py-28 px-6">
         <SectionHeader
-          eyebrow="Tolemi Insights"
           heading="Actionable Insights, Instantly."
           subtitle="Filter properties by sale price, date, occupancy, and more — see matching parcels highlight on the map in real time."
         />
@@ -302,9 +301,24 @@ import InsightsMap from "./InsightsMap.astro";
       detailsPanel.classList.remove("opacity-100");
     }
 
-    // Slider interaction — user takes over from scroll
-    [priceMin, priceMax, dateMin, dateMax].forEach((input) => {
-      input.addEventListener("input", () => {
+    // Slider interaction — user takes over from scroll.
+    // Clamp each pair so the min thumb can't pass the max thumb (and vice versa).
+    const sliderPairs: [HTMLInputElement, HTMLInputElement][] = [
+      [priceMin, priceMax],
+      [dateMin, dateMax],
+    ];
+    sliderPairs.forEach(([minInput, maxInput]) => {
+      minInput.addEventListener("input", () => {
+        if (Number(minInput.value) > Number(maxInput.value)) {
+          minInput.value = maxInput.value;
+        }
+        userTookOverSliders = true;
+        applyFilters();
+      });
+      maxInput.addEventListener("input", () => {
+        if (Number(maxInput.value) < Number(minInput.value)) {
+          maxInput.value = minInput.value;
+        }
         userTookOverSliders = true;
         applyFilters();
       });
