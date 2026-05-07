@@ -1,6 +1,17 @@
 ---
+import {
+  useCaseColorClasses,
+  type UseCaseColor,
+} from "../../lib/useCaseColors";
+
+export interface TagItem {
+  label: string;
+  href?: string;
+  color?: UseCaseColor;
+}
+
 interface Props {
-  tags: readonly string[];
+  tags: readonly (string | TagItem)[];
   size?: "sm" | "md";
 }
 
@@ -8,16 +19,37 @@ const { tags, size = "md" } = Astro.props;
 
 const sizeClasses =
   size === "sm" ? "text-[10px] px-2 py-0.5" : "text-xs px-2.5 py-1";
+
+const defaultClasses =
+  "bg-tolemi-sky/8 text-tolemi-sky-600 border-tolemi-sky/15";
+
+const normalized = (tags || []).map((t) =>
+  typeof t === "string" ? { label: t } : t
+);
 ---
 
-{tags && tags.length > 0 && (
+{normalized.length > 0 && (
   <ul class="flex flex-wrap gap-1.5">
-    {tags.map((tag) => (
-      <li
-        class={`${sizeClasses} rounded-full bg-tolemi-sky/8 text-tolemi-sky-600 border border-tolemi-sky/15 font-medium tracking-wide`}
-      >
-        {tag}
-      </li>
-    ))}
+    {normalized.map((tag) => {
+      const colorClasses = tag.color
+        ? useCaseColorClasses[tag.color]
+        : defaultClasses;
+      const baseClasses = `${sizeClasses} inline-block rounded-full border font-medium tracking-wide ${colorClasses}`;
+      return (
+        <li>
+          {tag.href ? (
+            <a
+              href={tag.href}
+              class={`${baseClasses} transition-colors`}
+              data-use-case-tag={tag.href.includes("tag=") ? tag.href.split("tag=")[1] : undefined}
+            >
+              {tag.label}
+            </a>
+          ) : (
+            <span class={baseClasses}>{tag.label}</span>
+          )}
+        </li>
+      );
+    })}
   </ul>
 )}

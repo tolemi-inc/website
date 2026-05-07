@@ -455,6 +455,14 @@ export default config({
           publicPath: '/uploads/blog/',
         }),
         publishedDate: fields.date({ label: 'Published Date' }),
+        useCases: fields.array(
+          fields.relationship({ label: 'Use Case', collection: 'solutions' }),
+          {
+            label: 'Use Cases',
+            description: 'Tag this post with the use cases it relates to. These are the only tags shown on the spotlight page and drive filtering.',
+            itemLabel: (props) => props.value || 'Use Case',
+          }
+        ),
         body: fields.markdoc({ label: 'Body' }),
       },
     }),
