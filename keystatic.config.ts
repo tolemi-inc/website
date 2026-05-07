@@ -36,6 +36,25 @@ const navChild = fields.object(
   { label: 'Nav Child Link' }
 );
 
+// Image with required alt text. Use `imageWithAlt({ directory, publicPath })`
+// anywhere you'd previously have used `fields.image()` directly.
+const imageWithAlt = (opts: { label?: string; directory: string; publicPath: string }) =>
+  fields.object(
+    {
+      src: fields.image({
+        label: 'Image',
+        directory: opts.directory,
+        publicPath: opts.publicPath,
+      }),
+      alt: fields.text({
+        label: 'Alt text',
+        description:
+          'Describe the image for screen readers and SEO. Leave blank only if the image is purely decorative.',
+      }),
+    },
+    { label: opts.label || 'Image' }
+  );
+
 const featureBlock = fields.object(
   {
     title: fields.text({ label: 'Title', validation: { isRequired: true } }),
@@ -53,12 +72,11 @@ const featureBlock = fields.object(
       },
     }),
     images: fields.array(
-      fields.image({
-        label: 'Image',
+      imageWithAlt({
         directory: 'public/uploads/features',
         publicPath: '/uploads/features/',
       }),
-      { label: 'Images', itemLabel: (props) => props.value?.filename || 'Image' }
+      { label: 'Images', itemLabel: (props) => props.fields.src.value?.filename || 'Image' }
     ),
   },
   { label: 'Feature' }
@@ -279,7 +297,7 @@ export default config({
               name: fields.text({ label: 'Name', validation: { isRequired: true } }),
               title: fields.text({ label: 'Title' }),
               bio: fields.text({ label: 'Bio', multiline: true }),
-              photo: fields.image({
+              photo: imageWithAlt({
                 label: 'Photo',
                 directory: 'public/uploads',
                 publicPath: '/uploads/',
@@ -421,8 +439,8 @@ export default config({
         title: fields.slug({ name: { label: 'Page Title' } }),
         headline: fields.text({ label: 'Headline' }),
         subheadline: fields.text({ label: 'Subheadline' }),
-        image: fields.image({
-          label: 'Image',
+        image: imageWithAlt({
+          label: 'Header Image',
           directory: 'public/uploads/products',
           publicPath: '/uploads/products/',
         }),
@@ -452,8 +470,8 @@ export default config({
         title: fields.slug({ name: { label: 'Page Title' } }),
         headline: fields.text({ label: 'Headline' }),
         subheadline: fields.text({ label: 'Subheadline' }),
-        image: fields.image({
-          label: 'Image',
+        image: imageWithAlt({
+          label: 'Header Image',
           directory: 'public/uploads/solutions',
           publicPath: '/uploads/solutions/',
         }),
@@ -481,7 +499,7 @@ export default config({
       schema: {
         title: fields.slug({ name: { label: 'Title' } }),
         description: fields.text({ label: 'Description', multiline: true }),
-        image: fields.image({
+        image: imageWithAlt({
           label: 'Cover Image',
           directory: 'public/uploads/blog',
           publicPath: '/uploads/blog/',
@@ -508,7 +526,7 @@ export default config({
         title: fields.slug({ name: { label: 'Title' } }),
         subtitle: fields.text({ label: 'Subtitle (e.g. City, State)' }),
         description: fields.text({ label: 'Description', multiline: true }),
-        image: fields.image({
+        image: imageWithAlt({
           label: 'Cover Image',
           directory: 'public/uploads/blog',
           publicPath: '/uploads/blog/',

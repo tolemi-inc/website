@@ -83,10 +83,14 @@ const otherPosts = allPosts
 <Base title={post.title}>
   <PageHero headline={post.title} subheadline={post.subtitle || post.description} />
 
-  {post.image && (
+  {post.image?.src && (
     <section class="px-6">
       <div class="max-w-4xl mx-auto reveal -mt-8">
-        <img src={post.image} alt={post.title} class="w-full rounded-2xl border border-black/[0.06]" />
+        <img
+          src={post.image.src}
+          alt={post.image.alt?.trim() ? post.image.alt : post.title}
+          class="w-full rounded-2xl border border-black/[0.06]"
+        />
       </div>
     </section>
   )}

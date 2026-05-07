@@ -3,7 +3,7 @@ interface Member {
   name: string;
   title?: string;
   bio?: string;
-  photo?: string;
+  photo?: { src: string | null; alt?: string } | null;
 }
 
 interface Props {
@@ -19,8 +19,12 @@ const { members } = Astro.props;
       {members.map((member) => (
         <div class="bg-white rounded-2xl border border-black/[0.06] p-8 text-center reveal">
           <div class="w-24 h-24 mx-auto mb-5 rounded-full bg-gradient-to-br from-tolemi-yellow/15 to-tolemi-sky/15 flex items-center justify-center overflow-hidden">
-            {member.photo ? (
-              <img src={member.photo} alt={member.name} class="w-full h-full object-cover rounded-full" />
+            {member.photo?.src ? (
+              <img
+                src={member.photo.src}
+                alt={member.photo.alt?.trim() ? member.photo.alt : member.name}
+                class="w-full h-full object-cover rounded-full"
+              />
             ) : (
               <span class="text-3xl font-bold text-tolemi-sky-600/60">
                 {member.name.split(' ').map(n => n[0]).join('')}
