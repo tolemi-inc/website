@@ -1,8 +1,8 @@
-const cardStyles = [
-  { border: 'border-tolemi-sky/25', bg: 'bg-gradient-to-br from-tolemi-sky/10 via-transparent to-transparent', accent: 'text-tolemi-sky-600' },
-  { border: 'border-tolemi-green/25', bg: 'bg-gradient-to-br from-tolemi-green/10 via-transparent to-transparent', accent: 'text-tolemi-green' },
-  { border: 'border-tolemi-red/25', bg: 'bg-gradient-to-br from-tolemi-red/10 via-transparent to-transparent', accent: 'text-tolemi-red' },
-  { border: 'border-tolemi-yellow/25', bg: 'bg-gradient-to-br from-tolemi-yellow/10 via-transparent to-transparent', accent: 'text-tolemi-yellow-600' },
+const accents = [
+  'text-tolemi-sky',
+  'text-tolemi-green',
+  'text-tolemi-red',
+  'text-tolemi-yellow',
 ];
 
 interface StatCardProps {
@@ -12,17 +12,22 @@ interface StatCardProps {
 }
 
 export default function StatCard({ value, label, index }: StatCardProps) {
-  const style = cardStyles[index % cardStyles.length];
+  const accent = accents[index % accents.length];
 
   return (
     <div
-      className={`text-center p-8 md:p-10 rounded-2xl border backdrop-blur-sm reveal ${style.border} ${style.bg}`}
+      className="flex flex-col items-center justify-center text-center p-8 md:p-10 rounded-2xl reveal bg-tolemi-dark shadow-lg shadow-tolemi-dark/15 min-h-[220px] md:min-h-[260px]"
       style={{ transitionDelay: `${index * 100}ms` }}
     >
-      <div className={`font-heading text-4xl md:text-5xl font-bold mb-3 ${style.accent}`}>
+      <div
+        className={`font-heading text-5xl md:text-6xl lg:text-7xl font-extrabold ${accent}`}
+        style={{ fontVariantNumeric: 'tabular-nums' }}
+      >
         {value}
       </div>
-      <div className="text-sm text-text-secondary">{label}</div>
+      <div className="mt-3 text-xs md:text-sm font-semibold uppercase tracking-wider text-white/95">
+        {label}
+      </div>
     </div>
   );
 }

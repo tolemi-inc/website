@@ -47,24 +47,6 @@
       }
     },
     {
-      "discriminant": "testimonials",
-      "value": {
-        "heading": "What Our Partners Say",
-        "items": [
-          {
-            "quote": "Tolemi transformed how we approach budget planning. We went from weeks of spreadsheet wrangling to real-time dashboards overnight.",
-            "author": "Jamie Rodriguez",
-            "role": "City Manager, Maplewood"
-          },
-          {
-            "quote": "The team at Tolemi genuinely understands the challenges local governments face. Their platform is built for us, not adapted from the private sector.",
-            "author": "Priya Kapoor",
-            "role": "Director of Public Works, Lakeville"
-          }
-        ]
-      }
-    },
-    {
       "discriminant": "cta",
       "value": {
         "heading": "Ready to Transform Your City's Data?",
