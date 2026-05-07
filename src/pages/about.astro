@@ -4,7 +4,7 @@ import PageHero from "../components/blocks/PageHero.astro";
 import CallToAction from "../components/blocks/CallToAction.astro";
 import { createReader } from '@keystatic/core/reader';
 import keystaticConfig from '../../keystatic.config';
-import Markdoc from '@markdoc/markdoc';
+import { renderRichtext } from '../lib/richtext';
 
 export const prerender = true;
 
@@ -13,7 +13,7 @@ const aboutData = await reader.singletons.aboutPage.read();
 if (!aboutData) throw new Error('About page data not found');
 
 const historyBody = await aboutData.historyBody();
-const historyHtml = Markdoc.renderers.html(Markdoc.transform(historyBody.node));
+const historyHtml = renderRichtext(historyBody.node);
 ---
 
 <Base title={aboutData.title}>
@@ -22,7 +22,7 @@ const historyHtml = Markdoc.renderers.html(Markdoc.transform(historyBody.node));
   <section class="py-16 md:py-20 px-6">
     <div class="max-w-3xl mx-auto reveal">
       {aboutData.historyHeading && <h2 class="font-heading text-3xl md:text-4xl font-bold text-text-primary mb-6">{aboutData.historyHeading}</h2>}
-      <div class="prose prose-lg text-text-secondary">
+      <div class="richtext">
         <Fragment set:html={historyHtml} />
       </div>
     </div>

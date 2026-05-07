@@ -1,16 +1,23 @@
 ---
-interface Props {
-  images: string[];
-  alt?: string;
+interface CarouselImage {
+  src: string;
+  alt: string;
 }
 
-const { images, alt = "" } = Astro.props;
+interface Props {
+  images: CarouselImage[];
+  fallbackAlt?: string;
+}
+
+const { images, fallbackAlt = "" } = Astro.props;
 const id = `carousel-${Math.random().toString(36).slice(2, 10)}`;
+const altFor = (img: CarouselImage, i: number) =>
+  img.alt?.trim() || (fallbackAlt ? `${fallbackAlt} — image ${i + 1}` : "");
 ---
 
 {images.length === 1 && (
   <div class="rounded-2xl overflow-hidden border border-black/[0.06] bg-surface-secondary">
-    <img src={images[0]} alt={alt} class="w-full h-auto" />
+    <img src={images[0].src} alt={altFor(images[0], 0)} class="w-full h-auto" />
   </div>
 )}
 
@@ -21,11 +28,11 @@ const id = `carousel-${Math.random().toString(36).slice(2, 10)}`;
       data-carousel-track={id}
       style="scrollbar-width: none; -ms-overflow-style: none;"
     >
-      {images.map((src, i) => (
+      {images.map((img, i) => (
         <div class="snap-start shrink-0 w-full">
           <img
-            src={src}
-            alt={`${alt} ${i + 1}`}
+            src={img.src}
+            alt={altFor(img, i)}
             class="w-full h-auto rounded-2xl border border-black/[0.06] bg-surface-secondary"
           />
         </div>
