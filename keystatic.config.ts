@@ -105,6 +105,11 @@ export default config({
       format: { data: 'json' },
       schema: {
         companyName: fields.text({ label: 'Company Name' }),
+        demoBookingUrl: fields.url({
+          label: 'Demo Booking URL',
+          description: 'Google appointment-schedule link. All "Get a Demo" CTAs open this in a new tab.',
+          validation: { isRequired: true },
+        }),
         nav: fields.array(
           fields.object(
             {
