@@ -16,7 +16,7 @@ export default function StatCard({ value, label, index }: StatCardProps) {
 
   return (
     <div
-      className="flex flex-col items-center justify-center text-center p-8 md:p-10 rounded-2xl reveal bg-tolemi-dark min-h-[220px] md:min-h-[260px]"
+      className="flex flex-col items-center justify-center text-center p-8 md:p-10 rounded-2xl reveal bg-tolemi-dark shadow-lg shadow-tolemi-dark/15 min-h-[220px] md:min-h-[260px]"
       style={{ transitionDelay: `${index * 100}ms` }}
     >
       <div
