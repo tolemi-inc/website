@@ -34,7 +34,7 @@ const cards = [
 <div class="space-y-3">
   {
     cards.map((card, i) => (
-      <div class="flex items-center gap-3 p-4 rounded-xl bg-surface border border-text-muted/10 shadow-sm transition-all duration-400" data-card={i}>
+      <div class="detail-card relative flex items-center gap-3 p-4 rounded-xl bg-surface border border-text-muted/10 shadow-sm transition-all duration-400" data-card={i}>
         <div
           class={`w-9 h-9 rounded-lg ${card.bgColor} flex items-center justify-center flex-shrink-0`}
         >
@@ -62,3 +62,32 @@ const cards = [
     ))
   }
 </div>
+
+<style>
+  .detail-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 2px;
+    background: linear-gradient(
+      135deg,
+      var(--gradient-from, transparent),
+      var(--gradient-to, transparent)
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+  .detail-card.is-active::before {
+    opacity: 1;
+  }
+  .detail-card.is-active {
+    border-color: transparent !important;
+  }
+</style>

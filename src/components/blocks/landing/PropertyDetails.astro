@@ -33,24 +33,32 @@ import SectionHeader from "../../ui/SectionHeader.astro";
       type: "numeric",
       format: (v: any) => `${v}`,
       accent: "#0ea5e9",
+      gradientFrom: "#4CD5FF",
+      gradientTo: "#6366F1",
     },
     {
       key: "zoning",
       type: "categorical",
       format: (v: any) => v,
       accent: "#eab308",
+      gradientFrom: "#FFCB1B",
+      gradientTo: "#FF0025",
     },
     {
       key: "assessed_value",
       type: "numeric",
       format: (v: any) => `$${(v / 1000).toFixed(0)}k`,
       accent: "#ef4444",
+      gradientFrom: "#FF0025",
+      gradientTo: "#FFCB1B",
     },
     {
       key: "last_sale_date",
       type: "numeric",
       format: (v: any) => v,
       accent: "#22c55e",
+      gradientFrom: "#37A04F",
+      gradientTo: "#4CD5FF",
     },
   ];
 
@@ -300,7 +308,9 @@ import SectionHeader from "../../ui/SectionHeader.astro";
 
       // Reset all cards
       cards.forEach((c) => {
-        c.style.borderColor = "";
+        c.classList.remove("is-active");
+        c.style.removeProperty("--gradient-from");
+        c.style.removeProperty("--gradient-to");
         c.style.boxShadow = "";
         c.style.transform = "";
       });
@@ -344,8 +354,10 @@ import SectionHeader from "../../ui/SectionHeader.astro";
 
       // Highlight active card
       const card = cards[index];
-      card.style.borderColor = config.accent;
-      card.style.boxShadow = `0 0 0 1px ${config.accent}, 0 4px 12px ${config.accent}33`;
+      card.style.setProperty("--gradient-from", config.gradientFrom);
+      card.style.setProperty("--gradient-to", config.gradientTo);
+      card.classList.add("is-active");
+      card.style.boxShadow = `0 4px 12px ${config.accent}33`;
       card.style.transform = "scale(1.02)";
     }
 
