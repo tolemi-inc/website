@@ -3,7 +3,7 @@
 // Using text placeholders — replace with actual SVGs/PNGs when available
 const investors = [
   { name: "Y Combinator", logo: "/logos/investors/ycombinator.svg", sizeClass: "h-8 md:h-10" },
-  { name: "Lightspeed", logo: "/logos/investors/lightspeed.png", sizeClass: "h-20 md:h-28" },
+  { name: "Lightspeed", logo: "/logos/investors/lightspeed.png", sizeClass: "h-40 md:h-56" },
   { name: "Fika Ventures", logo: "/logos/investors/fika.png", sizeClass: "h-20 md:h-28" },
 ];
 ---
@@ -34,7 +34,7 @@ const investors = [
               <img
                 src={inv.logo}
                 alt={inv.name}
-                class={`${inv.sizeClass} w-auto opacity-60 group-hover:opacity-100 transition-opacity grayscale group-hover:grayscale-0`}
+                class={`${inv.sizeClass} w-auto`}
               />
             ) : (
               <div class="h-10 md:h-12 px-6 flex items-center justify-center bg-surface-secondary rounded-lg border border-text-muted/15">
