@@ -39,10 +39,18 @@
       "value": {
         "heading": "Real Impact, Real Numbers",
         "items": [
-          { "value": "1.2M+", "label": "Properties Tracked" },
-          { "value": "100+", "label": "Municipal Partners" },
-          { "value": "50K+", "label": "Permits Processed" },
-          { "value": "$12M+", "label": "Payments Collected" }
+          {
+            "value": "36M+",
+            "label": "Properties Tracked"
+          },
+          {
+            "value": "100+",
+            "label": "Municipal Partners"
+          },
+          {
+            "value": "150K+",
+            "label": "Payments Processed"
+          }
         ]
       }
     },
