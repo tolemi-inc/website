@@ -25,11 +25,13 @@ const displaySources = pick(sourceGroups);
   <div class="max-w-7xl mx-auto">
     <SectionHeader
       heading="Your Data, Unified"
-      subtitle="Tolemi connects to your city's existing data sources and transforms them into a single, intelligent platform."
+      subtitle="Tolemi connects to your existing data sources and transforms them into an integrated platform."
     />
 
     {/* ===== DESKTOP: single-row horizontal flow ===== */}
-    <div class="hidden md:flex items-center justify-between gap-2 lg:gap-4 reveal max-w-6xl mx-auto">
+    <div
+      class="hidden md:flex items-center justify-between gap-2 lg:gap-4 reveal max-w-6xl mx-auto"
+    >
       <CitySeals
         displaySeals={displaySeals}
         gridCols={3}
@@ -101,10 +103,8 @@ const displaySources = pick(sourceGroups);
       <FlowArrow direction="vertical" />
       <ProductCards variant="mobile" />
     </div>
-
   </div>
 </section>
-
 
 <script>
   import pipelineData from "../../../data/pipeline.json";

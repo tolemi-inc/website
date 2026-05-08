@@ -12,7 +12,7 @@ import InsightsMap from "./InsightsMap.astro";
       <div class="w-full py-20 md:py-28 px-6">
         <SectionHeader
           heading="Actionable Insights, Instantly."
-          subtitle="Filter properties by sale price, date, occupancy, and more — see matching parcels highlight on the map in real time."
+          subtitle="Filter properties by any combination of traits. Drill down to see details about each one."
         />
         <div class="max-w-7xl mx-auto">
           <div
@@ -27,58 +27,124 @@ import InsightsMap from "./InsightsMap.astro";
               class="opacity-0 pointer-events-none transition-all duration-300 md:col-span-2 lg:col-span-1 flex flex-col"
             >
               <!-- Nav above card -->
-              <div id="detail-nav" class="flex items-center justify-between mb-2 px-1 hidden">
-                <span class="text-xs font-semibold text-text-muted uppercase tracking-widest">Property Details</span>
+              <div
+                id="detail-nav"
+                class="flex items-center justify-between mb-2 px-1 hidden"
+              >
+                <span
+                  class="text-xs font-semibold text-text-muted uppercase tracking-widest"
+                  >Property Details</span
+                >
                 <div class="flex items-center gap-2">
-                  <button id="detail-prev" class="w-7 h-7 rounded-full bg-text-muted/10 hover:bg-text-muted/20 flex items-center justify-center transition-colors" aria-label="Previous">
-                    <svg class="w-3.5 h-3.5 text-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
+                  <button
+                    id="detail-prev"
+                    class="w-7 h-7 rounded-full bg-text-muted/10 hover:bg-text-muted/20 flex items-center justify-center transition-colors"
+                    aria-label="Previous"
+                  >
+                    <svg
+                      class="w-3.5 h-3.5 text-text-secondary"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      ><path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2.5"
+                        d="M15 19l-7-7 7-7"></path></svg
+                    >
                   </button>
-                  <span id="detail-pos" class="text-xs font-semibold text-text-muted tabular-nums min-w-[3ch] text-center"></span>
-                  <button id="detail-next" class="w-7 h-7 rounded-full bg-text-muted/10 hover:bg-text-muted/20 flex items-center justify-center transition-colors" aria-label="Next">
-                    <svg class="w-3.5 h-3.5 text-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                  <span
+                    id="detail-pos"
+                    class="text-xs font-semibold text-text-muted tabular-nums min-w-[3ch] text-center"
+                  ></span>
+                  <button
+                    id="detail-next"
+                    class="w-7 h-7 rounded-full bg-text-muted/10 hover:bg-text-muted/20 flex items-center justify-center transition-colors"
+                    aria-label="Next"
+                  >
+                    <svg
+                      class="w-3.5 h-3.5 text-text-secondary"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      ><path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2.5"
+                        d="M9 5l7 7-7 7"></path></svg
+                    >
                   </button>
                 </div>
               </div>
-              <div class="bg-surface rounded-xl border border-text-muted/10 shadow-sm p-5 md:p-6 flex-1 flex flex-col">
+              <div
+                class="bg-surface rounded-xl border border-text-muted/10 shadow-sm p-5 md:p-6 flex-1 flex flex-col"
+              >
                 <h3
                   id="detail-address"
                   class="font-heading text-base font-bold text-text-primary mb-4 leading-tight"
-                ></h3>
+                >
+                </h3>
                 <div class="space-y-2.5 text-sm">
                   <div class="flex justify-between">
                     <span class="text-text-muted">Sale Price</span>
-                    <span id="detail-price" class="font-semibold text-text-primary tabular-nums"></span>
+                    <span
+                      id="detail-price"
+                      class="font-semibold text-text-primary tabular-nums"
+                    ></span>
                   </div>
                   <div class="flex justify-between">
                     <span class="text-text-muted">Assessed Value</span>
-                    <span id="detail-assessed" class="font-semibold text-text-primary tabular-nums"></span>
+                    <span
+                      id="detail-assessed"
+                      class="font-semibold text-text-primary tabular-nums"
+                    ></span>
                   </div>
                   <div class="flex justify-between">
                     <span class="text-text-muted">Last Sale</span>
-                    <span id="detail-date" class="font-semibold text-text-primary"></span>
+                    <span
+                      id="detail-date"
+                      class="font-semibold text-text-primary"></span>
                   </div>
                   <div class="flex justify-between">
                     <span class="text-text-muted">Zoning</span>
-                    <span id="detail-zoning" class="font-semibold text-text-primary"></span>
+                    <span
+                      id="detail-zoning"
+                      class="font-semibold text-text-primary"></span>
                   </div>
                   <div class="flex justify-between">
                     <span class="text-text-muted">Lot Size</span>
-                    <span id="detail-acres" class="font-semibold text-text-primary tabular-nums"></span>
+                    <span
+                      id="detail-acres"
+                      class="font-semibold text-text-primary tabular-nums"
+                    ></span>
                   </div>
                   <div class="flex justify-between">
                     <span class="text-text-muted">Permits (total)</span>
-                    <span id="detail-permits" class="font-semibold text-text-primary tabular-nums"></span>
+                    <span
+                      id="detail-permits"
+                      class="font-semibold text-text-primary tabular-nums"
+                    ></span>
                   </div>
                   <div class="flex justify-between">
                     <span class="text-text-muted">Permits (6 mo)</span>
-                    <span id="detail-permits-recent" class="font-semibold text-text-primary tabular-nums"></span>
+                    <span
+                      id="detail-permits-recent"
+                      class="font-semibold text-text-primary tabular-nums"
+                    ></span>
                   </div>
                   <div class="flex justify-between">
                     <span class="text-text-muted">Police Calls (6 mo)</span>
-                    <span id="detail-calls" class="font-semibold text-text-primary tabular-nums"></span>
+                    <span
+                      id="detail-calls"
+                      class="font-semibold text-text-primary tabular-nums"
+                    ></span>
                   </div>
                 </div>
-                <div id="detail-tags" class="flex flex-wrap gap-1.5 mt-auto pt-3 border-t border-text-muted/10"></div>
+                <div
+                  id="detail-tags"
+                  class="flex flex-wrap gap-1.5 mt-auto pt-3 border-t border-text-muted/10"
+                >
+                </div>
               </div>
             </div>
           </div>
@@ -94,9 +160,13 @@ import InsightsMap from "./InsightsMap.astro";
     if (!section) return;
 
     const mapContainer = document.getElementById("insights-map");
-    const mapParcels = document.querySelectorAll("#insights-map path[data-idx]");
+    const mapParcels = document.querySelectorAll(
+      "#insights-map path[data-idx]",
+    );
     const metaScript = mapContainer?.querySelector("[data-parcel-meta]");
-    const parcelMeta: any[] = metaScript ? JSON.parse(metaScript.textContent || "[]") : [];
+    const parcelMeta: any[] = metaScript
+      ? JSON.parse(metaScript.textContent || "[]")
+      : [];
 
     const priceMin = document.getElementById("price-min") as HTMLInputElement;
     const priceMax = document.getElementById("price-max") as HTMLInputElement;
@@ -108,9 +178,15 @@ import InsightsMap from "./InsightsMap.astro";
     const dateMaxLabel = document.getElementById("date-max-label")!;
     const priceRangeFill = document.getElementById("price-range-fill")!;
     const dateRangeFill = document.getElementById("date-range-fill")!;
-    const filterRental = document.getElementById("filter-rental") as HTMLInputElement;
-    const filterOwner = document.getElementById("filter-owner") as HTMLInputElement;
-    const filterVacant = document.getElementById("filter-vacant") as HTMLInputElement;
+    const filterRental = document.getElementById(
+      "filter-rental",
+    ) as HTMLInputElement;
+    const filterOwner = document.getElementById(
+      "filter-owner",
+    ) as HTMLInputElement;
+    const filterVacant = document.getElementById(
+      "filter-vacant",
+    ) as HTMLInputElement;
     const filterCount = document.getElementById("filter-count")!;
     const detailsPanel = document.getElementById("parcel-details")!;
     const hoverOverlay = document.getElementById("hover-overlay")!;
@@ -130,8 +206,12 @@ import InsightsMap from "./InsightsMap.astro";
     const matchedParcels = new Set<number>();
     let matchedList: number[] = []; // ordered list for cycling
 
-    function lerp(a: number, b: number, t: number) { return a + (b - a) * t; }
-    function clamp01(t: number) { return Math.max(0, Math.min(1, t)); }
+    function lerp(a: number, b: number, t: number) {
+      return a + (b - a) * t;
+    }
+    function clamp01(t: number) {
+      return Math.max(0, Math.min(1, t));
+    }
 
     function formatPrice(v: number): string {
       if (v >= 1_000_000) return `$${(v / 1_000_000).toFixed(1)}M`;
@@ -150,7 +230,7 @@ import InsightsMap from "./InsightsMap.astro";
       const leftPct = ((lo - min) / (max - min)) * 100;
       const rightPct = ((hi - min) / (max - min)) * 100;
       fillEl.style.left = leftPct + "%";
-      fillEl.style.width = (rightPct - leftPct) + "%";
+      fillEl.style.width = rightPct - leftPct + "%";
     }
 
     function applyFilters() {
@@ -181,14 +261,16 @@ import InsightsMap from "./InsightsMap.astro";
         if (!p) return;
 
         const saleYear = new Date(p.last_sale_date).getFullYear();
-        const inPrice = p.property_value >= pMinVal && p.property_value <= pMaxVal;
+        const inPrice =
+          p.property_value >= pMinVal && p.property_value <= pMaxVal;
         const inDate = saleYear >= dMinVal && saleYear <= dMaxVal;
 
         let inCheckbox = true;
         if (anyCheckbox) {
-          inCheckbox = (checkRental && p.is_rental) ||
-                       (checkOwner && p.is_owner_occupied) ||
-                       (checkVacant && p.is_vacant);
+          inCheckbox =
+            (checkRental && p.is_rental) ||
+            (checkOwner && p.is_owner_occupied) ||
+            (checkVacant && p.is_vacant);
         }
 
         const match = inPrice && inDate && inCheckbox;
@@ -209,22 +291,38 @@ import InsightsMap from "./InsightsMap.astro";
       filterCount.textContent = `${matchCount} of ${parcelMeta.length}`;
 
       // Auto-deselect only when scroll is driving selection and the parcel no longer matches
-      if (scrollAutoSelect && selectedIdx >= 0 && !matchedParcels.has(selectedIdx)) {
+      if (
+        scrollAutoSelect &&
+        selectedIdx >= 0 &&
+        !matchedParcels.has(selectedIdx)
+      ) {
         selectParcel(-1);
       }
 
       // Auto-select first match when scroll narrows to a small set
-      if (scrollAutoSelect && matchCount > 0 && matchCount <= 8 && selectedIdx < 0) {
+      if (
+        scrollAutoSelect &&
+        matchCount > 0 &&
+        matchCount <= 8 &&
+        selectedIdx < 0
+      ) {
         selectParcel(matchedList[0]);
       }
 
       // Re-apply selection highlight (selectParcel sets opacity to 1)
       if (selectedIdx >= 0 && mapParcels[selectedIdx]) {
-        (mapParcels[selectedIdx] as SVGElement).setAttribute("fill-opacity", "1");
+        (mapParcels[selectedIdx] as SVGElement).setAttribute(
+          "fill-opacity",
+          "1",
+        );
       }
 
       // Update nav visibility and position indicator
-      if (matchedList.length > 1 && selectedIdx >= 0 && matchedParcels.has(selectedIdx)) {
+      if (
+        matchedList.length > 1 &&
+        selectedIdx >= 0 &&
+        matchedParcels.has(selectedIdx)
+      ) {
         detailNav.classList.remove("hidden");
         const pos = matchedList.indexOf(selectedIdx);
         detailPos.textContent = `${pos + 1} / ${matchedList.length}`;
@@ -240,8 +338,10 @@ import InsightsMap from "./InsightsMap.astro";
 
       // Reset previous selection back to matched opacity
       if (prevIdx >= 0 && prevIdx !== idx && mapParcels[prevIdx]) {
-        (mapParcels[prevIdx] as SVGElement).setAttribute("fill-opacity",
-          matchedParcels.has(prevIdx) ? "0.35" : "0.08");
+        (mapParcels[prevIdx] as SVGElement).setAttribute(
+          "fill-opacity",
+          matchedParcels.has(prevIdx) ? "0.35" : "0.08",
+        );
       }
 
       if (idx >= 0 && mapParcels[idx]) {
@@ -249,9 +349,15 @@ import InsightsMap from "./InsightsMap.astro";
         (mapParcels[idx] as SVGElement).setAttribute("fill-opacity", "1");
 
         // Glowing clone of the selected parcel
-        const glow = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        const glow = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "path",
+        );
         glow.setAttribute("d", mapParcels[idx].getAttribute("d")!);
-        glow.setAttribute("fill", (mapParcels[idx] as SVGElement).getAttribute("fill")!);
+        glow.setAttribute(
+          "fill",
+          (mapParcels[idx] as SVGElement).getAttribute("fill")!,
+        );
         glow.setAttribute("fill-opacity", "0.6");
         glow.setAttribute("stroke", "white");
         glow.setAttribute("stroke-width", "1.5");
@@ -270,14 +376,25 @@ import InsightsMap from "./InsightsMap.astro";
       if (!p) return;
 
       document.getElementById("detail-address")!.textContent = p.street_address;
-      document.getElementById("detail-price")!.textContent = formatPrice(p.property_value);
-      document.getElementById("detail-assessed")!.textContent = formatPrice(p.assessed_value);
+      document.getElementById("detail-price")!.textContent = formatPrice(
+        p.property_value,
+      );
+      document.getElementById("detail-assessed")!.textContent = formatPrice(
+        p.assessed_value,
+      );
       document.getElementById("detail-date")!.textContent = p.last_sale_date;
       document.getElementById("detail-zoning")!.textContent = p.zoning;
-      document.getElementById("detail-acres")!.textContent = p.acres < 0.01 ? "<0.01 ac" : p.acres.toFixed(2) + " ac";
-      document.getElementById("detail-permits")!.textContent = String(p.building_permits);
-      document.getElementById("detail-permits-recent")!.textContent = String(p.count_permits_last_six_months);
-      document.getElementById("detail-calls")!.textContent = String(p.count_police_calls_last_six_months);
+      document.getElementById("detail-acres")!.textContent =
+        p.acres < 0.01 ? "<0.01 ac" : p.acres.toFixed(2) + " ac";
+      document.getElementById("detail-permits")!.textContent = String(
+        p.building_permits,
+      );
+      document.getElementById("detail-permits-recent")!.textContent = String(
+        p.count_permits_last_six_months,
+      );
+      document.getElementById("detail-calls")!.textContent = String(
+        p.count_police_calls_last_six_months,
+      );
 
       const tagsEl = document.getElementById("detail-tags")!;
       tagsEl.innerHTML = "";
@@ -338,7 +455,10 @@ import InsightsMap from "./InsightsMap.astro";
       hoveredIdx = idx;
       hoverOverlay.innerHTML = "";
       if (idx < 0 || !mapParcels[idx]) return;
-      const glow = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      const glow = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "path",
+      );
       glow.setAttribute("d", mapParcels[idx].getAttribute("d")!);
       glow.setAttribute("fill", "white");
       glow.setAttribute("fill-opacity", "0.25");
@@ -370,7 +490,8 @@ import InsightsMap from "./InsightsMap.astro";
     function cycleSelection(delta: number) {
       if (matchedList.length === 0) return;
       const currentPos = matchedList.indexOf(selectedIdx);
-      const nextPos = (currentPos + delta + matchedList.length) % matchedList.length;
+      const nextPos =
+        (currentPos + delta + matchedList.length) % matchedList.length;
       scrollAutoSelect = false;
       selectParcel(matchedList[nextPos]);
       applyFilters();
@@ -394,11 +515,15 @@ import InsightsMap from "./InsightsMap.astro";
         // Phase 1 (0–0.12): price min rises
         const pMinBase = lerp(200000, 800000, clamp01(progress / 0.12));
         // Phase 2 (0.12–0.25): price max drops
-        const pMaxBase = lerp(4000000, 1300000, clamp01((progress - 0.12) / 0.13));
+        const pMaxBase = lerp(
+          4000000,
+          1300000,
+          clamp01((progress - 0.12) / 0.13),
+        );
         // Phase 3 (0.25–0.40): date min rises
         const dMinBase = lerp(1890, 2015, clamp01((progress - 0.25) / 0.15));
         // Phase 4 (0.40–0.55): date max drops
-        const dMaxBase = lerp(2026, 2022, clamp01((progress - 0.40) / 0.15));
+        const dMaxBase = lerp(2026, 2022, clamp01((progress - 0.4) / 0.15));
         // No further tightening — these values already give ~5 matches with rental
         priceMin.value = String(Math.round(pMinBase));
         priceMax.value = String(Math.round(pMaxBase));
@@ -407,7 +532,7 @@ import InsightsMap from "./InsightsMap.astro";
       }
       // Phase 5 (0.55–0.65): rental checkbox (only if user hasn't taken over)
       if (!userTookOverCheckboxes) {
-        filterRental.checked = progress > 0.60;
+        filterRental.checked = progress > 0.6;
         filterOwner.checked = false;
         filterVacant.checked = false;
       }
