@@ -21,6 +21,12 @@ interface Props {
 
 const { basePath, items, emptyMessage = "No posts yet — check back soon." } = Astro.props;
 
+const cardGradients = [
+  "from-tolemi-sky-600 to-tolemi-sky",
+  "from-tolemi-red to-tolemi-yellow",
+  "from-tolemi-yellow to-tolemi-sky",
+];
+
 const formatDate = (iso?: string | null) => {
   if (!iso) return "";
   const d = new Date(iso);
@@ -35,7 +41,7 @@ const formatDate = (iso?: string | null) => {
       <p class="text-center text-text-secondary">{emptyMessage}</p>
     ) : (
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {items.map((item) => (
+        {items.map((item, i) => (
           <article
             class="blog-card group relative flex flex-col bg-white rounded-2xl border border-black/[0.06] overflow-hidden hover:shadow-lg hover:shadow-black/[0.06] hover:border-tolemi-sky/20 transition-all duration-300"
             data-tags={item.filterTags ? item.filterTags.join(" ") : undefined}
@@ -50,6 +56,7 @@ const formatDate = (iso?: string | null) => {
               </div>
             )}
             <div class="p-8 flex flex-col flex-1">
+              <div class={`w-8 h-1 rounded-full bg-gradient-to-r ${cardGradients[i % cardGradients.length]} mb-5`}></div>
               {(item.publishedDate || item.meta) && (
                 <p class="text-xs font-semibold tracking-widest uppercase text-tolemi-sky-600 mb-3">
                   {item.meta || formatDate(item.publishedDate)}
