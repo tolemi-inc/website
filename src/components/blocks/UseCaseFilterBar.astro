@@ -29,9 +29,9 @@ const { basePath, options } = Astro.props;
       <a
         href={basePath}
         data-filter=""
-        class="filter-pill text-xs px-3 py-1.5 rounded-full border font-medium tracking-wide transition-colors bg-white text-text-secondary border-black/10 hover:bg-tolemi-light"
-        data-inactive-class="bg-white text-text-secondary border-black/10 hover:bg-tolemi-light"
-        data-active-class="bg-tolemi-dark text-white border-tolemi-dark"
+        class="filter-pill text-xs px-3 py-1.5 rounded-full font-semibold tracking-wide transition-all shadow-sm shadow-black/5 bg-white text-text-secondary hover:bg-tolemi-light"
+        data-inactive-class="bg-white text-text-secondary hover:bg-tolemi-light"
+        data-active-class="bg-tolemi-dark text-white"
       >
         All
       </a>
@@ -39,7 +39,7 @@ const { basePath, options } = Astro.props;
         <a
           href={`${basePath}?tag=${encodeURIComponent(opt.slug)}`}
           data-filter={opt.slug}
-          class={`filter-pill text-xs px-3 py-1.5 rounded-full border font-medium tracking-wide transition-colors ${useCaseColorClasses[opt.color]}`}
+          class={`filter-pill text-xs px-3 py-1.5 rounded-full font-semibold tracking-wide transition-all shadow-sm shadow-black/5 ${useCaseColorClasses[opt.color]}`}
           data-inactive-class={useCaseColorClasses[opt.color]}
           data-active-class={useCaseActiveClasses[opt.color]}
         >
