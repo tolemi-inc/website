@@ -1,11 +1,14 @@
 ---
-// LandingBody — all sections on the landing page
+// LandingBody — all sections on the landing page, in narrative order:
+// mission → story graph → products → registration → how we work → why us
+// → cities → investors → CTA.
 
-import Hero from "./Hero.astro";
-import Products from "./landing/Products.astro";
-import Pipeline from "./landing/Pipeline.astro";
-import PropertyDetails from "./landing/PropertyDetails.astro";
-import Insights from "./landing/Insights.astro";
+import HeroGraph from "./landing/HeroGraph.astro";
+import StoryGraph from "./landing/StoryGraph.astro";
+import ProductTabs from "./landing/ProductTabs.astro";
+import RegistrationSpotlight from "./landing/RegistrationSpotlight.astro";
+import HowWeWork from "./landing/HowWeWork.astro";
+import WhyUs from "./landing/WhyUs.astro";
 import CityLogos from "./CityLogos.astro";
 import Stats from "./landing/Stats.astro";
 import Investors from "./Investors.astro";
@@ -13,37 +16,54 @@ import CallToAction from "./CallToAction.astro";
 
 interface Props {
   hero?: { headline: string; subheadline?: string; ctaText?: string; ctaLink?: string };
-  features?: { heading?: string; subheading?: string; items?: any[] };
+  story?: { heading?: string; subheading?: string; stages?: any[]; layers?: any[] };
+  products?: { heading?: string; subheading?: string; items?: any[] };
+  registration?: {
+    eyebrow?: string;
+    heading: string;
+    body?: string;
+    bullets?: any[];
+    imagePath?: string;
+    imageAlt?: string;
+    ctaText?: string;
+    ctaLink?: string;
+  };
+  howWeWork?: { heading?: string; subheading?: string; steps?: any[]; closing?: string };
+  whyUs?: { heading?: string; body?: string; points?: any[] };
+  logos?: { heading?: string; subheading?: string };
   stats?: { heading?: string; items?: any[] };
   cta?: { heading: string; text?: string; buttonText?: string; buttonLink?: string };
 }
 
-const { hero, stats, cta } = Astro.props;
+const { hero, story, products, registration, howWeWork, whyUs, logos, stats, cta } = Astro.props;
 ---
 
-{/* Hero */}
-{hero && <Hero {...hero} />}
+{/* Mission hero — the ownership graph over the mission statement */}
+{hero && <HeroGraph {...hero} />}
 
-{/* Products — What is Tolemi? */}
-<Products />
+{/* Story graph — data → insights → workflows → action */}
+{story && <StoryGraph {...story} />}
 
-{/* Pipeline — Your Data, Unified */}
-<Pipeline />
+{/* Products — Slate, BuildingBlocks, PubliCity */}
+{products && <ProductTabs {...products} />}
 
-{/* Property Details — Every Property. Every Detail. */}
-<PropertyDetails />
+{/* Property registration spotlight */}
+{registration && <RegistrationSpotlight {...registration} />}
 
-{/* Insights — Tolemi Insights typewriter */}
-<Insights />
+{/* How we work — turnkey lifecycle */}
+{howWeWork && <HowWeWork {...howWeWork} />}
+
+{/* Why us */}
+{whyUs && <WhyUs {...whyUs} />}
 
 {/* City logos — Trusted by Cities Nationwide */}
-<CityLogos />
+{logos && <CityLogos {...logos} />}
 
-{/* Stats — Trusted by Growing Cities */}
+{/* Stats — only renders if a stats block exists in the CMS */}
 {stats && <Stats {...stats} />}
 
 {/* Investors */}
 <Investors />
 
-{/* CTA — Ready to Transform Your Data? */}
+{/* CTA */}
 {cta && <CallToAction {...cta} />}

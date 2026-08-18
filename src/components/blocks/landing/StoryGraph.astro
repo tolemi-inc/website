@@ -1,0 +1,126 @@
+---
+// Story graph — data → insights → workflows → action, with the product
+// layers underneath: layer 1 spans stages 1–2, layer 2 spans stages 3–4,
+// layer 3 spans the full width (transparency layer).
+// Animation is a one-time scroll reveal (.reveal), never scroll-linked.
+import SectionHeader from "../../ui/SectionHeader.astro";
+
+interface Stage {
+  label: string;
+  detail?: string;
+}
+interface Layer {
+  name: string;
+  role?: string;
+  detail?: string;
+}
+interface Props {
+  heading?: string;
+  subheading?: string;
+  stages?: Stage[];
+  layers?: Layer[];
+  stageAccents?: string[];
+  layerGradients?: string[];
+}
+
+const {
+  heading = "From Data to Action",
+  subheading,
+  stages = [],
+  layers = [],
+  stageAccents = [
+    "from-tolemi-sky-400 to-tolemi-sky-600",
+    "from-tolemi-sky-600 to-tolemi-indigo-400",
+    "from-tolemi-indigo-400 to-tolemi-indigo-600",
+    "from-tolemi-indigo-600 to-tolemi-coral-400",
+  ],
+  layerGradients = [
+    "from-tolemi-sky-500 to-tolemi-indigo-500",
+    "from-tolemi-indigo-500 to-tolemi-coral-500",
+    "from-tolemi-green-500 to-tolemi-sky-500",
+  ],
+} = Astro.props;
+
+const [foundation, action, transparency] = layers;
+---
+
+<section class="py-20 md:py-32 px-6 bg-surface-secondary relative overflow-hidden">
+  <div class="max-w-6xl mx-auto">
+    <SectionHeader heading={heading} subtitle={subheading} />
+
+    {/* Stages */}
+    <div class="grid md:grid-cols-4 gap-4 md:gap-0 reveal">
+      {stages.map((stage, i) => (
+        <div class="relative flex md:block items-stretch">
+          <div class="flex-1 bg-surface rounded-2xl border border-text-muted/10 shadow-sm p-6 md:mx-3 h-full">
+            <div class={`w-8 h-1 rounded-full bg-gradient-to-r ${stageAccents[i % stageAccents.length]} mb-4`}></div>
+            <h3 class="font-heading text-lg font-bold text-text-primary mb-2">{stage.label}</h3>
+            {stage.detail && (
+              <p class="text-sm text-text-secondary leading-relaxed">{stage.detail}</p>
+            )}
+          </div>
+          {i < stages.length - 1 && (
+            <div
+              class="hidden md:flex absolute top-1/2 -right-2.5 -translate-y-1/2 z-10 w-5 h-5 items-center justify-center text-text-muted"
+              aria-hidden="true"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+              </svg>
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+
+    {/* Product layer bars */}
+    <div class="mt-6 grid md:grid-cols-2 gap-4 md:gap-6 reveal">
+      {foundation && (
+        <div class="md:mx-3">
+          <div class={`rounded-xl bg-gradient-to-r ${layerGradients[0]} p-[1.5px]`}>
+            <div class="rounded-[calc(0.75rem-1.5px)] bg-surface px-6 py-4 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+              <span class="font-heading font-bold text-text-primary">{foundation.name}</span>
+              {foundation.role && (
+                <span class="text-xs font-semibold uppercase tracking-wider text-tolemi-sky-600">{foundation.role}</span>
+              )}
+              {foundation.detail && (
+                <span class="w-full text-sm text-text-secondary">{foundation.detail}</span>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+      {action && (
+        <div class="md:mx-3">
+          <div class={`rounded-xl bg-gradient-to-r ${layerGradients[1]} p-[1.5px]`}>
+            <div class="rounded-[calc(0.75rem-1.5px)] bg-surface px-6 py-4 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+              <span class="font-heading font-bold text-text-primary">{action.name}</span>
+              {action.role && (
+                <span class="text-xs font-semibold uppercase tracking-wider text-tolemi-indigo-500">{action.role}</span>
+              )}
+              {action.detail && (
+                <span class="w-full text-sm text-text-secondary">{action.detail}</span>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+
+    {transparency && (
+      <div class="mt-4 md:mt-6 md:mx-3 reveal">
+        <div class={`rounded-xl bg-gradient-to-r ${layerGradients[2]} p-[1.5px]`}>
+          <div class="rounded-[calc(0.75rem-1.5px)] bg-surface px-6 py-4 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+            <span class="font-heading font-bold text-text-primary">{transparency.name}</span>
+            {transparency.role && (
+              <span class="text-xs font-semibold uppercase tracking-wider text-tolemi-green-600">{transparency.role}</span>
+            )}
+            {transparency.detail && (
+              <span class="w-full text-sm text-text-secondary">{transparency.detail}</span>
+            )}
+          </div>
+        </div>
+      </div>
+    )}
+  </div>
+</section>

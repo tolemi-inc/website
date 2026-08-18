@@ -4,62 +4,179 @@
     {
       "discriminant": "hero",
       "value": {
-        "headline": "Smarter Cities Start with Better Data",
-        "subheadline": "Tolemi helps city governments unlock the power of their data to make faster, better informed decisions for the future of their communities.",
-        "ctaText": "Request a Demo Now",
+        "headline": "We help local governments create and run data-driven programs that protect tenants, increase housing supply, preserve affordability, and revitalize neighborhoods.",
+        "subheadline": "From property registration to affordable housing, Tolemi delivers the data, the workflows, and the hands-on support to take a housing program from idea to impact.",
+        "ctaText": "Talk to Us",
         "ctaLink": "https://calendar.app.google/ADWYkErAkBkvTd9C6"
       }
     },
     {
-      "discriminant": "features",
+      "discriminant": "story",
       "value": {
-        "heading": "Why City Leaders Choose Tolemi",
-        "subheading": "Modern SAAS purpose-built to put rich municipal data to use.",
+        "heading": "From Data to Action",
+        "subheading": "Housing programs run on connected data. Tolemi turns the records your city already has into insights, workflows, and results on the ground.",
+        "stages": [
+          {
+            "label": "Data",
+            "detail": "Property, sales, assessment, code violations, 311 service calls, rental records — connected across every department."
+          },
+          {
+            "label": "Insights",
+            "detail": "Owner timelines, linked portfolios, likely rentals, and risk indicators derived automatically."
+          },
+          {
+            "label": "Workflows",
+            "detail": "Registration portals, inspections, outreach campaigns, payment collection, and compliance tracking."
+          },
+          {
+            "label": "Action",
+            "detail": "Programs launched, violations resolved, and safer housing in your community."
+          }
+        ],
+        "layers": []
+      }
+    },
+    {
+      "discriminant": "products",
+      "value": {
+        "heading": "One Platform, Three Layers",
+        "subheading": "Cities don't need another application — they need a program that works. Our products are how we deliver it.",
         "items": [
           {
-            "title": "Location Intelligence",
-            "description": "See every property in context — zoning, districts, representatives, and geographic details at a glance.",
-            "icon": "📊"
+            "name": "Slate",
+            "tagline": "Workflows & Action",
+            "description": "Slate runs your housing programs end to end — long-term and short-term rental registration, affordable housing initiatives, and land bank programs. It manages the whole lifecycle: registration portals, inspections, email and mail outreach, payment collection, and compliance tracking.",
+            "bullets": [
+              "Registration and licensing portal with online payments",
+              "Inspection scheduling and case management",
+              "Email and mail outreach campaigns",
+              "Compliance and program-efficacy analytics"
+            ],
+            "imagePath": "",
+            "imageAlt": ""
           },
           {
-            "title": "Ownership Tracking",
-            "description": "Trace the full chain of property ownership over time, with linked entities and associated addresses.",
-            "icon": "⚡"
+            "name": "BuildingBlocks",
+            "tagline": "Data & Insights",
+            "description": "BuildingBlocks connects the data your city already has — property, sales, assessment, code violations, 311 service calls — and keeps it current. It links owners across LLCs, builds ownership timelines, and surfaces likely rentals, so your programs start from the full picture.",
+            "bullets": [
+              "Integrates data across departments and formats",
+              "Links owners and entities into full portfolios",
+              "Surfaces likely rentals and risk indicators",
+              "Fuels every workflow in Slate"
+            ],
+            "imagePath": "/screenshots/bbmap.png",
+            "imageAlt": "BuildingBlocks map view of connected city property data"
           },
           {
-            "title": "Assessment Analytics",
-            "description": "Track property values, land use classifications, and assessment trends across your entire portfolio.",
-            "icon": "📄"
+            "name": "PubliCity",
+            "tagline": "Transparency",
+            "description": "PubliCity gives residents a simple public portal to look up properties, view active development projects, and engage with your programs. We configure and customize it so the public sees exactly what you want them to see.",
+            "bullets": [
+              "Public property lookup",
+              "Active development project pages",
+              "Configured and branded for your city"
+            ],
+            "imagePath": "/screenshots/publicity.png",
+            "imageAlt": "PubliCity public portal for property lookup"
           }
         ]
       }
     },
     {
-      "discriminant": "stats",
+      "discriminant": "registration",
       "value": {
-        "heading": "Real Impact, Real Numbers",
-        "items": [
+        "eyebrow": "Property Registration",
+        "heading": "Your property registry, empowered by your data",
+        "body": "Most registries wait for owners to come forward. Tolemi's registry already knows your city — who owns what, what's likely a rental, and where the problems are. It's why most of our new city partnerships start here.",
+        "bullets": [
           {
-            "value": "36M+",
-            "label": "Properties Tracked"
+            "title": "Owner linking",
+            "description": "An owner can't register five buildings that pass and quietly skip the two that don't. Linked ownership reveals the whole portfolio."
           },
           {
-            "value": "100+",
-            "label": "Municipal Partners"
+            "title": "Find every rental",
+            "description": "Likely rentals that never registered are flagged automatically — your registry sees more than the owners who opt in."
           },
           {
-            "value": "150K+",
-            "label": "Payments Processed"
+            "title": "Risk-based inspections",
+            "description": "Problem properties get attention constantly; responsible owners aren't over-burdened. Inspector time goes where it matters."
+          }
+        ],
+        "imagePath": "",
+        "imageAlt": "",
+        "ctaText": "See It on Your Data",
+        "ctaLink": "https://calendar.app.google/ADWYkErAkBkvTd9C6"
+      }
+    },
+    {
+      "discriminant": "howWeWork",
+      "value": {
+        "heading": "Turnkey, From First Meeting to Full Compliance",
+        "subheading": "We do much more than provide tools. We stand up the program with you, and provide ongoing support while you run it.",
+        "steps": [
+          {
+            "title": "Understand",
+            "description": "We start with your ordinance, your goals, and your constraints."
+          },
+          {
+            "title": "Connect your data",
+            "description": "We integrate your systems, hydrate them with external datasets, and connect the dots into usable insights."
+          },
+          {
+            "title": "Stand up the program",
+            "description": "Workflows, registration portal, outreach, and payments: we act as "
+          },
+          {
+            "title": "Train and launch",
+            "description": "We educate your staff and hold your hand through go-live."
+          },
+          {
+            "title": "Measure and improve",
+            "description": "Backend analytics track program efficacy, so every cycle gets better."
+          },
+          {
+            "title": "Support, always",
+            "description": "Ongoing help desk for your staff and continuous adjustments as your program evolves."
+          }
+        ],
+        "closing": "We hold your hand throughout the whole program lifecycle."
+      }
+    },
+    {
+      "discriminant": "whyUs",
+      "value": {
+        "heading": "Not Another Generic Software Vendor",
+        "body": "We are a team of citizens who care: technologists, activists, and former municipal staff who have been doing this work for over ten years. We learned it the hard way, alongside our partners in more than 100 cities, states, and land banks. We bring that network's experience, best practices, and pitfalls to avoid to every new program.",
+        "points": [
+          {
+            "title": "10+ years",
+            "description": "working with local government data and housing programs."
+          },
+          {
+            "title": "100+ municipal partners",
+            "description": "using data to inform decisions and improve housing outcomes across the US"
+          },
+          {
+            "title": "We've sat in your seat",
+            "description": "Some of us worked at municipalities. We build for the people doing the work."
           }
         ]
+      }
+    },
+    {
+      "discriminant": "logos",
+      "value": {
+        "heading": "Trusted by Cities Nationwide",
+        "subheading": "Over 100 municipal governments across the US use Tolemi to understand their data, run their programs, and make smarter decisions."
       }
     },
     {
       "discriminant": "cta",
       "value": {
-        "heading": "Ready to Transform Your City's Data?",
-        "text": "Join the municipalities already using Tolemi to serve their communities better. Schedule a personalized demo today.",
-        "buttonText": "Get Started",
+        "heading": "Tell Us About the Program You Want to Run",
+        "text": "We'll show you what it looks like on your city's own data.",
+        "buttonText": "Talk to Us",
         "buttonLink": "https://calendar.app.google/ADWYkErAkBkvTd9C6"
       }
     }

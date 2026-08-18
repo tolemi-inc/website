@@ -1,0 +1,48 @@
+---
+// Why us — humans and citizens who care, not another generic software vendor.
+interface Point {
+  title: string;
+  description?: string;
+}
+interface Props {
+  heading?: string;
+  body?: string;
+  points?: Point[];
+  accentGradient?: string;
+}
+
+const {
+  heading = "Why Tolemi",
+  body,
+  points = [],
+  accentGradient = "from-tolemi-indigo-500 to-tolemi-sky-500",
+} = Astro.props;
+---
+
+<section class="py-20 md:py-32 px-6 bg-surface-secondary">
+  <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 md:gap-20 items-start">
+    <div class="reveal">
+      <div class={`w-12 h-1 rounded-full bg-gradient-to-r ${accentGradient} mb-6`}></div>
+      <h2 class="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-text-primary tracking-tight mb-6">
+        {heading}
+      </h2>
+      {body && (
+        <p class="text-base md:text-lg text-text-secondary leading-relaxed">{body}</p>
+      )}
+    </div>
+
+    <div class="flex flex-col gap-8 md:pt-4 reveal">
+      {points.map((point) => (
+        <div class="flex gap-5">
+          <div class={`w-1 rounded-full bg-gradient-to-b ${accentGradient} flex-shrink-0`}></div>
+          <div>
+            <h3 class="font-heading text-xl font-bold text-text-primary mb-1">{point.title}</h3>
+            {point.description && (
+              <p class="text-sm md:text-base text-text-secondary leading-relaxed">{point.description}</p>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

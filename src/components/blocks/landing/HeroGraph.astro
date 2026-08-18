@@ -1,0 +1,692 @@
+---
+// HeroGraph — the landing hero: a live ownership graph over the mission statement.
+// Fictional demo data lives in the inline script's NODES constant; all real copy
+// (headline, subheadline, CTA) comes from Keystatic via props.
+import DemoButton from "../../ui/DemoButton.astro";
+
+interface Props {
+  headline: string;
+  subheadline?: string;
+  ctaText?: string;
+  ctaLink?: string;
+  eyebrow?: string;
+  eyebrowColor?: string;
+}
+
+const {
+  headline,
+  subheadline,
+  ctaText,
+  ctaLink,
+  eyebrow = "Our Mission",
+  eyebrowColor = "text-tolemi-sky-600",
+} = Astro.props;
+---
+
+<section class="relative overflow-hidden pt-24 md:pt-28 pb-4 px-6 bg-surface">
+  <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 md:gap-14 items-center">
+    {/* the mission, left */}
+    <div class="py-8">
+      <p class={`font-heading text-sm font-semibold uppercase tracking-[0.2em] ${eyebrowColor} mb-5 reveal`}>
+        {eyebrow}
+      </p>
+      <h1 class="font-heading text-2xl md:text-3xl lg:text-4xl font-bold text-text-primary tracking-tight leading-snug mb-6 reveal">
+        {headline}
+      </h1>
+      {subheadline && (
+        <p class="text-lg md:text-xl text-text-secondary leading-relaxed mb-9 reveal">
+          {subheadline}
+        </p>
+      )}
+      {ctaText && (
+        <div class="reveal">
+          <DemoButton href={ctaLink || "#"} size="lg" arrow>{ctaText}</DemoButton>
+        </div>
+      )}
+    </div>
+    {/* the graph, right */}
+    <div class="gstage" id="herograph-stage">
+      <svg id="herograph-svg" viewBox="0 0 560 560"
+        aria-label="Scattered facts spring into an ownership graph; labeled identifiers — a shared phone number and mailing address — draw three owners together into one portfolio"
+      ></svg>
+      <div class="mini-tt" id="herograph-tt"></div>
+      <div class="tslider">
+        <span class="tsl-label">Disjointed databases</span>
+        <div class="tsl-track" id="herograph-track" role="slider" tabindex="0"
+          aria-label="From disjointed databases to Tolemi insights"
+          aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <div class="tsl-veil" id="herograph-veil"></div>
+          <div class="tsl-knob" id="herograph-knob"></div>
+        </div>
+        <span class="tsl-label">Tolemi insights</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .gstage { position: relative; width: 100%; }
+  #herograph-svg { cursor: pointer; display: block; width: 100%; height: auto; }
+  #herograph-svg .gel { transition: opacity 0.55s ease; }
+  #herograph-svg .gel.dim { opacity: 0.14 !important; }
+  #herograph-svg text { font-family: var(--font-sans); pointer-events: none; }
+  #herograph-svg .hg-label { fill: #343332; font-size: 12px; font-weight: 600; text-anchor: middle; }
+  #herograph-svg .hg-sub { fill: #8b909a; font-size: 10.5px; text-anchor: middle; }
+  #herograph-svg .hg-glyph { fill: #0a5568; font-weight: 700; text-anchor: middle; }
+  #herograph-svg .hg-own { stroke: #d9dce4; stroke-width: 1.8; }
+  #herograph-svg .hg-link { stroke: #4CD5FF; stroke-width: 2.4; stroke-dasharray: 5 5; }
+  #herograph-svg .hg-node { cursor: pointer; }
+  #herograph-svg .hg-node:focus { outline: none; }
+  #herograph-svg .hg-node:focus-visible circle { stroke: #343332; stroke-width: 2; }
+
+  /* profile cards */
+  .gcard {
+    position: absolute; left: 0; top: 0; display: flex; flex-direction: column;
+    background: #ffffff; border: 1px solid #e4e6ee; border-radius: 1em;
+    border-left: 0.3em solid var(--acc, #e4e6ee);
+    padding: 0.65em 1em; cursor: pointer; will-change: transform;
+    box-shadow: 0 10px 22px -14px rgba(52, 51, 50, 0.35);
+    transition: opacity 0.5s, border-color 0.4s;
+  }
+  .gcard.shell { opacity: 0; }
+  .gcard.flag { border-style: dashed; border-left-style: solid; border-color: #FFCB1B; }
+  .gcard.ghost { border-color: #c8ccd6; border-style: dashed; border-left-style: solid; }
+  .gcard.dim { opacity: 0.14; }
+  .gcard:focus-visible { outline: 2px solid #0e9bc4; outline-offset: 2px; }
+  .gcard .ic {
+    width: 2em; height: 2em; border-radius: 50%; flex: none;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.4s;
+  }
+  .gcard .gc-head { display: flex; align-items: center; gap: 0.8em; }
+  .gcard .nm {
+    font: 700 1.15em/1.3 var(--font-sans); color: #26272b; white-space: nowrap;
+    min-width: 9em; opacity: 0; transform: translateX(-4px);
+    transition: opacity 0.35s, transform 0.35s;
+  }
+  .gcard .nm.in { opacity: 1; transform: none; }
+  .gcard .gc-table {
+    display: flex; flex-direction: column; gap: 0.3em;
+    border-top: 1px solid #eef0f4; margin-top: 0.5em; padding-top: 0.5em; min-width: 11.5em;
+  }
+  .gcard .gc-row { display: flex; justify-content: space-between; gap: 1.6em; align-items: baseline; }
+  .gcard .gc-row .lb {
+    font: 600 0.8em/1.4 var(--font-sans); letter-spacing: 0.06em; text-transform: uppercase;
+    color: #9aa0ab; white-space: nowrap;
+  }
+  .gcard .gc-row .vl {
+    font: 600 0.95em/1.5 var(--font-sans); color: #33353a; white-space: nowrap;
+    padding: 0 0.7em; border-radius: 999px; background: #f2f3f6;
+    min-height: 1.3em; opacity: 0; transform: translateX(-4px);
+    transition: opacity 0.35s, transform 0.35s;
+  }
+  .gcard .gc-row .vl.t-reg { background: #d4f4ff; color: #0a7a9e; }
+  .gcard .gc-row .vl.t-id { background: #d4f4ff; color: #0a7a9e; }
+  .gcard .gc-row .vl.t-use { background: #f0f0ee; color: #55565a; }
+  .gcard .gc-row .vl.warn { background: #fff0c2; color: #8a6d00; }
+  .gcard .gc-row .vl.t-alert { background: #ffe0e4; color: #b3001a; }
+  .gcard .gc-row .vl.in { opacity: 1; transform: none; }
+
+  /* the flying fact */
+  .gfact {
+    position: absolute; display: flex; align-items: center; gap: 0.5em; white-space: nowrap;
+    background: #ffffff; border: 1px solid #e4e6ee; border-radius: 999px;
+    padding: 0.3em 0.9em; font: 600 0.95em/1 var(--font-sans); color: #5b6068;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .gfact i { width: 0.5em; height: 0.5em; border-radius: 50%; flex: none; }
+  .gfact.warn { color: #8a6d00; }
+
+  /* the disjointed source tables — where every record starts */
+  .gsrc {
+    position: absolute; left: 0; top: 0; background: #ffffff; font-size: 1.15em;
+    border: 1px solid #e4e6ee; border-top: 0.32em solid var(--tc, #d5d8de);
+    border-radius: 1em; padding: 0 0 0.7em; min-width: 17em; overflow: hidden;
+    box-shadow: 0 12px 26px -14px rgba(52, 51, 50, 0.32);
+    pointer-events: none; transition: opacity 0.35s;
+  }
+  .gsrc-title {
+    font: 700 0.9em/1.3 var(--font-sans); letter-spacing: 0.09em; text-transform: uppercase;
+    color: var(--tink, #9aa0ab); background: var(--tbg, #f6f6f4);
+    padding: 0.75em 1.45em 0.65em; margin-bottom: 0.5em;
+  }
+  .gsrc-row {
+    font: 600 1em/1.95 var(--font-sans); color: #494b51; padding: 0 1.45em;
+    white-space: nowrap; display: flex; align-items: center; gap: 0.6em;
+  }
+  .gsrc-row i {
+    width: 0.5em; height: 0.5em; border-radius: 50%;
+    background: var(--tc, #d5d8de); flex: none;
+  }
+
+
+  /* tooltip */
+  .mini-tt {
+    position: absolute; pointer-events: none; z-index: 5; max-width: 230px;
+    background: #101d33f2; border-radius: 9px; padding: 8px 11px;
+    font-size: 12px; line-height: 1.45; color: #dbe4f0;
+    opacity: 0; transform: translateY(4px); transition: opacity 0.15s, transform 0.15s;
+  }
+  .mini-tt.show { opacity: 1; transform: translateY(0); }
+  .mini-tt .tt-title { font-weight: 600; color: #fff; }
+
+  /* the Tolemi slider — a soft brand rainbow; vividness follows the knob */
+  .tslider { display: flex; align-items: center; gap: 16px; margin-top: 14px; padding: 0 2px; }
+  .tsl-label {
+    font: 600 10px/1.3 var(--font-sans); letter-spacing: 0.1em; text-transform: uppercase;
+    color: #55565a; white-space: nowrap;
+  }
+  .tsl-track {
+    position: relative; flex: 1; height: 10px; border-radius: 999px; cursor: pointer;
+    touch-action: none;
+    background: linear-gradient(90deg, #ff8091, #ffdb70, #7fd194, #7fdfff, #a5b4fc);
+    box-shadow: inset 0 1px 2px rgba(52, 51, 50, 0.18);
+  }
+  .tsl-veil {
+    position: absolute; top: 0; bottom: 0; right: 0; left: 0; border-radius: 999px;
+    background: rgba(255, 255, 255, 0.68); pointer-events: none;
+  }
+  .tsl-track:focus-visible { outline: 2px solid #343332; outline-offset: 4px; }
+  .tsl-knob {
+    position: absolute; top: 50%; left: 0%; width: 20px; height: 20px; border-radius: 50%;
+    transform: translate(-50%, -50%); background: #343332;
+    box-shadow: 0 2px 8px rgba(52, 51, 50, 0.4);
+    pointer-events: none; transition: transform 0.2s;
+  }
+  .tslider.dragging .tsl-knob { transform: translate(-50%, -50%) scale(1.18); }
+  @media (max-width: 640px) { .tsl-label { font-size: 8.5px; } }
+
+</style>
+
+<script>
+  const NS = "http://www.w3.org/2000/svg";
+  // deterministic pseudo-random (0-99): same scatter every load, no Math.random
+  const hash = (i: number) => ((i * 2654435761) >>> 0) % 100;
+  const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ========== PROPERTY GRAPH HERO — from source tables to one picture ========== */
+  // The slider's start state is literal: four disjointed source tables
+  // (Addresses, Current use, Rental registrations, Assessments). Scrubbing
+  // right, the records slide out of their tables into profile cards, the cards
+  // cluster by owner, and the owners link into one portfolio. Facts with no
+  // source row — "Registered: Never", "311 calls" — appear later, derived.
+  (() => {
+    const svg = document.getElementById("herograph-svg");
+    const tt = document.getElementById("herograph-tt");
+    const wrap = document.getElementById("herograph-stage");
+    const VW = 560, VH = 560;
+    const mk = (tag, attrs, parent) => {
+      const e = document.createElementNS(NS, tag);
+      for (const k in attrs) e.setAttribute(k, attrs[k]);
+      (parent || svg).appendChild(e);
+      return e;
+    };
+    const COL = { owner: "#343332", link: "#4CD5FF", reg: "#4CD5FF",
+      unreg: "#FFCB1B", ghost: "#b7bcc7" };
+    const ICON_PERSON =
+      '<svg viewBox="-8 -8.5 16 17" width="1.2em" height="1.2em" aria-hidden="true"><path d="M0,-6.2 a3,3 0 1,1 -0.01,0 M-5.4,7 C-5.4,1.6 5.4,1.6 5.4,7 Z" fill="#fff"/></svg>';
+    const ICON_HOUSE =
+      '<svg viewBox="-7.5 -7 15 14" width="1.2em" height="1.2em" aria-hidden="true"><path d="M-5.4,-0.4 L0,-5.4 L5.4,-0.4 L5.4,5 L-5.4,5 Z" fill="#fff"/></svg>';
+
+    // rows carry an `at` threshold: the slider position where they reveal.
+    // Sourced facts land at 0.24 (end of extraction); derived facts later.
+    const NODES = [
+      { id: "e1", kind: "owner", lx: 140, ly: 170, ox: 115, oy: 185,
+        name: "Maple Grove Rentals LLC",
+        rows: [
+          { lb: "Properties", vl: "3", at: 0.55 },
+          { lb: "Portfolio", vl: "Linked", at: 0.88 },
+        ],
+        tip: "Owns three registered rentals · part of one linked portfolio" },
+      { id: "e2", kind: "owner", lx: 330, ly: 90, ox: 355, oy: 80,
+        name: "MG Holdings LLC",
+        rows: [
+          { lb: "Properties", vl: "2", at: 0.55 },
+          { lb: "Portfolio", vl: "Linked", at: 0.88 },
+        ],
+        tip: "Three owner identities, one portfolio — Tolemi links them" },
+      { id: "e3", kind: "owner", lx: 440, ly: 265, ox: 470, oy: 285,
+        name: "J. Harmon",
+        rows: [
+          { lb: "Properties", vl: "2", at: 0.55 },
+          { lb: "Portfolio", vl: "Linked", at: 0.88 },
+        ],
+        tip: "A personal name on the filings — same portfolio" },
+
+      { id: "p1", kind: "prop", reg: true, owner: "e1", lx: 75, ly: 335,
+        name: "27 Winslow Ave",
+        rows: [
+          { lb: "Current use", vl: "2-Fam Res", at: 0.24 },
+          { lb: "Registered", vl: "2025", at: 0.24 },
+        ],
+        tip: "Active rental registration" },
+      { id: "p2", kind: "prop", reg: true, owner: "e1", lx: 185, ly: 455,
+        name: "118 Elm St",
+        rows: [
+          { lb: "Current use", vl: "3-Fam Res", at: 0.24 },
+          { lb: "Registered", vl: "2024", at: 0.24 },
+        ],
+        tip: "Active rental registration" },
+      { id: "p3", kind: "prop", reg: true, owner: "e1", lx: 260, ly: 305,
+        name: "112 Elm St",
+        rows: [
+          { lb: "Current use", vl: "2-Fam Res", at: 0.24 },
+          { lb: "Registered", vl: "2024", at: 0.24 },
+        ],
+        tip: "Active rental registration" },
+      { id: "p5", kind: "prop", reg: true, owner: "e2", lx: 300, ly: 235,
+        name: "301 Court St",
+        rows: [
+          { lb: "Current use", vl: "2-Fam Res", at: 0.24 },
+          { lb: "Registered", vl: "2025", at: 0.24 },
+        ],
+        tip: "Active rental registration" },
+      { id: "p4", kind: "prop", reg: false, owner: "e2", lx: 430, ly: 380,
+        pk: [80, 520], name: "44 Brayton Rd",
+        rows: [
+          { lb: "Current use", vl: "1-Fam Res", at: 0.24 },
+          { lb: "Registered", vl: "Never", at: 0.45, warn: true },
+        ],
+        tip: "Never registered — claimed by the linked portfolio" },
+      { id: "p6", kind: "prop", reg: false, owner: "e3", lx: 340, ly: 490,
+        pk: [470, 530], name: "52 Delano St",
+        rows: [
+          { lb: "311 calls", vl: "5 in 12 mo", at: 0.45 },
+          { lb: "Registered", vl: "Never", at: 0.45, warn: true },
+        ],
+        tip: "Never registered — five code calls in twelve months" },
+      { id: "p7", kind: "prop", reg: true, owner: "e3", lx: 490, ly: 425,
+        name: "9 Falmouth St",
+        rows: [
+          { lb: "Current use", vl: "1-Fam Res", at: 0.24 },
+          { lb: "Registered", vl: "2023", at: 0.24 },
+        ],
+        tip: "Active rental registration" },
+    ];
+    const byId = Object.fromEntries(NODES.map(n => [n.id, n]));
+    NODES.forEach(n => {
+      if (n.kind === "owner") { n.gx = n.ox; n.gy = n.oy; }
+      else {
+        const o = byId[n.owner];
+        if (n.pk) { n.gx = n.pk[0]; n.gy = n.pk[1]; }
+        else { n.gx = n.lx + (o.ox - o.lx); n.gy = n.ly + (o.oy - o.ly); }
+      }
+    });
+
+    // the disjointed databases: where every sourced fact starts
+    // each source system wears its own brand color, carried by its records
+    const TABLES = [
+      { title: "Addresses", x: 16, y: 20,
+        c: "#4CD5FF", ink: "#0a7a9e", bg: "#eefbff", rows: [
+        { text: "27 Winslow Ave", to: "p1", slot: "nm" },
+        { text: "118 Elm St", to: "p2", slot: "nm" },
+        { text: "112 Elm St", to: "p3", slot: "nm" },
+        { text: "301 Court St", to: "p5", slot: "nm" },
+        { text: "44 Brayton Rd", to: "p4", slot: "nm" },
+        { text: "52 Delano St", to: "p6", slot: "nm" },
+        { text: "9 Falmouth St", to: "p7", slot: "nm" },
+      ] },
+      { title: "Current use", rx: 16, y: 20,
+        c: "#6366F1", ink: "#4338ca", bg: "#eef2ff", rows: [
+        { text: "27 Winslow · 2-Fam Res", chip: "2-Fam Res", to: "p1", slot: "use" },
+        { text: "118 Elm · 3-Fam Res", chip: "3-Fam Res", to: "p2", slot: "use" },
+        { text: "112 Elm · 2-Fam Res", chip: "2-Fam Res", to: "p3", slot: "use" },
+        { text: "301 Court · 2-Fam Res", chip: "2-Fam Res", to: "p5", slot: "use" },
+        { text: "44 Brayton · 1-Fam Res", chip: "1-Fam Res", to: "p4", slot: "use" },
+        { text: "9 Falmouth · 1-Fam Res", chip: "1-Fam Res", to: "p7", slot: "use" },
+      ] },
+      { title: "Rental registrations", x: 16, y: 352,
+        c: "#37A04F", ink: "#246b35", bg: "#f0faf2", rows: [
+        { text: "27 Winslow Ave · 2025", chip: "2025", to: "p1", slot: "reg" },
+        { text: "118 Elm St · 2024", chip: "2024", to: "p2", slot: "reg" },
+        { text: "112 Elm St · 2024", chip: "2024", to: "p3", slot: "reg" },
+        { text: "301 Court St · 2025", chip: "2025", to: "p5", slot: "reg" },
+        { text: "9 Falmouth St · 2023", chip: "2023", to: "p7", slot: "reg" },
+      ] },
+      { title: "Assessments", rx: 16, y: 380,
+        c: "#FFCB1B", ink: "#8a6d00", bg: "#fffbeb", rows: [
+        { text: "112 Elm St · Maple Grove Rentals LLC", chip: "Maple Grove Rentals LLC", to: "e1", slot: "nm" },
+        { text: "301 Court St · MG Holdings LLC", chip: "MG Holdings LLC", to: "e2", slot: "nm" },
+        { text: "9 Falmouth St · J. Harmon", chip: "J. Harmon", to: "e3", slot: "nm" },
+      ] },
+    ];
+
+    const EDGES = [];
+    NODES.filter(n => n.kind === "prop").forEach(p =>
+      EDGES.push({ a: p.owner, b: p.id, kind: "own",
+        l: mk("line", { class: "gel hg-own" }) }));
+    [["e1", "e2"], ["e2", "e3"]].forEach(([a, b]) =>
+      EDGES.push({ a, b, kind: "link",
+        l: mk("line", { class: "gel hg-link" }) }));
+    EDGES.forEach(e => (e.l.style.opacity = 0));
+    const neighbors = {};
+    EDGES.forEach(e => {
+      (neighbors[e.a] = neighbors[e.a] || new Set()).add(e.b);
+      (neighbors[e.b] = neighbors[e.b] || new Set()).add(e.a);
+    });
+
+    // ---- render: profile cards (kept clear of the corner tables at start) ----
+    const TONE = { "Registered": "t-reg", "Phone": "t-id", "Mailing": "t-id",
+      "Current use": "t-use", "Properties": "t-use", "Portfolio": "t-id",
+      "311 calls": "t-alert" };
+    NODES.forEach((n, i) => {
+      n.sx = 55 + (hash(i * 17 + 3) / 100) * (VW - 110);
+      n.sy = 160 + (hash(i * 29 + 11) / 100) * 190;
+      n.x = n.sx; n.y = n.sy; n.tx = n.sx; n.ty = n.sy; n.vx = 0; n.vy = 0;
+
+      const el = document.createElement("div");
+      el.className = "gcard shell" + (n.kind === "prop" && !n.reg ? " flag" : "");
+      el.setAttribute("role", "img");
+      el.setAttribute("tabindex", "0");
+      el.setAttribute("aria-label", `${n.name} — ${n.tip}`);
+      const rowsHtml = n.rows.map(r =>
+        `<div class="gc-row"><span class="lb">${r.lb}</span>` +
+        `<span class="vl ${r.warn ? "warn" : TONE[r.lb] || ""}" data-at="${r.at}">${r.vl}</span></div>`
+      ).join("");
+      el.innerHTML =
+        `<div class="gc-head"><span class="ic" style="background:${
+          n.kind === "owner" ? COL.owner : n.reg ? COL.reg : COL.unreg}">${
+          n.kind === "owner" ? ICON_PERSON
+          : ICON_HOUSE.replace('#fff', n.reg ? '#0a3a47' : '#6b5500')}</span>` +
+        `<span class="nm" data-at="0.24">${n.name}</span></div>` +
+        `<div class="gc-table">${rowsHtml}</div>`;
+      el.style.setProperty("--acc",
+        n.kind === "owner" ? COL.owner : n.reg ? COL.reg : COL.unreg);
+      wrap.appendChild(el);
+      n.el = el;
+      n.icEl = el.querySelector(".ic");
+      n.slotEls = { nm: el.querySelector(".nm") };
+      el.querySelectorAll(".gc-row").forEach((row, k) => {
+        const lb = n.rows[k].lb;
+        if (lb === "Current use") n.slotEls.use = row.querySelector(".vl");
+        if (lb === "Registered") n.slotEls.reg = row.querySelector(".vl");
+      });
+    });
+    const cards = NODES;
+
+    // ---- the source tables ----
+    TABLES.forEach(t => {
+      const el = document.createElement("div");
+      el.className = "gsrc";
+      el.style.setProperty("--tc", t.c);
+      el.style.setProperty("--tink", t.ink);
+      el.style.setProperty("--tbg", t.bg);
+      el.innerHTML = `<div class="gsrc-title">${t.title}</div>` +
+        t.rows.map(r => `<div class="gsrc-row"><i></i>${r.text}</div>`).join("");
+      wrap.appendChild(el);
+      t.el = el;
+      el.querySelectorAll(".gsrc-row").forEach((rowEl, k) => (t.rows[k].el = rowEl));
+    });
+
+    // ---- the records in flight: one chip per sourced fact ----
+    const CHIPS = [];
+    TABLES.forEach(t => t.rows.forEach(r => {
+      const chip = document.createElement("div");
+      chip.className = "gfact";
+      chip.innerHTML = `<i style="background:${t.c}"></i>${r.chip || r.text}`;
+      wrap.appendChild(chip);
+      CHIPS.push({ chip, srcEl: r.el, node: byId[r.to], slot: r.slot,
+        st: 0.02 + (hash(CHIPS.length * 7 + 3) % 100) * 0.0007 });
+    }));
+    const REVEALS = [...wrap.querySelectorAll("[data-at]")];
+
+    const setGhost = (n, ghost) => {
+      if (n.kind !== "prop" || n.reg) return;
+      n.icEl.style.background = ghost ? COL.ghost : COL.unreg;
+      n.el.style.setProperty("--acc", ghost ? COL.ghost : COL.unreg);
+      n.el.classList.toggle("ghost", ghost);
+    };
+
+    // ---- scale, measurement, collision, flight paths ----
+    let SC = { sx: 1, sy: 1 };
+    function measure() {
+      const r = svg.getBoundingClientRect();
+      SC = { sx: r.width / VW, sy: r.height / VH };
+      // the graph compresses as one object: type scales with the stage
+      wrap.style.fontSize = Math.max(5.5, 8.8 * SC.sx) + "px";
+      cards.forEach(n => { n.hw = n.el.offsetWidth / 2; n.hh = n.el.offsetHeight / 2; });
+    }
+    function placeTables() {
+      TABLES.forEach(t => {
+        if (t.rx != null) {
+          t.el.style.left = "auto";
+          t.el.style.right = t.rx * SC.sx + "px";
+        } else {
+          t.el.style.left = t.x * SC.sx + "px";
+        }
+        t.el.style.top = t.y * SC.sy + "px";
+      });
+    }
+    function resolve(px, py, outx, outy) {
+      const items = cards.map(n => ({ n, x: n[px], y: n[py],
+        hw: n.hw / SC.sx + 14, hh: n.hh / SC.sy + 12 }));
+      for (let it = 0; it < 48; it++) {
+        let moved = false;
+        for (let a = 0; a < items.length; a++)
+          for (let b = a + 1; b < items.length; b++) {
+            const A = items[a], B = items[b];
+            const dx = B.x - A.x, dy = B.y - A.y;
+            const ox = A.hw + B.hw - Math.abs(dx);
+            const oy = A.hh + B.hh - Math.abs(dy);
+            if (ox > 0 && oy > 0) {
+              moved = true;
+              if (ox < oy) { const s = (dx >= 0 ? 1 : -1) * ox / 2; A.x -= s; B.x += s; }
+              else { const s = (dy >= 0 ? 1 : -1) * oy / 2; A.y -= s; B.y += s; }
+            }
+          }
+        items.forEach(A => {
+          A.x = Math.max(A.hw + 4, Math.min(VW - A.hw - 4, A.x));
+          A.y = Math.max(A.hh + 4, Math.min(VH - A.hh - 4, A.y));
+        });
+        if (!moved) break;
+      }
+      items.forEach(A => { A.n[outx] = A.x; A.n[outy] = A.y; });
+    }
+    // flight paths are measured with the cards at their scattered positions
+    function measureFlight() {
+      const w = wrap.getBoundingClientRect();
+      CHIPS.forEach(c => {
+        const s = c.srcEl.getBoundingClientRect();
+        const d = c.node.slotEls[c.slot].getBoundingClientRect();
+        const h = c.chip.offsetHeight;
+        c.fx = s.left - w.left + 10;
+        c.fy = s.top - w.top + (s.height - h) / 2;
+        c.tx = d.left - w.left - 4;
+        c.ty = d.top - w.top + (d.height - h) / 2;
+      });
+    }
+
+    // ---- spring engine ----
+    const S = 95, D = 13;
+    let raf = null, last = 0, pending = false;
+    function render(n) {
+      n.el.style.transform =
+        `translate(${n.x * SC.sx - n.hw}px, ${n.y * SC.sy - n.hh}px)`;
+    }
+    function frame(now) {
+      const dt = Math.min(32, now - (last || now)) / 1000;
+      last = now;
+      let live = false;
+      NODES.forEach(n => {
+        n.vx += (S * (n.tx - n.x) - D * n.vx) * dt;
+        n.vy += (S * (n.ty - n.y) - D * n.vy) * dt;
+        n.x += n.vx * dt;
+        n.y += n.vy * dt;
+        if (Math.abs(n.vx) + Math.abs(n.vy) +
+            Math.abs(n.tx - n.x) + Math.abs(n.ty - n.y) > 0.25) live = true;
+        render(n);
+      });
+      EDGES.forEach(e => {
+        const A = byId[e.a], B = byId[e.b];
+        e.l.setAttribute("x1", A.x); e.l.setAttribute("y1", A.y);
+        e.l.setAttribute("x2", B.x); e.l.setAttribute("y2", B.y);
+      });
+      raf = live || pending ? requestAnimationFrame(frame) : null;
+      if (!raf) last = 0;
+    }
+    function wake() { if (!raf) { last = 0; raf = requestAnimationFrame(frame); } }
+
+    // ---- the Tolemi slider: disjointed databases → Tolemi insights ----
+    // 0 → 0.25 records slide out of their tables; 0.25 → 0.6 profiles cluster
+    // by owner; 0.6 → 1 the owners link into one portfolio. Fully reversible.
+    const track = document.getElementById("herograph-track");
+    const knobEl = document.getElementById("herograph-knob");
+    const veil = document.getElementById("herograph-veil");
+    const E = 0.25, O = 0.6;
+    let V = 0, autoRaf = null;
+    const cancelAuto = () => { if (autoRaf) cancelAnimationFrame(autoRaf); autoRaf = null; };
+    const mixv = (a, b, u) => a + (b - a) * u;
+    const clamp01 = v => Math.max(0, Math.min(1, v));
+    function setV(v) {
+      V = clamp01(v);
+      knobEl.style.left = V * 100 + "%";
+      veil.style.left = V * 100 + "%";
+      track.setAttribute("aria-valuenow", String(Math.round(V * 100)));
+      NODES.forEach(n => {
+        const gx = n.gx2 ?? n.gx, gy = n.gy2 ?? n.gy;
+        const lx = n.lx2 ?? n.lx, ly = n.ly2 ?? n.ly;
+        if (V < E) { n.tx = n.sx; n.ty = n.sy; }
+        else if (V < O) {
+          const u = (V - E) / (O - E);
+          n.tx = mixv(n.sx, gx, u); n.ty = mixv(n.sy, gy, u);
+        } else {
+          const u = (V - O) / (1 - O);
+          n.tx = mixv(gx, lx, u); n.ty = mixv(gy, ly, u);
+        }
+        n.el.classList.toggle("shell", V < 0.045);
+        setGhost(n, V < 0.85);
+      });
+      REVEALS.forEach(el => el.classList.toggle("in", V >= +el.dataset.at));
+      TABLES.forEach(t => {
+        const op = 1 - clamp01((V - 0.2) / 0.12);
+        t.el.style.opacity = op;
+      });
+      CHIPS.forEach(c => {
+        const u = clamp01((V - c.st) / 0.2);
+        const e = 1 - Math.pow(1 - u, 2);
+        c.chip.style.left = mixv(c.fx, c.tx, e) + "px";
+        c.chip.style.top = mixv(c.fy, c.ty, e) + "px";
+        c.chip.style.opacity = V < 0.005 || u >= 1 || V > 0.32 ? 0 : 1;
+      });
+      EDGES.forEach(e => {
+        const late = e.kind === "link" || byId[e.b].pk;
+        e.l.style.opacity = late ? clamp01((V - 0.85) / 0.1) : clamp01((V - 0.42) / 0.12);
+      });
+      wake();
+    }
+    const vFromEvent = ev => {
+      const r = track.getBoundingClientRect();
+      return (ev.clientX - r.left) / r.width;
+    };
+    track.addEventListener("pointerdown", ev => {
+      cancelAuto();
+      track.setPointerCapture(ev.pointerId);
+      track.parentElement.classList.add("dragging");
+      setV(vFromEvent(ev));
+      const move = e => setV(vFromEvent(e));
+      track.addEventListener("pointermove", move);
+      track.addEventListener("pointerup", () => {
+        track.removeEventListener("pointermove", move);
+        track.parentElement.classList.remove("dragging");
+      }, { once: true });
+    });
+    track.addEventListener("keydown", ev => {
+      if (ev.key === "ArrowLeft") { cancelAuto(); setV(V - 0.05); ev.preventDefault(); }
+      if (ev.key === "ArrowRight") { cancelAuto(); setV(V + 0.05); ev.preventDefault(); }
+    });
+
+    // ---- sequencing ----
+    let timers = [];
+    function reset() {
+      timers.forEach(clearTimeout); timers = [];
+      pending = false;
+      cancelAuto();
+      measure();
+      placeTables();
+      resolve("gx", "gy", "gx2", "gy2");
+      resolve("lx", "ly", "lx2", "ly2");
+      NODES.forEach(n => {
+        n.x = n.tx = n.sx; n.y = n.ty = n.sy; n.vx = n.vy = 0;
+        render(n);
+      });
+      measureFlight();
+      setV(0);
+    }
+    function finish() {
+      cancelAuto();
+      measure();
+      placeTables();
+      resolve("gx", "gy", "gx2", "gy2");
+      resolve("lx", "ly", "lx2", "ly2");
+      setV(1);
+      NODES.forEach(n => { n.x = n.tx; n.y = n.ty; n.vx = n.vy = 0; render(n); });
+      EDGES.forEach(e => {
+        const A = byId[e.a], B = byId[e.b];
+        e.l.setAttribute("x1", A.x); e.l.setAttribute("y1", A.y);
+        e.l.setAttribute("x2", B.x); e.l.setAttribute("y2", B.y);
+      });
+    }
+    function play() {
+      reset();
+      if (REDUCED) { finish(); return; }
+      pending = true;
+      wake();
+      timers.push(setTimeout(() => {
+        const t0 = performance.now(), DUR = 6200;
+        const step = now => {
+          if (autoRaf === null) return;
+          const u = Math.min(1, (now - t0) / DUR);
+          setV(u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2);
+          if (u < 1) autoRaf = requestAnimationFrame(step);
+          else { autoRaf = null; pending = false; }
+        };
+        autoRaf = requestAnimationFrame(step);
+      }, 600));
+    }
+
+    // ---- hover: isolate a card's part of the graph ----
+    function isolate(id) {
+      const keep = new Set([id, ...(neighbors[id] || [])]);
+      NODES.forEach(n => n.el.classList.toggle("dim", !keep.has(n.id)));
+      EDGES.forEach(e => e.l.classList.toggle("dim", !(e.a === id || e.b === id)));
+    }
+    function clearIso() {
+      NODES.forEach(n => n.el.classList.remove("dim"));
+      EDGES.forEach(e => e.l.classList.remove("dim"));
+      tt.classList.remove("show");
+    }
+    NODES.forEach(n => {
+      const show = () => {
+        isolate(n.id);
+        const r = svg.getBoundingClientRect(), w = wrap.getBoundingClientRect();
+        tt.innerHTML = `<div class="tt-title">${n.name}</div>${n.tip}`;
+        tt.style.left = Math.min(w.width - 240, Math.max(6,
+          (r.left - w.left) + n.x * SC.sx - 40)) + "px";
+        tt.style.top = Math.max(2, (r.top - w.top) + n.y * SC.sy - 62) + "px";
+        tt.classList.add("show");
+      };
+      n.el.addEventListener("mouseenter", show);
+      n.el.addEventListener("focus", show);
+      n.el.addEventListener("mouseleave", clearIso);
+      n.el.addEventListener("blur", clearIso);
+    });
+
+    window.addEventListener("resize", () => {
+      measure();
+      placeTables();
+      resolve("gx", "gy", "gx2", "gy2");
+      resolve("lx", "ly", "lx2", "ly2");
+      if (V < 0.01) measureFlight();
+      setV(V);
+      NODES.forEach(render);
+    });
+
+    reset();
+    const io = new IntersectionObserver(en => {
+      if (en[0].isIntersecting) { io.disconnect(); play(); }
+    }, { threshold: 0.4 });
+    io.observe(svg);
+    svg.addEventListener("click", ev => { if (ev.target === svg) play(); });
+  })();
+</script>

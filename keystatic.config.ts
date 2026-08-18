@@ -11,15 +11,6 @@ const heroFields = {
   ctaLink: fields.text({ label: 'CTA Button Link' }),
 };
 
-const featureItem = fields.object(
-  {
-    title: fields.text({ label: 'Title', validation: { isRequired: true } }),
-    description: fields.text({ label: 'Description', multiline: true }),
-    icon: fields.text({ label: 'Icon (emoji or text)' }),
-  },
-  { label: 'Feature Item' }
-);
-
 const statItem = fields.object(
   {
     value: fields.text({ label: 'Value', validation: { isRequired: true } }),
@@ -54,6 +45,14 @@ const imageWithAlt = (opts: { label?: string; directory: string; publicPath: str
     },
     { label: opts.label || 'Image' }
   );
+
+const titledItem = fields.object(
+  {
+    title: fields.text({ label: 'Title', validation: { isRequired: true } }),
+    description: fields.text({ label: 'Description', multiline: true }),
+  },
+  { label: 'Item' }
+);
 
 const featureBlock = fields.object(
   {
@@ -204,8 +203,13 @@ export default config({
             fields.select({
               label: 'Block type',
               options: [
-                { label: 'Hero', value: 'hero' },
-                { label: 'Features', value: 'features' },
+                { label: 'Hero (Mission)', value: 'hero' },
+                { label: 'Story Graph (Data → Action)', value: 'story' },
+                { label: 'Products', value: 'products' },
+                { label: 'Registration Spotlight', value: 'registration' },
+                { label: 'How We Work', value: 'howWeWork' },
+                { label: 'Why Us', value: 'whyUs' },
+                { label: 'City Logos', value: 'logos' },
                 { label: 'Stats', value: 'stats' },
                 { label: 'Call to Action', value: 'cta' },
               ],
@@ -213,16 +217,117 @@ export default config({
             }),
             {
               hero: fields.object(heroFields, { label: 'Hero' }),
-              features: fields.object(
+              story: fields.object(
                 {
                   heading: fields.text({ label: 'Section Heading' }),
-                  subheading: fields.text({ label: 'Section Subheading' }),
-                  items: fields.array(featureItem, {
-                    label: 'Feature Items',
-                    itemLabel: (props) => props.fields.title.value || 'Feature',
+                  subheading: fields.text({ label: 'Section Subheading', multiline: true }),
+                  stages: fields.array(
+                    fields.object(
+                      {
+                        label: fields.text({ label: 'Stage Label', validation: { isRequired: true } }),
+                        detail: fields.text({ label: 'Stage Detail', multiline: true }),
+                      },
+                      { label: 'Stage' }
+                    ),
+                    {
+                      label: 'Pipeline Stages (expects 4: data → insights → workflows → action)',
+                      itemLabel: (props) => props.fields.label.value || 'Stage',
+                    }
+                  ),
+                  layers: fields.array(
+                    fields.object(
+                      {
+                        name: fields.text({ label: 'Product Name', validation: { isRequired: true } }),
+                        role: fields.text({ label: 'Role (short label)' }),
+                        detail: fields.text({ label: 'Detail', multiline: true }),
+                      },
+                      { label: 'Layer' }
+                    ),
+                    {
+                      label:
+                        'Product Layers (expects 3: first spans stages 1–2, second spans 3–4, third spans full width)',
+                      itemLabel: (props) => props.fields.name.value || 'Layer',
+                    }
+                  ),
+                },
+                { label: 'Story Graph' }
+              ),
+              products: fields.object(
+                {
+                  heading: fields.text({ label: 'Section Heading' }),
+                  subheading: fields.text({ label: 'Section Subheading', multiline: true }),
+                  items: fields.array(
+                    fields.object(
+                      {
+                        name: fields.text({ label: 'Product Name', validation: { isRequired: true } }),
+                        tagline: fields.text({ label: 'Tagline (shown above name)' }),
+                        description: fields.text({ label: 'Description', multiline: true }),
+                        bullets: fields.array(fields.text({ label: 'Bullet' }), {
+                          label: 'Bullets',
+                          itemLabel: (props) => props.value || 'Bullet',
+                        }),
+                        imagePath: fields.text({
+                          label: 'Screenshot Path',
+                          description:
+                            'Path under /public, e.g. /screenshots/bbmap.png. Leave blank to show a stylized workflow card instead of a screenshot.',
+                        }),
+                        imageAlt: fields.text({ label: 'Screenshot Alt Text' }),
+                      },
+                      { label: 'Product' }
+                    ),
+                    { label: 'Products', itemLabel: (props) => props.fields.name.value || 'Product' }
+                  ),
+                },
+                { label: 'Products' }
+              ),
+              registration: fields.object(
+                {
+                  eyebrow: fields.text({ label: 'Eyebrow' }),
+                  heading: fields.text({ label: 'Heading' }),
+                  body: fields.text({ label: 'Body', multiline: true }),
+                  bullets: fields.array(titledItem, {
+                    label: 'Teaser Bullets',
+                    itemLabel: (props) => props.fields.title.value || 'Bullet',
+                  }),
+                  imagePath: fields.text({
+                    label: 'Image Path',
+                    description: 'Path under /public, e.g. /screenshots/owner-timeline.png',
+                  }),
+                  imageAlt: fields.text({ label: 'Image Alt Text' }),
+                  ctaText: fields.text({ label: 'CTA Button Text' }),
+                  ctaLink: fields.text({ label: 'CTA Button Link' }),
+                },
+                { label: 'Registration Spotlight' }
+              ),
+              howWeWork: fields.object(
+                {
+                  heading: fields.text({ label: 'Section Heading' }),
+                  subheading: fields.text({ label: 'Section Subheading', multiline: true }),
+                  steps: fields.array(titledItem, {
+                    label: 'Steps',
+                    itemLabel: (props) => props.fields.title.value || 'Step',
+                  }),
+                  closing: fields.text({ label: 'Closing Line' }),
+                },
+                { label: 'How We Work' }
+              ),
+              whyUs: fields.object(
+                {
+                  heading: fields.text({ label: 'Section Heading' }),
+                  body: fields.text({ label: 'Body', multiline: true }),
+                  points: fields.array(titledItem, {
+                    label: 'Points',
+                    itemLabel: (props) => props.fields.title.value || 'Point',
                   }),
                 },
-                { label: 'Features' }
+                { label: 'Why Us' }
+              ),
+              logos: fields.object(
+                {
+                  heading: fields.text({ label: 'Section Heading' }),
+                  subheading: fields.text({ label: 'Section Subheading', multiline: true }),
+                },
+                { label: 'City Logos' }
               ),
               stats: fields.object(
                 {
@@ -393,36 +498,6 @@ export default config({
       },
     }),
 
-    mapExplorer: singleton({
-      label: 'Map Explorer',
-      path: 'content/map-explorer/map-explorer',
-      previewUrl: 'https://{branch}--tolemi.netlify.app/',
-      format: { data: 'json' },
-      schema: {
-        heading: fields.text({ label: 'Heading' }),
-        subheading: fields.text({ label: 'Subheading' }),
-        cards: fields.array(
-          fields.object(
-            {
-              label: fields.text({ label: 'Label', validation: { isRequired: true } }),
-              detail: fields.text({ label: 'Detail Text', validation: { isRequired: true } }),
-              color: fields.select({
-                label: 'Color',
-                options: [
-                  { label: 'Green', value: 'green' },
-                  { label: 'Blue', value: 'sky' },
-                  { label: 'Red', value: 'red' },
-                  { label: 'Yellow', value: 'yellow' },
-                ],
-                defaultValue: 'green',
-              }),
-            },
-            { label: 'Property Card' }
-          ),
-          { label: 'Property Cards', itemLabel: (props) => props.fields.label.value || 'Card' }
-        ),
-      },
-    }),
   },
 
   // -------------------------------------------------------------------------

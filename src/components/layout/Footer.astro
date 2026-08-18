@@ -26,7 +26,7 @@ interface Props {
 const { footerText, socialLinks = [], footerLinks, demoBookingUrl = "#" } = Astro.props;
 ---
 
-<footer class="bg-text-primary text-white/70 pt-16 pb-8 px-6">
+<footer class="bg-tolemi-navy text-white/70 pt-16 pb-8 px-6">
   <div class="max-w-7xl mx-auto">
     <div class="grid grid-cols-2 md:grid-cols-4 gap-10 mb-12">
       <!-- Brand -->
@@ -52,7 +52,7 @@ const { footerText, socialLinks = [], footerLinks, demoBookingUrl = "#" } = Astr
       </div>
 
       <!-- Solutions -->
-      {footerLinks?.solutions && (
+      {footerLinks?.solutions && footerLinks.solutions.length > 0 && (
         <div>
           <h4 class="text-white font-heading text-sm font-semibold mb-4">Solutions</h4>
           <ul class="flex flex-col gap-2.5">
@@ -66,7 +66,7 @@ const { footerText, socialLinks = [], footerLinks, demoBookingUrl = "#" } = Astr
       )}
 
       <!-- Products -->
-      {footerLinks?.products && (
+      {footerLinks?.products && footerLinks.products.length > 0 && (
         <div>
           <h4 class="text-white font-heading text-sm font-semibold mb-4">Products</h4>
           <ul class="flex flex-col gap-2.5">
@@ -80,7 +80,7 @@ const { footerText, socialLinks = [], footerLinks, demoBookingUrl = "#" } = Astr
       )}
 
       <!-- Company -->
-      {footerLinks?.company && (
+      {footerLinks?.company && footerLinks.company.length > 0 && (
         <div>
           <h4 class="text-white font-heading text-sm font-semibold mb-4">Company</h4>
           <ul class="flex flex-col gap-2.5">

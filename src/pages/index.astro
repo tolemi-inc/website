@@ -1,21 +1,26 @@
 ---
+export const prerender = true;
+
 import Base from "../layouts/Base.astro";
 import LandingBody from "../components/blocks/LandingBody.astro";
 
 import homeData from "../../content/pages/home.json";
 
 // Blocks are stored as { discriminant, value } by Keystatic
-const heroBlock = (homeData.blocks.find((b: any) => b.discriminant === "hero") as any)?.value;
-const featuresBlock = (homeData.blocks.find((b: any) => b.discriminant === "features") as any)?.value;
-const statsBlock = (homeData.blocks.find((b: any) => b.discriminant === "stats") as any)?.value;
-const ctaBlock = (homeData.blocks.find((b: any) => b.discriminant === "cta") as any)?.value;
+const block = (name: string) =>
+  (homeData.blocks.find((b: any) => b.discriminant === name) as any)?.value;
 ---
 
 <Base title={homeData.title}>
   <LandingBody
-    hero={heroBlock}
-    features={featuresBlock}
-    stats={statsBlock}
-    cta={ctaBlock}
+    hero={block("hero")}
+    story={block("story")}
+    products={block("products")}
+    registration={block("registration")}
+    howWeWork={block("howWeWork")}
+    whyUs={block("whyUs")}
+    logos={block("logos")}
+    stats={block("stats")}
+    cta={block("cta")}
   />
 </Base>

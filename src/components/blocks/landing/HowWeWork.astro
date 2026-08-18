@@ -1,0 +1,57 @@
+---
+// How we work — the turnkey lifecycle as numbered steps.
+import SectionHeader from "../../ui/SectionHeader.astro";
+
+interface Step {
+  title: string;
+  description?: string;
+}
+interface Props {
+  heading?: string;
+  subheading?: string;
+  steps?: Step[];
+  closing?: string;
+  numberColors?: string[];
+}
+
+const {
+  heading = "How We Work",
+  subheading,
+  steps = [],
+  closing,
+  numberColors = [
+    "bg-tolemi-indigo-500",
+    "bg-tolemi-sky-500",
+    "bg-tolemi-coral-400",
+    "bg-tolemi-green-500",
+  ],
+} = Astro.props;
+---
+
+<section class="py-20 md:py-32 px-6 bg-surface">
+  <div class="max-w-6xl mx-auto">
+    <SectionHeader heading={heading} subtitle={subheading} />
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 reveal">
+      {steps.map((step, i) => (
+        <div class="bg-surface-secondary rounded-2xl p-6 md:p-8">
+          <div
+            class={`w-9 h-9 rounded-full ${numberColors[i % numberColors.length]} text-white font-heading font-bold flex items-center justify-center mb-4`}
+          >
+            {i + 1}
+          </div>
+          <h3 class="font-heading text-lg font-bold text-text-primary mb-2">{step.title}</h3>
+          {step.description && (
+            <p class="text-sm md:text-base text-text-secondary leading-relaxed">{step.description}</p>
+          )}
+        </div>
+      ))}
+    </div>
+
+    {closing && (
+      <p class="text-center font-heading text-lg md:text-xl font-semibold text-text-primary mt-14 reveal">
+        {closing}
+      </p>
+    )}
+  </div>
+</section>

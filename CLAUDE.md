@@ -32,7 +32,7 @@ Every discrete visual chunk of a page should be a separate Astro component in `s
 
 When a visual pattern appears in multiple places (cards, section headers, stat displays, job listings), extract it into `src/components/ui/`. Existing examples:
 - `SectionHeader.astro` — eyebrow + heading + subtitle pattern
-- `FeatureSlide.astro` — text + mockup with accent gradient
+- `DemoButton.astro` — pill CTA button (link or button)
 - `StatCard.tsx` — animated stat card (React)
 
 ### Colors and gradients are component props

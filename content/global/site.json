@@ -3,22 +3,9 @@
   "demoBookingUrl": "https://calendar.app.google/ADWYkErAkBkvTd9C6",
   "nav": [
     {
-      "label": "Solutions",
-      "href": "/solutions",
-      "children": [
-        {
-          "label": "Code Enforcement",
-          "href": "/solutions/code-enforcement"
-        },
-        {
-          "label": "Long-Term Rental Registration",
-          "href": "/solutions/long-term-rental-registration"
-        },
-        {
-          "label": "Short-Term Rental Registration",
-          "href": "/solutions/short-term-rental-registration"
-        }
-      ]
+      "label": "Platform",
+      "href": "/#products",
+      "children": []
     },
     {
       "label": "Spotlight",
@@ -31,39 +18,31 @@
       "children": []
     },
     {
-      "label": "About Tolemi",
+      "label": "Company",
       "href": "/about",
-      "children": []
+      "children": [
+        {
+          "label": "About Tolemi",
+          "href": "/about"
+        },
+        {
+          "label": "Careers",
+          "href": "/careers"
+        }
+      ]
     }
   ],
   "footerText": "© 2026 Tolemi. All rights reserved.",
   "footerLinks": {
-    "solutions": [
-      {
-        "label": "Code Enforcement",
-        "href": "/solutions/code-enforcement"
-      },
-      {
-        "label": "Long-Term Rental",
-        "href": "/solutions/long-term-rental-registration"
-      },
-      {
-        "label": "Short-Term Rental",
-        "href": "/solutions/short-term-rental-registration"
-      }
-    ],
+    "solutions": [],
     "products": [
       {
-        "label": "BuildingBlocks",
-        "href": "/products/building-blocks"
+        "label": "Platform Overview",
+        "href": "/#products"
       },
       {
-        "label": "Slate",
-        "href": "/products/slate"
-      },
-      {
-        "label": "Publicity",
-        "href": "/products/publicity"
+        "label": "Property Registration",
+        "href": "/#registration"
       }
     ],
     "company": [
