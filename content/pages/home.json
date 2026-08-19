@@ -5,7 +5,7 @@
       "discriminant": "hero",
       "value": {
         "headline": "We help local governments create and run data-driven programs that protect tenants, increase housing supply, preserve affordability, and revitalize neighborhoods.",
-        "subheadline": "Tolemi is a civic technology company that builds data integration, spatial insights, and workflow automation software for local governments. We unlock the wealth of municipal data so cities can ensure safe, stable housing and build stronger neighborhoods.",
+        "subheadline": "Tolemi is a civic technology company that builds data integration, spatial insights, and workflow automation software for state and local governments. We unlock the wealth of municipal data so agencies can ensure safe, stable housing and build stronger neighborhoods.",
         "ctaText": "Talk to Us",
         "ctaLink": "https://calendar.app.google/ADWYkErAkBkvTd9C6"
       }
@@ -14,7 +14,7 @@
       "discriminant": "story",
       "value": {
         "heading": "From Data to Action",
-        "subheading": "We integrate with your data, hydrate it with externally sourced datasets, connect the dots, and derive the insights that make smart workflows.",
+        "subheading": "We integrate with your data, enhance it with externally sourced datasets, connect the dots, and derive the insights that make smart workflows.",
         "stages": [
           {
             "label": "Data",
@@ -29,8 +29,8 @@
             "detail": "Integrated registration portal, inspections, email and mail campaigns, payment collection, and compliance."
           },
           {
-            "label": "Action",
-            "detail": "Programs launched and run efficiently."
+            "label": "Automation",
+            "detail": "Outreach, renewals, and escalations run automatically, so programs launch fast and run efficiently."
           }
         ],
         "layers": []
@@ -40,19 +40,19 @@
       "discriminant": "products",
       "value": {
         "heading": "One Platform, Three Layers",
-        "subheading": "Cities care about launching and efficiently running housing programs. The application matters less. Our products are the enablers, part of the package we provide.",
+        "subheading": "State and local governments care about launching and efficiently running housing programs. The application matters less. Our products are the enablers, part of the package we provide.",
         "ctaNote": "Book a 30-minute demo to see how it works for a program like yours.",
         "items": [
           {
             "name": "Slate",
             "tagline": "Workflow & Registration Management: Acquisition · Disposition · Compliance",
-            "headline": "Your city runs on processes.",
+            "headline": "Your agency runs on processes.",
             "headlineAccent": "Slate runs them for you.",
             "description": "Slate replaces disconnected spreadsheets and generic project tools with purpose-built workflows tied directly to parcels, so your team can track every property, task, and deadline in one place, and nothing falls through the cracks.",
             "features": [
               {
                 "title": "Operationalize Data",
-                "description": "Slate connects directly to parcels of record and integrates with your city data, so your team can analyze and act on property information without switching systems."
+                "description": "Slate connects directly to parcels of record and integrates with your data, so your team can analyze and act on property information without switching systems."
               },
               {
                 "title": "Custom Configuration",
@@ -64,7 +64,7 @@
               },
               {
                 "title": "Analyze Data",
-                "description": "Layer data created in Slate with BuildingBlocks to see how your programs and teams are impacting the city, connecting operational work to citywide spatial analysis."
+                "description": "Layer data created in Slate with BuildingBlocks to see how your programs and teams are impacting your community, connecting operational work to citywide spatial analysis."
               },
               {
                 "title": "Map-Based Tracking",
@@ -86,7 +86,7 @@
               },
               {
                 "title": "Property Acquisition & Disposition",
-                "description": "Track city-owned properties through acquisition, disposition, or redevelopment with automated workflows and reporting."
+                "description": "Track publicly owned properties through acquisition, disposition, or redevelopment with automated workflows and reporting."
               },
               {
                 "title": "Land Bank Operations",
@@ -162,7 +162,7 @@
             ],
             "imagePath": "/screenshots/bbmap.png",
             "imageAlt": "BuildingBlocks map view of connected city property data",
-            "ctaText": "See your city's data in one place",
+            "ctaText": "See every property in one place",
             "ctaLink": "https://calendar.app.google/ADWYkErAkBkvTd9C6"
           },
           {
@@ -170,7 +170,7 @@
             "tagline": "Public-Facing Property Portal: Transparency · Engagement · Applications",
             "headline": "Your community has questions.",
             "headlineAccent": "PubliCity answers them.",
-            "description": "Most cities field the same property questions from residents, developers, and buyers over and over. By phone, by email, in person. PubliCity puts that information on a public map so anyone can find it, and channels applications and feedback directly to your staff.",
+            "description": "Most municipalities and agencies field the same property questions from residents, developers, and buyers over and over. By phone, by email, in person. PubliCity puts that information on a public map so anyone can find it, and channels applications and feedback directly to your staff.",
             "features": [
               {
                 "title": "List Properties for Sale",
@@ -235,8 +235,8 @@
             "description": "LLCs, trusts, and shells resolve back to the actual person or organization holding the property. No registering five buildings that pass while quietly skipping the two that don't."
           },
           {
-            "title": "Find every rental",
-            "description": "Likely rentals that never registered are flagged automatically. Your registry sees more than the owners who come forward."
+            "title": "Automate compliance",
+            "description": "Long-term rentals, short-term rentals, vacant structures, foreclosures: likely unregistered properties are flagged automatically, and automated outreach brings their owners into compliance."
           },
           {
             "title": "Risk-based inspections",
@@ -253,14 +253,14 @@
       "discriminant": "whyUs",
       "value": {
         "heading": "Not Another Generic Software Vendor",
-        "body": "We are a team of citizens who care: technologists, activists, and former municipal staff who have been doing this work for over ten years. We learned it the hard way, alongside our partners in more than 100 cities, states, and land banks. We bring that network's experience, best practices, and pitfalls to avoid to every new program.",
+        "body": "We are a team of citizens who care: technologists, activists, and former municipal staff who have been doing this work for over ten years. We learned it the hard way, alongside our partners in more than 100 municipalities, states, and public sector agencies like land banks. We bring that network's experience, best practices, and pitfalls to avoid to every new program.",
         "points": [
           {
             "title": "10+ years",
             "description": "working with local government data and housing programs."
           },
           {
-            "title": "100+ municipal partners",
+            "title": "100+ government partners",
             "description": "using data to inform decisions and improve housing outcomes across the US"
           },
           {
@@ -273,15 +273,15 @@
     {
       "discriminant": "logos",
       "value": {
-        "heading": "Trusted by Cities Nationwide",
-        "subheading": "More than 100 cities and counties use the Tolemi platform to centralize data, identify properties and owners, prioritize resources, and streamline processes."
+        "heading": "Trusted by Governments Nationwide",
+        "subheading": "More than 100 municipalities, counties, and public sector agencies use the Tolemi platform to centralize data, identify properties and owners, prioritize resources, and streamline processes."
       }
     },
     {
       "discriminant": "cta",
       "value": {
         "heading": "Tell Us About the Program You Want to Run",
-        "text": "We'll show you what it looks like on your city's own data.",
+        "text": "We'll walk you through how a program like yours works, end to end.",
         "buttonText": "Talk to Us",
         "buttonLink": "https://calendar.app.google/ADWYkErAkBkvTd9C6"
       }
