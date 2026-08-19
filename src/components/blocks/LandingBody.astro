@@ -1,13 +1,12 @@
 ---
 // LandingBody — all sections on the landing page, in narrative order:
-// mission → story graph → products → registration → how we work → why us
+// mission → story graph → products → registration → why us
 // → cities → investors → CTA.
 
 import HeroGraph from "./landing/HeroGraph.astro";
 import StoryGraph from "./landing/StoryGraph.astro";
 import ProductTabs from "./landing/ProductTabs.astro";
 import RegistrationSpotlight from "./landing/RegistrationSpotlight.astro";
-import HowWeWork from "./landing/HowWeWork.astro";
 import WhyUs from "./landing/WhyUs.astro";
 import CityLogos from "./CityLogos.astro";
 import Stats from "./landing/Stats.astro";
@@ -28,14 +27,13 @@ interface Props {
     ctaText?: string;
     ctaLink?: string;
   };
-  howWeWork?: { heading?: string; subheading?: string; steps?: any[]; closing?: string };
   whyUs?: { heading?: string; body?: string; points?: any[] };
   logos?: { heading?: string; subheading?: string };
   stats?: { heading?: string; items?: any[] };
   cta?: { heading: string; text?: string; buttonText?: string; buttonLink?: string };
 }
 
-const { hero, story, products, registration, howWeWork, whyUs, logos, stats, cta } = Astro.props;
+const { hero, story, products, registration, whyUs, logos, stats, cta } = Astro.props;
 ---
 
 {/* Mission hero — the ownership graph over the mission statement */}
@@ -49,9 +47,6 @@ const { hero, story, products, registration, howWeWork, whyUs, logos, stats, cta
 
 {/* Property registration spotlight */}
 {registration && <RegistrationSpotlight {...registration} />}
-
-{/* How we work — turnkey lifecycle */}
-{howWeWork && <HowWeWork {...howWeWork} />}
 
 {/* Why us */}
 {whyUs && <WhyUs {...whyUs} />}

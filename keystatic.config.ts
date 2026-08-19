@@ -207,7 +207,6 @@ export default config({
                 { label: 'Story Graph (Data → Action)', value: 'story' },
                 { label: 'Products', value: 'products' },
                 { label: 'Registration Spotlight', value: 'registration' },
-                { label: 'How We Work', value: 'howWeWork' },
                 { label: 'Why Us', value: 'whyUs' },
                 { label: 'City Logos', value: 'logos' },
                 { label: 'Stats', value: 'stats' },
@@ -314,18 +313,6 @@ export default config({
                 },
                 { label: 'Registration Spotlight' }
               ),
-              howWeWork: fields.object(
-                {
-                  heading: fields.text({ label: 'Section Heading' }),
-                  subheading: fields.text({ label: 'Section Subheading', multiline: true }),
-                  steps: fields.array(titledItem, {
-                    label: 'Steps',
-                    itemLabel: (props) => props.fields.title.value || 'Step',
-                  }),
-                  closing: fields.text({ label: 'Closing Line' }),
-                },
-                { label: 'How We Work' }
-              ),
               whyUs: fields.object(
                 {
                   heading: fields.text({ label: 'Section Heading' }),
@@ -398,6 +385,18 @@ export default config({
             { label: 'Milestone' }
           ),
           { label: 'Milestones', itemLabel: (props) => props.fields.year.value || 'Milestone' }
+        ),
+        howWeWork: fields.object(
+          {
+            heading: fields.text({ label: 'Section Heading' }),
+            subheading: fields.text({ label: 'Section Subheading', multiline: true }),
+            steps: fields.array(titledItem, {
+              label: 'Steps',
+              itemLabel: (props) => props.fields.title.value || 'Step',
+            }),
+            closing: fields.text({ label: 'Closing Line' }),
+          },
+          { label: 'How We Work' }
         ),
       },
     }),

@@ -250,40 +250,6 @@
       }
     },
     {
-      "discriminant": "howWeWork",
-      "value": {
-        "heading": "How We Work",
-        "subheading": "We do much more than just provide tools. We bring the know-how, the expertise, and the support to run the whole program.",
-        "steps": [
-          {
-            "title": "Understand",
-            "description": "We start with your needs and requirements: your ordinance, your goals, your constraints. Then we provide feedback."
-          },
-          {
-            "title": "Connect your data",
-            "description": "We integrate with your data, hydrate it with externally sourced datasets, and connect the dots."
-          },
-          {
-            "title": "Stand up the program",
-            "description": "We set up your internal and external workflows and the citizen-facing portal: registration, outreach, and payment collection."
-          },
-          {
-            "title": "Train and launch",
-            "description": "We educate your staff and hold your hand during launch."
-          },
-          {
-            "title": "Measure and improve",
-            "description": "Backend analytics track and improve program efficacy, so every cycle gets better."
-          },
-          {
-            "title": "Support, always",
-            "description": "We continually support and adjust the program as it evolves, with a help desk for your staff."
-          }
-        ],
-        "closing": "We hold your hand throughout the whole program lifecycle."
-      }
-    },
-    {
       "discriminant": "whyUs",
       "value": {
         "heading": "Not Another Generic Software Vendor",
