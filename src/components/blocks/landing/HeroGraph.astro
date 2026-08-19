@@ -23,7 +23,7 @@ const {
 } = Astro.props;
 ---
 
-<section class="relative overflow-hidden pt-24 md:pt-28 pb-4 px-6 bg-surface">
+<section class="relative overflow-hidden pt-28 pb-4 px-6 bg-surface">
   <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 md:gap-14 items-center">
     {/* the mission, left */}
     <div class="py-8">
@@ -39,13 +39,13 @@ const {
         </p>
       )}
       {ctaText && (
-        <div class="reveal">
+        <div class="reveal text-center md:text-left">
           <DemoButton href={ctaLink || "#"} size="lg" arrow>{ctaText}</DemoButton>
         </div>
       )}
     </div>
     {/* the graph, right */}
-    <div class="gstage" id="herograph-stage">
+    <div class="gstage order-first md:order-none" id="herograph-stage">
       <svg id="herograph-svg" viewBox="0 0 560 560"
         aria-label="Scattered facts spring into an ownership graph; labeled identifiers — a shared phone number and mailing address — draw three owners together into one portfolio"
       ></svg>
@@ -182,6 +182,10 @@ const {
     touch-action: none;
     background: linear-gradient(90deg, #ff8091, #ffdb70, #7fd194, #7fdfff, #a5b4fc);
     box-shadow: inset 0 1px 2px rgba(52, 51, 50, 0.18);
+  }
+  /* invisible halo so the 10px track meets the ~44px touch-target minimum */
+  .tsl-track::before {
+    content: ""; position: absolute; left: 0; right: 0; top: -17px; bottom: -17px;
   }
   .tsl-veil {
     position: absolute; top: 0; bottom: 0; right: 0; left: 0; border-radius: 999px;

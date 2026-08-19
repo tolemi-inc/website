@@ -99,6 +99,37 @@
 
 html {
   scroll-behavior: smooth;
+  /* Anchor jumps land below the fixed header (mobile ~76px, desktop ~132px) */
+  scroll-padding-top: 6rem;
+}
+@media (min-width: 768px) {
+  html {
+    scroll-padding-top: 9.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .animation-delay-100,
+  .animation-delay-200,
+  .animation-delay-300 {
+    opacity: 1;
+  }
+  .animate-float,
+  .animate-float-delayed,
+  .animate-fade-in,
+  .animate-fade-in-up,
+  .animate-fade-in-slow {
+    animation: none;
+    opacity: 1;
+  }
 }
 
 /* Keyframes */
@@ -149,6 +180,7 @@ html {
   color: var(--color-text-secondary);
   font-size: 1.125rem;
   line-height: 1.75;
+  overflow-wrap: break-word;
 }
 
 .richtext > * + * {
@@ -328,6 +360,20 @@ html {
   font-family: var(--font-heading);
   color: var(--color-text-primary);
   font-weight: 600;
+}
+
+/* Mobile: scale the magazine typography down and keep wide content scrollable
+   inside its own box instead of stretching the page. */
+@media (max-width: 640px) {
+  .richtext h1 { font-size: 2.25rem; }
+  .richtext h2 { font-size: 1.875rem; }
+  .richtext h3 { font-size: 1.5rem; }
+  .richtext h4 { font-size: 1.25rem; }
+  .richtext blockquote { font-size: 1.1875rem; padding-left: 1rem; }
+  .richtext table {
+    display: block;
+    overflow-x: auto;
+  }
 }
 
 /* Feature cards stack: each card is sticky and the next slides up to cover it */

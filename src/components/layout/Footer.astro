@@ -32,7 +32,8 @@ const { footerText, socialLinks = [], footerLinks, demoBookingUrl = "#" } = Astr
       <!-- Brand -->
       <div class="col-span-2 md:col-span-1">
         <a href="/">
-          <img src="/logos/light_tolemi_gradient.svg" alt="Tolemi" class="h-24 mb-4" onerror="this.src='/logos/dark_tolemi_gradient.svg'; this.classList.add('invert')" />
+          {/* negative margins trim the logo SVG's large transparent padding */}
+          <img src="/logos/light_tolemi_gradient.svg" alt="Tolemi" class="h-24 -my-6" onerror="this.src='/logos/dark_tolemi_gradient.svg'; this.classList.add('invert')" />
         </a>
         <p class="text-sm leading-relaxed">Modern data tools for local governments.</p>
         {socialLinks.length > 0 && (
@@ -42,7 +43,7 @@ const { footerText, socialLinks = [], footerLinks, demoBookingUrl = "#" } = Astr
                 href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="text-sm text-white/50 hover:text-white transition-colors"
+                class="inline-block py-1.5 text-sm text-white/50 hover:text-white transition-colors"
               >
                 {link.platform}
               </a>
@@ -58,7 +59,7 @@ const { footerText, socialLinks = [], footerLinks, demoBookingUrl = "#" } = Astr
           <ul class="flex flex-col gap-2.5">
             {footerLinks.solutions.map((link) => (
               <li>
-                <a href={link.href} class="text-sm hover:text-white transition-colors">{link.label}</a>
+                <a href={link.href} class="inline-block py-1 text-sm hover:text-white transition-colors">{link.label}</a>
               </li>
             ))}
           </ul>
@@ -72,7 +73,7 @@ const { footerText, socialLinks = [], footerLinks, demoBookingUrl = "#" } = Astr
           <ul class="flex flex-col gap-2.5">
             {footerLinks.products.map((link) => (
               <li>
-                <a href={link.href} class="text-sm hover:text-white transition-colors">{link.label}</a>
+                <a href={link.href} class="inline-block py-1 text-sm hover:text-white transition-colors">{link.label}</a>
               </li>
             ))}
           </ul>
@@ -86,7 +87,7 @@ const { footerText, socialLinks = [], footerLinks, demoBookingUrl = "#" } = Astr
           <ul class="flex flex-col gap-2.5">
             {footerLinks.company.map((link) => (
               <li>
-                <a href={link.href} class="text-sm hover:text-white transition-colors">{link.label}</a>
+                <a href={link.href} class="inline-block py-1 text-sm hover:text-white transition-colors">{link.label}</a>
               </li>
             ))}
           </ul>
@@ -99,9 +100,9 @@ const { footerText, socialLinks = [], footerLinks, demoBookingUrl = "#" } = Astr
       {footerText && <p class="text-xs text-white/40">{footerText}</p>}
       <div class="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-white/40">
         {footerLinks?.legal?.map((link) => (
-          <a href={link.href} class="hover:text-white transition-colors">{link.label}</a>
+          <a href={link.href} class="inline-block py-1.5 hover:text-white transition-colors">{link.label}</a>
         ))}
-        <a href={demoBookingUrl} target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">Request a Demo</a>
+        <a href={demoBookingUrl} target="_blank" rel="noopener noreferrer" class="inline-block py-1.5 hover:text-white transition-colors">Request a Demo</a>
       </div>
     </div>
   </div>

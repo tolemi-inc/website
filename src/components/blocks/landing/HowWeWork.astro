@@ -1,5 +1,7 @@
 ---
-// How we work — the turnkey lifecycle as numbered steps.
+// How we work — the turnkey lifecycle as numbered steps that snake down the
+// page in two columns: odd rows read left→right, even rows right→left (so
+// step 3 sits directly under step 2), with arrows tracing the path.
 import SectionHeader from "../../ui/SectionHeader.astro";
 
 interface Step {
@@ -11,7 +13,9 @@ interface Props {
   subheading?: string;
   steps?: Step[];
   closing?: string;
-  numberColors?: string[];
+  headingGradients?: string[];
+  numberColor?: string;
+  arrowColors?: string[];
 }
 
 const {
@@ -19,33 +23,115 @@ const {
   subheading,
   steps = [],
   closing,
-  numberColors = [
-    "bg-tolemi-indigo-500",
-    "bg-tolemi-sky-500",
-    "bg-tolemi-coral-400",
-    "bg-tolemi-green-500",
+  // three alternating brand gradients (same trio as the Why Us dividers and
+  // registration bullets), in deep shades so the gradient text stays readable
+  // on the light card background
+  headingGradients = [
+    "from-tolemi-indigo-600 to-tolemi-sky-600",
+    "from-tolemi-sky-600 to-tolemi-green-600",
+    "from-tolemi-coral-600 to-tolemi-yellow-600",
+  ],
+  numberColor = "bg-tolemi-dark text-white",
+  // each arrow wears the color its step's gradient ends on
+  arrowColors = [
+    "text-tolemi-sky-600",
+    "text-tolemi-green-600",
+    "text-tolemi-yellow-600",
   ],
 } = Astro.props;
+
+// Arrow after step i (0-based), following the snake: → at the end of a
+// left→right cell, ↓ at the end of a row, ← in right→left rows. Repeats
+// every 4 steps (two rows). The last step gets no arrow.
+const arrowFor = (i: number, count: number): "right" | "down" | "left" | null => {
+  if (i === count - 1) return null;
+  const m = (i + 1) % 4;
+  if (m === 1) return "right";
+  if (m === 3) return "left";
+  return "down";
+};
+
+const ARROW_PATHS = {
+  right: "M9 5l7 7-7 7",
+  left: "M15 19l-7-7 7-7",
+  down: "M19 9l-7 7-7-7",
+};
 ---
 
 <section class="py-20 md:py-32 px-6 bg-surface">
-  <div class="max-w-6xl mx-auto">
+  <div class="max-w-5xl mx-auto">
     <SectionHeader heading={heading} subtitle={subheading} />
 
-    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 reveal">
-      {steps.map((step, i) => (
-        <div class="bg-surface-secondary rounded-2xl p-6 md:p-8">
-          <div
-            class={`w-9 h-9 rounded-full ${numberColors[i % numberColors.length]} text-white font-heading font-bold flex items-center justify-center mb-4`}
-          >
-            {i + 1}
+    <div class="hww-snake grid sm:grid-cols-2 gap-6 md:gap-8 reveal">
+      {steps.map((step, i) => {
+        const arrow = arrowFor(i, steps.length);
+        const arrowColor = arrowColors[i % arrowColors.length];
+        return (
+          <div class="relative">
+            <div class="h-full rounded-2xl bg-surface-secondary p-6 md:p-8">
+              <div class="flex items-center gap-3 mb-3">
+                {/* lining-nums: Raleway's default old-style figures sit off-center in the circle */}
+                <div
+                  class={`w-9 h-9 rounded-full ${numberColor} font-heading font-bold leading-none lining-nums tabular-nums flex items-center justify-center flex-shrink-0`}
+                >
+                  {i + 1}
+                </div>
+                <h3
+                  class={`font-heading text-lg font-bold bg-gradient-to-r ${headingGradients[i % headingGradients.length]} bg-clip-text text-transparent`}
+                >
+                  {step.title}
+                </h3>
+              </div>
+              {step.description && (
+                <p class="text-sm md:text-base text-text-secondary leading-relaxed">{step.description}</p>
+              )}
+            </div>
+
+            {/* snake arrows (2-column layout) */}
+            {arrow === "right" && (
+              <div
+                class={`hidden sm:flex absolute top-1/2 -translate-y-1/2 left-full w-6 md:w-8 items-center justify-center ${arrowColor}`}
+                aria-hidden="true"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={ARROW_PATHS.right}></path>
+                </svg>
+              </div>
+            )}
+            {arrow === "left" && (
+              <div
+                class={`hidden sm:flex absolute top-1/2 -translate-y-1/2 right-full w-6 md:w-8 items-center justify-center ${arrowColor}`}
+                aria-hidden="true"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={ARROW_PATHS.left}></path>
+                </svg>
+              </div>
+            )}
+            {arrow === "down" && (
+              <div
+                class={`hidden sm:flex absolute left-1/2 -translate-x-1/2 top-full h-6 md:h-8 items-center justify-center ${arrowColor}`}
+                aria-hidden="true"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={ARROW_PATHS.down}></path>
+                </svg>
+              </div>
+            )}
+            {/* single-column (mobile): every step flows straight down */}
+            {arrow && (
+              <div
+                class={`sm:hidden absolute left-1/2 -translate-x-1/2 top-full h-6 flex items-center justify-center ${arrowColor}`}
+                aria-hidden="true"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={ARROW_PATHS.down}></path>
+                </svg>
+              </div>
+            )}
           </div>
-          <h3 class="font-heading text-lg font-bold text-text-primary mb-2">{step.title}</h3>
-          {step.description && (
-            <p class="text-sm md:text-base text-text-secondary leading-relaxed">{step.description}</p>
-          )}
-        </div>
-      ))}
+        );
+      })}
     </div>
 
     {closing && (
@@ -55,3 +141,20 @@ const {
     )}
   </div>
 </section>
+
+<style>
+  /* Boustrophedon grid: every second row is reversed so the numbered path
+     snakes — step 3 lands directly under step 2, step 4 under step 1.
+     grid-auto-flow: dense backfills the column-pinned cells. */
+  @media (min-width: 640px) {
+    .hww-snake {
+      grid-auto-flow: dense;
+    }
+    .hww-snake > div:nth-child(4n + 3) {
+      grid-column: 2;
+    }
+    .hww-snake > div:nth-child(4n + 4) {
+      grid-column: 1;
+    }
+  }
+</style>

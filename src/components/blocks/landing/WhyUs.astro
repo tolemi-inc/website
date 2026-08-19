@@ -9,6 +9,7 @@ interface Props {
   body?: string;
   points?: Point[];
   accentGradient?: string;
+  pointGradients?: string[];
 }
 
 const {
@@ -16,6 +17,11 @@ const {
   body,
   points = [],
   accentGradient = "from-tolemi-indigo-500 to-tolemi-sky-500",
+  pointGradients = [
+    "from-tolemi-indigo-500 to-tolemi-sky-500",
+    "from-tolemi-sky-500 to-tolemi-green-500",
+    "from-tolemi-coral-400 to-tolemi-yellow-400",
+  ],
 } = Astro.props;
 ---
 
@@ -32,9 +38,9 @@ const {
     </div>
 
     <div class="flex flex-col gap-8 md:pt-4 reveal">
-      {points.map((point) => (
+      {points.map((point, i) => (
         <div class="flex gap-5">
-          <div class={`w-1 rounded-full bg-gradient-to-b ${accentGradient} flex-shrink-0`}></div>
+          <div class={`w-1 rounded-full bg-gradient-to-b ${pointGradients[i % pointGradients.length]} flex-shrink-0`}></div>
           <div>
             <h3 class="font-heading text-xl font-bold text-text-primary mb-1">{point.title}</h3>
             {point.description && (

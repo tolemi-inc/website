@@ -256,15 +256,28 @@ export default config({
                 {
                   heading: fields.text({ label: 'Section Heading' }),
                   subheading: fields.text({ label: 'Section Subheading', multiline: true }),
+                  ctaNote: fields.text({
+                    label: 'CTA note (small line under each product demo button)',
+                  }),
                   items: fields.array(
                     fields.object(
                       {
                         name: fields.text({ label: 'Product Name', validation: { isRequired: true } }),
-                        tagline: fields.text({ label: 'Tagline (shown above name)' }),
-                        description: fields.text({ label: 'Description', multiline: true }),
-                        bullets: fields.array(fields.text({ label: 'Bullet' }), {
-                          label: 'Bullets',
-                          itemLabel: (props) => props.value || 'Bullet',
+                        tagline: fields.text({
+                          label: 'Category (eyebrow, e.g. "Property Data & Spatial Analytics — Integration · Analysis · Automation")',
+                        }),
+                        headline: fields.text({ label: 'Headline (first beat, e.g. "Your data is already there,")' }),
+                        headlineAccent: fields.text({
+                          label: 'Headline accent (second beat, e.g. "BuildingBlocks connects it.")',
+                        }),
+                        description: fields.text({ label: 'Intro paragraph', multiline: true }),
+                        features: fields.array(titledItem, {
+                          label: 'Key Features',
+                          itemLabel: (props) => props.fields.title.value || 'Feature',
+                        }),
+                        useCases: fields.array(titledItem, {
+                          label: 'Use Cases ("what cities are using it for")',
+                          itemLabel: (props) => props.fields.title.value || 'Use case',
                         }),
                         imagePath: fields.text({
                           label: 'Screenshot Path',
@@ -272,6 +285,8 @@ export default config({
                             'Path under /public, e.g. /screenshots/bbmap.png. Leave blank to show a stylized workflow card instead of a screenshot.',
                         }),
                         imageAlt: fields.text({ label: 'Screenshot Alt Text' }),
+                        ctaText: fields.text({ label: 'CTA text (e.g. "See your city\'s data in one place.")' }),
+                        ctaLink: fields.text({ label: 'CTA link' }),
                       },
                       { label: 'Product' }
                     ),

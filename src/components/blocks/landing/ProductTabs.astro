@@ -1,35 +1,47 @@
 ---
 // Product tabs — click-driven (never scroll-driven). Content comes from the
-// homePage "products" block. A product with no imagePath renders a stylized
-// workflow card instead of a screenshot.
+// homePage "products" block, structured like Jasmine's one-pagers:
+// category eyebrow → two-beat headline → intro → key features →
+// "built for your work" use cases → demo CTA. A product with no imagePath
+// renders a stylized workflow card instead of a screenshot.
 import SectionHeader from "../../ui/SectionHeader.astro";
+import DemoButton from "../../ui/DemoButton.astro";
 
+interface TitledItem {
+  title: string;
+  description?: string;
+}
 interface ProductItem {
   name: string;
   tagline?: string;
+  headline?: string;
+  headlineAccent?: string;
   description?: string;
-  bullets?: string[];
+  features?: TitledItem[];
+  useCases?: TitledItem[];
   imagePath?: string;
   imageAlt?: string;
+  ctaText?: string;
+  ctaLink?: string;
 }
 interface Props {
   heading?: string;
   subheading?: string;
+  ctaNote?: string;
   items?: ProductItem[];
   accentGradients?: string[];
-  bulletColor?: string;
 }
 
 const {
   heading = "The Tolemi Platform",
   subheading,
+  ctaNote,
   items = [],
   accentGradients = [
     "from-tolemi-indigo-500 to-tolemi-coral-400",
     "from-tolemi-sky-600 to-tolemi-sky",
     "from-tolemi-green to-tolemi-sky",
   ],
-  bulletColor = "text-tolemi-indigo-500",
 } = Astro.props;
 
 const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-");
@@ -40,14 +52,14 @@ const tabs = items.map((item, i) => ({
 }));
 ---
 
-<section id="products" class="py-20 md:py-28 px-6 bg-surface relative overflow-hidden scroll-mt-20">
+<section id="products" class="py-20 md:py-28 px-6 bg-surface relative overflow-hidden">
   <div class="max-w-7xl mx-auto">
     <SectionHeader heading={heading} subtitle={subheading} />
 
     {/* Tab buttons */}
-    <div class="flex justify-center mb-10 md:mb-14 reveal">
+    <div class="mb-10 md:mb-14 reveal overflow-x-auto -mx-6 px-6 md:mx-0 md:px-0">
       <div
-        class="inline-flex gap-1 p-1 rounded-xl bg-surface-secondary border border-text-muted/10"
+        class="flex w-max mx-auto gap-1 p-1 rounded-xl bg-surface-secondary border border-text-muted/10"
         role="tablist"
       >
         {tabs.map((tab, i) => (
@@ -77,37 +89,29 @@ const tabs = items.map((item, i) => ({
             <div>
               <div class={`w-8 h-1 rounded-full bg-gradient-to-r ${tab.accent} mb-6`}></div>
               {tab.tagline && (
-                <p class="text-xs font-semibold uppercase tracking-[0.15em] text-text-muted mb-2">
+                <p class="text-xs font-semibold uppercase tracking-[0.15em] text-text-muted mb-3">
                   {tab.tagline}
                 </p>
               )}
               <h3 class="font-heading text-2xl md:text-3xl font-bold text-text-primary mb-4">
-                {tab.name}
+                {tab.headline ? (
+                  <>
+                    {tab.headline}{" "}
+                    <span class={`bg-gradient-to-r ${tab.accent} bg-clip-text text-transparent`}>
+                      {tab.headlineAccent}
+                    </span>
+                  </>
+                ) : (
+                  tab.name
+                )}
               </h3>
               {tab.description && (
-                <p class="text-base md:text-lg text-text-secondary leading-relaxed mb-6">
+                <p class="text-base md:text-lg text-text-secondary leading-relaxed">
                   {tab.description}
                 </p>
               )}
-              {tab.bullets && tab.bullets.length > 0 && (
-                <ul class="flex flex-col gap-2.5">
-                  {tab.bullets.map((bullet) => (
-                    <li class="flex items-start gap-3 text-sm md:text-base text-text-secondary">
-                      <svg
-                        class={`w-5 h-5 mt-0.5 flex-shrink-0 ${bulletColor}`}
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                      </svg>
-                      {bullet}
-                    </li>
-                  ))}
-                </ul>
-              )}
             </div>
-            <div class="w-full max-w-lg mx-auto">
+            <div class="w-full max-w-lg mx-auto order-first md:order-none">
               {tab.imagePath ? (
                 <img
                   src={tab.imagePath}
@@ -129,6 +133,62 @@ const tabs = items.map((item, i) => ({
               )}
             </div>
           </div>
+
+          {tab.features && tab.features.length > 0 && (
+            <div class="mt-12 md:mt-16">
+              <h4 class="font-heading text-sm font-semibold uppercase tracking-[0.15em] text-text-muted mb-6">
+                Key Features
+              </h4>
+              <div
+                class:list={[
+                  "grid sm:grid-cols-2 gap-5 md:gap-6",
+                  tab.features.length % 3 === 0 ? "lg:grid-cols-3" : "lg:grid-cols-2",
+                ]}
+              >
+                {tab.features.map((feature) => (
+                  <div class="bg-surface-secondary/60 rounded-xl border border-text-muted/10 p-5 md:p-6">
+                    <h5 class="font-heading font-bold text-text-primary mb-1.5">{feature.title}</h5>
+                    {feature.description && (
+                      <p class="text-sm text-text-secondary leading-relaxed">{feature.description}</p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {tab.useCases && tab.useCases.length > 0 && (
+            <div class="mt-12 md:mt-16">
+              <h4 class="font-heading text-sm font-semibold uppercase tracking-[0.15em] text-text-muted mb-6">
+                What cities are using {tab.name} for
+              </h4>
+              <div
+                class:list={[
+                  "grid sm:grid-cols-2 gap-x-8 gap-y-6",
+                  tab.useCases.length % 3 === 0 ? "lg:grid-cols-3" : "lg:grid-cols-2",
+                ]}
+              >
+                {tab.useCases.map((useCase) => (
+                  <div class="flex gap-4">
+                    <div class={`w-1 rounded-full bg-gradient-to-b ${tab.accent} flex-shrink-0`}></div>
+                    <div>
+                      <h5 class="font-heading font-bold text-text-primary mb-1">{useCase.title}</h5>
+                      {useCase.description && (
+                        <p class="text-sm text-text-secondary leading-relaxed">{useCase.description}</p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {tab.ctaText && (
+            <div class="mt-12 md:mt-14 text-center">
+              <DemoButton href={tab.ctaLink || "#"} arrow>{tab.ctaText}</DemoButton>
+              {ctaNote && <p class="text-sm text-text-muted mt-3">{ctaNote}</p>}
+            </div>
+          )}
         </div>
       ))}
     </div>

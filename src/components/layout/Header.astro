@@ -24,7 +24,10 @@ const { companyName = "Tolemi", nav = [], demoBookingUrl = "#" } = Astro.props;
 <header id="site-header" class="fixed top-0 w-full z-50 backdrop-blur-2xl border-b transition-colors duration-300" style="background: linear-gradient(180deg, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0.7) 100%); box-shadow: 0 4px 30px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.15); border-color: rgba(0,0,0,0.06);">
   <div class="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
     <a href="/" class="flex items-center">
-      <img src="/logos/dark_tolemi_gradient.svg" alt={companyName} class="h-27" />
+      {/* The logo SVG is mostly transparent padding (wordmark is a small band of the
+          viewBox); negative margins trim that padding out of the mobile header height
+          without shrinking the visible mark. */}
+      <img src="/logos/dark_tolemi_gradient.svg" alt={companyName} class="h-27 -my-7 md:my-0" />
     </a>
 
     {/* Desktop nav */}
@@ -34,14 +37,16 @@ const { companyName = "Tolemi", nav = [], demoBookingUrl = "#" } = Astro.props;
           <div class="relative group">
             <button
               type="button"
-              class="font-heading text-sm font-medium text-text-primary hover:text-tolemi-sky-600 transition-colors flex items-center gap-1"
+              aria-expanded="false"
+              aria-haspopup="true"
+              class="nav-dropdown-btn font-heading text-sm font-medium text-text-primary hover:text-tolemi-sky-600 transition-colors flex items-center gap-1 py-2"
             >
               {link.label}
               <svg class="w-3.5 h-3.5 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
               </svg>
             </button>
-            <div class="absolute top-full left-1/2 -translate-x-1/2 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+            <div class="nav-dropdown absolute top-full left-1/2 -translate-x-1/2 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
               <div class="bg-white/90 backdrop-blur-xl border border-black/[0.06] rounded-xl shadow-lg shadow-black/[0.08] py-2 min-w-[220px]">
                 {link.children.map((child) => (
                   <a
@@ -70,8 +75,10 @@ const { companyName = "Tolemi", nav = [], demoBookingUrl = "#" } = Astro.props;
     <button
       id="mobile-menu-btn"
       type="button"
-      class="md:hidden flex flex-col justify-center items-center w-10 h-10 gap-1.5"
+      class="md:hidden flex flex-col justify-center items-center w-11 h-11 gap-1.5"
       aria-label="Toggle menu"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
     >
       <span class="hamburger-line block w-6 h-0.5 bg-text-primary transition-all duration-300"></span>
       <span class="hamburger-line block w-6 h-0.5 bg-text-primary transition-all duration-300"></span>
@@ -80,13 +87,14 @@ const { companyName = "Tolemi", nav = [], demoBookingUrl = "#" } = Astro.props;
   </div>
 
   {/* Mobile menu */}
-  <div id="mobile-menu" class="md:hidden hidden border-t border-black/[0.06]" style="background: rgba(255,255,255,0.95); backdrop-filter: blur(24px);">
+  <div id="mobile-menu" class="md:hidden hidden border-t border-black/[0.06] max-h-[calc(100dvh-5rem)] overflow-y-auto" style="background: rgba(255,255,255,0.95); backdrop-filter: blur(24px);">
     <nav class="max-w-7xl mx-auto px-6 py-4 flex flex-col gap-1">
       {nav.map((link) =>
         link.children && link.children.length > 0 ? (
           <div class="mobile-dropdown">
             <button
               type="button"
+              aria-expanded="false"
               class="mobile-dropdown-btn w-full flex items-center justify-between py-3 font-heading text-sm font-medium text-text-primary"
             >
               {link.label}
@@ -119,31 +127,71 @@ const { companyName = "Tolemi", nav = [], demoBookingUrl = "#" } = Astro.props;
   </div>
 </header>
 
+<style>
+  /* Desktop dropdowns open on hover (group-hover) and stay open when toggled
+     by click/tap — the only affordance touch devices get. */
+  .dropdown-open .nav-dropdown {
+    opacity: 1;
+    visibility: visible;
+  }
+  .dropdown-open .nav-dropdown-btn svg {
+    transform: rotate(180deg);
+  }
+</style>
+
 <script>
   const menuBtn = document.getElementById('mobile-menu-btn');
   const mobileMenu = document.getElementById('mobile-menu');
 
+  function setMenu(open: boolean) {
+    mobileMenu?.classList.toggle('hidden', !open);
+    menuBtn?.setAttribute('aria-expanded', String(open));
+    const lines = menuBtn?.querySelectorAll('.hamburger-line') ?? [];
+    lines[0]?.classList.toggle('translate-y-[4px]', open);
+    lines[0]?.classList.toggle('rotate-45', open);
+    lines[1]?.classList.toggle('opacity-0', open);
+    lines[2]?.classList.toggle('-translate-y-[4px]', open);
+    lines[2]?.classList.toggle('-rotate-45', open);
+  }
+
   menuBtn?.addEventListener('click', () => {
-    const isOpen = !mobileMenu?.classList.contains('hidden');
-    mobileMenu?.classList.toggle('hidden');
-    const lines = menuBtn.querySelectorAll('.hamburger-line');
-    if (!isOpen) {
-      lines[0]?.classList.add('translate-y-[4px]', 'rotate-45');
-      lines[1]?.classList.add('opacity-0');
-      lines[2]?.classList.add('-translate-y-[4px]', '-rotate-45');
-    } else {
-      lines[0]?.classList.remove('translate-y-[4px]', 'rotate-45');
-      lines[1]?.classList.remove('opacity-0');
-      lines[2]?.classList.remove('-translate-y-[4px]', '-rotate-45');
-    }
+    setMenu(mobileMenu?.classList.contains('hidden') ?? false);
+  });
+
+  // Same-page anchor links don't trigger a page load, so close the menu on any tap
+  mobileMenu?.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => setMenu(false));
   });
 
   document.querySelectorAll('.mobile-dropdown-btn').forEach((btn) => {
     btn.addEventListener('click', () => {
       const content = btn.nextElementSibling;
-      const icon = btn.querySelector('svg');
-      content?.classList.toggle('hidden');
-      icon?.classList.toggle('rotate-180');
+      const hidden = content?.classList.toggle('hidden');
+      btn.setAttribute('aria-expanded', String(!hidden));
+      btn.querySelector('svg')?.classList.toggle('rotate-180');
+    });
+  });
+
+  // Desktop nav dropdowns: hover-only menus are unreachable on touch devices
+  // (tablets render the md: nav), so clicks toggle them too.
+  document.querySelectorAll('.nav-dropdown-btn').forEach((btn) => {
+    btn.addEventListener('click', (ev) => {
+      ev.stopPropagation();
+      const group = btn.parentElement;
+      document.querySelectorAll('.dropdown-open').forEach((g) => {
+        if (g !== group) {
+          g.classList.remove('dropdown-open');
+          g.querySelector('.nav-dropdown-btn')?.setAttribute('aria-expanded', 'false');
+        }
+      });
+      const open = group?.classList.toggle('dropdown-open') ?? false;
+      btn.setAttribute('aria-expanded', String(open));
+    });
+  });
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.dropdown-open').forEach((g) => {
+      g.classList.remove('dropdown-open');
+      g.querySelector('.nav-dropdown-btn')?.setAttribute('aria-expanded', 'false');
     });
   });
 </script>
