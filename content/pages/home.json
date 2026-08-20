@@ -236,7 +236,7 @@
           },
           {
             "title": "Automate compliance",
-            "description": "Long-term rentals, short-term rentals, vacant structures, foreclosures: likely unregistered properties are flagged automatically, and automated outreach brings their owners into compliance."
+            "description": "Long-term rentals, short-term rentals, vacant structures, foreclosures: flagging unregistered properties and compliance outreach are automated."
           },
           {
             "title": "Risk-based inspections",
@@ -257,15 +257,21 @@
         "points": [
           {
             "title": "10+ years",
-            "description": "working with local government data and housing programs."
+            "description": "working with local governments and housing programs",
+            "dark": true
           },
           {
             "title": "100+ government partners",
             "description": "using data to inform decisions and improve housing outcomes across the US"
           },
           {
-            "title": "We've sat in your seat",
-            "description": "Some of us worked at municipalities. We build for the people doing the work."
+            "title": "9K+ scheduled datasets",
+            "description": "pulling **2 billion+** rows daily",
+            "dark": true
+          },
+          {
+            "title": "$12.9M+",
+            "description": "in payments processed through Slate"
           }
         ]
       }
@@ -275,18 +281,6 @@
       "value": {
         "heading": "Trusted by Governments Nationwide",
         "subheading": "More than 100 municipalities, counties, and public sector agencies use the Tolemi platform to centralize data, identify properties and owners, prioritize resources, and streamline processes."
-      }
-    },
-    {
-      "discriminant": "stats",
-      "value": {
-        "heading": "By the Numbers",
-        "items": [
-          {
-            "value": "$12.9M+",
-            "label": "in payments processed through Slate"
-          }
-        ]
       }
     },
     {

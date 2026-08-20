@@ -3,6 +3,7 @@
 interface Point {
   title: string;
   description?: string;
+  dark?: boolean;
 }
 interface Props {
   heading?: string;
@@ -11,6 +12,23 @@ interface Props {
   accentGradient?: string;
   pointGradients?: string[];
 }
+
+// point descriptions may mark emphasis with **double asterisks**; the
+// phrase renders oversized as gradient text in the point's own colors
+const boldify = (s: string, gradient: string) =>
+  s.replace(
+    /\*\*(.+?)\*\*/g,
+    `<strong class="text-[1.25em] font-bold bg-gradient-to-r ${gradient} bg-clip-text text-transparent">$1</strong>`
+  );
+
+// plus signs in stat titles wear the same gradient as the point's bar,
+// oversized as a design statement (leading-none: a zero line box would give
+// the gradient no area to paint, leaving the clipped text invisible)
+const plusify = (s: string, gradient: string) =>
+  s.replace(
+    /\+/g,
+    `<span class="inline-block text-[1.45em] leading-none font-extrabold relative top-[0.08em] bg-gradient-to-b ${gradient} bg-clip-text text-transparent">+</span>`
+  );
 
 const {
   heading = "Why Tolemi",
@@ -39,12 +57,25 @@ const {
 
     <div class="flex flex-col gap-8 md:pt-4 reveal">
       {points.map((point, i) => (
-        <div class="flex gap-5">
-          <div class={`w-1 rounded-full bg-gradient-to-b ${pointGradients[i % pointGradients.length]} flex-shrink-0`}></div>
-          <div>
-            <h3 class="font-heading text-xl font-bold text-text-primary mb-1">{point.title}</h3>
+        <div
+          class={`flex rounded-2xl overflow-hidden ${
+            point.dark
+              ? "bg-tolemi-navy shadow-lg shadow-tolemi-navy/20"
+              : "bg-surface shadow-lg shadow-black/5"
+          }`}
+        >
+          {/* the gradient bar IS each card's left edge */}
+          <div class={`w-1 bg-gradient-to-b ${pointGradients[i % pointGradients.length]} flex-shrink-0`}></div>
+          <div class="p-5">
+            <h3
+              class={`font-heading text-xl font-bold mb-1 ${point.dark ? "text-white" : "text-text-primary"}`}
+              set:html={plusify(point.title, pointGradients[i % pointGradients.length])}
+            />
             {point.description && (
-              <p class="text-sm md:text-base text-text-secondary leading-relaxed">{point.description}</p>
+              <p
+                class={`text-sm md:text-base leading-relaxed ${point.dark ? "text-white/75" : "text-text-secondary"}`}
+                set:html={boldify(point.description, pointGradients[i % pointGradients.length])}
+              />
             )}
           </div>
         </div>

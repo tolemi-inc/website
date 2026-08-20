@@ -317,10 +317,23 @@ export default config({
                 {
                   heading: fields.text({ label: 'Section Heading' }),
                   body: fields.text({ label: 'Body', multiline: true }),
-                  points: fields.array(titledItem, {
-                    label: 'Points',
-                    itemLabel: (props) => props.fields.title.value || 'Point',
-                  }),
+                  points: fields.array(
+                    fields.object(
+                      {
+                        title: fields.text({ label: 'Title', validation: { isRequired: true } }),
+                        description: fields.text({ label: 'Description', multiline: true }),
+                        dark: fields.checkbox({
+                          label: 'Dark card (navy background, light text)',
+                          defaultValue: false,
+                        }),
+                      },
+                      { label: 'Point' }
+                    ),
+                    {
+                      label: 'Points',
+                      itemLabel: (props) => props.fields.title.value || 'Point',
+                    }
+                  ),
                 },
                 { label: 'Why Us' }
               ),
