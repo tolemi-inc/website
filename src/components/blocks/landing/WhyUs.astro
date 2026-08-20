@@ -16,11 +16,13 @@ interface Props {
 const boldify = (s: string) =>
   s.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
 
-// plus signs in stat titles wear the same gradient as the point's bar
+// plus signs in stat titles wear the same gradient as the point's bar,
+// oversized as a design statement (leading-none: a zero line box would give
+// the gradient no area to paint, leaving the clipped text invisible)
 const plusify = (s: string, gradient: string) =>
   s.replace(
     /\+/g,
-    `<span class="bg-gradient-to-b ${gradient} bg-clip-text text-transparent">+</span>`
+    `<span class="inline-block text-[1.45em] leading-none font-extrabold relative top-[0.08em] bg-gradient-to-b ${gradient} bg-clip-text text-transparent">+</span>`
   );
 
 const {
