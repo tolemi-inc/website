@@ -264,6 +264,10 @@
             "description": "using data to inform decisions and improve housing outcomes across the US"
           },
           {
+            "title": "$12.9M+",
+            "description": "in payments processed through Slate"
+          },
+          {
             "title": "We've sat in your seat",
             "description": "Some of us worked at municipalities. We build for the people doing the work."
           }
@@ -275,18 +279,6 @@
       "value": {
         "heading": "Trusted by Governments Nationwide",
         "subheading": "More than 100 municipalities, counties, and public sector agencies use the Tolemi platform to centralize data, identify properties and owners, prioritize resources, and streamline processes."
-      }
-    },
-    {
-      "discriminant": "stats",
-      "value": {
-        "heading": "By the Numbers",
-        "items": [
-          {
-            "value": "$12.9M+",
-            "label": "in payments processed through Slate"
-          }
-        ]
       }
     },
     {
