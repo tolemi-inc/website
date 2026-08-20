@@ -12,6 +12,17 @@ interface Props {
   pointGradients?: string[];
 }
 
+// point descriptions may mark emphasis with **double asterisks**
+const boldify = (s: string) =>
+  s.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+
+// plus signs in stat titles wear the same gradient as the point's bar
+const plusify = (s: string, gradient: string) =>
+  s.replace(
+    /\+/g,
+    `<span class="bg-gradient-to-b ${gradient} bg-clip-text text-transparent">+</span>`
+  );
+
 const {
   heading = "Why Tolemi",
   body,
@@ -42,9 +53,15 @@ const {
         <div class="flex gap-5">
           <div class={`w-1 rounded-full bg-gradient-to-b ${pointGradients[i % pointGradients.length]} flex-shrink-0`}></div>
           <div>
-            <h3 class="font-heading text-xl font-bold text-text-primary mb-1">{point.title}</h3>
+            <h3
+              class="font-heading text-xl font-bold text-text-primary mb-1"
+              set:html={plusify(point.title, pointGradients[i % pointGradients.length])}
+            />
             {point.description && (
-              <p class="text-sm md:text-base text-text-secondary leading-relaxed">{point.description}</p>
+              <p
+                class="text-sm md:text-base text-text-secondary leading-relaxed [&_strong]:font-semibold [&_strong]:text-text-primary"
+                set:html={boldify(point.description)}
+              />
             )}
           </div>
         </div>
