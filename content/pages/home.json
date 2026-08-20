@@ -257,7 +257,8 @@
         "points": [
           {
             "title": "10+ years",
-            "description": "working with local government data and housing programs."
+            "description": "working with local government data and housing programs.",
+            "dark": true
           },
           {
             "title": "100+ government partners",
@@ -265,7 +266,8 @@
           },
           {
             "title": "9K+ scheduled datasets",
-            "description": "pulling **2 billion+** rows daily"
+            "description": "pulling **2 billion+** rows daily",
+            "dark": true
           },
           {
             "title": "$12.9M+",
