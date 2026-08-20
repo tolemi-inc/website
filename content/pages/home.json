@@ -278,6 +278,18 @@
       }
     },
     {
+      "discriminant": "stats",
+      "value": {
+        "heading": "By the Numbers",
+        "items": [
+          {
+            "value": "$12.9M+",
+            "label": "in payments processed through Slate"
+          }
+        ]
+      }
+    },
+    {
       "discriminant": "cta",
       "value": {
         "heading": "Tell Us About the Program You Want to Run",
