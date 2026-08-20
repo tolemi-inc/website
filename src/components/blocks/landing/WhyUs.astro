@@ -13,11 +13,11 @@ interface Props {
 }
 
 // point descriptions may mark emphasis with **double asterisks**; the
-// phrase renders as gradient text in a deep shade of the point's colors
+// phrase renders oversized as gradient text in the point's own colors
 const boldify = (s: string, gradient: string) =>
   s.replace(
     /\*\*(.+?)\*\*/g,
-    `<strong class="font-bold bg-gradient-to-r ${gradient} bg-clip-text text-transparent">$1</strong>`
+    `<strong class="text-[1.25em] font-bold bg-gradient-to-r ${gradient} bg-clip-text text-transparent">$1</strong>`
   );
 
 // plus signs in stat titles wear the same gradient as the point's bar,
@@ -40,13 +40,6 @@ const {
     "from-tolemi-coral-400 to-tolemi-yellow-400",
   ],
 } = Astro.props;
-
-// deeper shades of the same trio, readable as body-size gradient text
-const textGradients = [
-  "from-tolemi-indigo-600 to-tolemi-sky-600",
-  "from-tolemi-sky-600 to-tolemi-green-600",
-  "from-tolemi-coral-600 to-tolemi-yellow-600",
-];
 ---
 
 <section class="py-20 md:py-32 px-6 bg-surface-secondary">
@@ -73,7 +66,7 @@ const textGradients = [
             {point.description && (
               <p
                 class="text-sm md:text-base text-text-secondary leading-relaxed"
-                set:html={boldify(point.description, textGradients[i % textGradients.length])}
+                set:html={boldify(point.description, pointGradients[i % pointGradients.length])}
               />
             )}
           </div>
