@@ -18,13 +18,6 @@ export const accentTextGradients: Record<BrandAccent, string> = {
   red: "from-tolemi-red to-tolemi-red",
 };
 
-// Gradient text on navy: the bright dot gradients, with yellow and red flat.
-export const accentDarkTextGradients: Record<BrandAccent, string> = {
-  ...accentGradients,
-  yellow: "from-orange-400 to-orange-400",
-  red: "from-tolemi-red to-tolemi-red",
-};
-
 // Solid stand-ins for strokes that can't take a gradient (arrows).
 export const accentSolids: Record<BrandAccent, string> = {
   sky: "text-tolemi-sky-500",

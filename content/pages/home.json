@@ -292,7 +292,6 @@
           {
             "title": "10+ years",
             "description": "working with local governments and housing programs",
-            "dark": true,
             "icon": "calendar"
           },
           {
@@ -303,7 +302,6 @@
           {
             "title": "9K+ scheduled datasets",
             "description": "pulling **2 billion+** records daily",
-            "dark": true,
             "icon": "database"
           }
         ]

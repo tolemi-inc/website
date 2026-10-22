@@ -19,7 +19,6 @@ interface Props {
   stepLabel?: string;
   accents?: BrandAccent[];
   stepLabelColor?: string;
-  darkStepLabelColor?: string;
   arrowColors?: string[];
 }
 
@@ -32,7 +31,6 @@ const {
   // corner-dot colors — the same trio as the product tabs
   accents = ["red", "yellow", "sky"],
   stepLabelColor = "text-tolemi-sky-600",
-  darkStepLabelColor = "text-tolemi-sky",
   // each arrow wears its step's dot color
   arrowColors = accents.map((a) => accentSolids[a]),
 } = Astro.props;
@@ -63,8 +61,6 @@ const ARROW_PATHS = {
       {steps.map((step, i) => {
         const arrow = arrowFor(i, steps.length);
         const arrowColor = arrowColors[i % arrowColors.length];
-        // odd steps navy — the snake turns this into a checkerboard
-        const dark = i % 2 === 0;
         return (
           <div class="relative">
             <InfoCard
@@ -72,10 +68,8 @@ const ARROW_PATHS = {
               description={step.description}
               icon={step.icon}
               eyebrow={`${stepLabel} ${i + 1}`}
-              dark={dark}
               accent={accents[i % accents.length]}
               eyebrowColor={stepLabelColor}
-              darkEyebrowColor={darkStepLabelColor}
             />
 
             {/* snake arrows (2-column layout) */}
