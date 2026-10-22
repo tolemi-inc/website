@@ -1,5 +1,8 @@
 ---
 import TagPills, { type TagItem } from "../ui/TagPills.astro";
+import CardDot from "../ui/CardDot.astro";
+import AccentLine from "../ui/AccentLine.astro";
+import { dotFill, type BrandAccent } from "../../lib/brandAccents";
 
 interface BlogItem {
   title: string;
@@ -26,6 +29,8 @@ const cardGradients = [
   "from-tolemi-red to-tolemi-yellow",
   "from-tolemi-yellow to-tolemi-sky",
 ];
+// Corner dot for each card, keyed to the leading color of its accent line.
+const cardDotAccents: BrandAccent[] = ["sky", "red", "yellow"];
 
 const formatDate = (iso?: string | null) => {
   if (!iso) return "";
@@ -43,7 +48,7 @@ const formatDate = (iso?: string | null) => {
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {items.map((item, i) => (
           <article
-            class="blog-card group relative flex flex-col bg-white rounded-2xl border border-black/[0.06] overflow-hidden hover:shadow-lg hover:shadow-black/[0.06] hover:border-tolemi-sky/20 transition-all duration-300"
+            class="blog-card group relative flex flex-col bg-white rounded-3xl border border-black/[0.08] overflow-hidden hover:shadow-lg hover:shadow-black/[0.06] hover:border-tolemi-sky/20 transition-all duration-300"
             data-tags={item.filterTags ? item.filterTags.join(" ") : undefined}
           >
             {item.image?.src && (
@@ -56,13 +61,13 @@ const formatDate = (iso?: string | null) => {
               </div>
             )}
             <div class="p-8 flex flex-col flex-1">
-              <div class={`w-8 h-1 rounded-full bg-gradient-to-r ${cardGradients[i % cardGradients.length]} mb-5`}></div>
+              <AccentLine color={`bg-gradient-to-r ${cardGradients[i % cardGradients.length]}`} class="mb-5" />
               {(item.publishedDate || item.meta) && (
                 <p class="text-xs font-semibold tracking-widest uppercase text-tolemi-sky-600 mb-3">
                   {item.meta || formatDate(item.publishedDate)}
                 </p>
               )}
-              <h3 class="font-heading text-xl font-semibold text-text-primary mb-1 group-hover:text-tolemi-sky-600 transition-colors">
+              <h3 class="font-heading text-xl font-semibold text-text-primary mb-1 pr-12 group-hover:text-tolemi-sky-600 transition-colors">
                 <a
                   href={`${basePath}/${item.slug}`}
                   class="before:absolute before:inset-0 before:content-[''] before:z-0"
@@ -76,18 +81,22 @@ const formatDate = (iso?: string | null) => {
               {item.description && (
                 <p class="text-text-secondary text-sm leading-relaxed flex-1">{item.description}</p>
               )}
-              <span class="inline-flex items-center gap-1 mt-4 text-sm font-medium text-tolemi-sky-600">
-                Read more
-                <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </span>
               {item.tags && item.tags.length > 0 && (
-                <div class="mt-5 pt-5 border-t border-black/[0.05] relative z-10">
+                <div class="mt-5 relative z-10">
                   <TagPills tags={item.tags} size="sm" />
                 </div>
               )}
+              <div class="mt-auto pt-6">
+                <AccentLine color="bg-tolemi-dark" width="w-full" thickness="h-0.5" class="mb-4" />
+                <span class="flex items-center justify-between text-sm font-semibold text-text-primary">
+                  Read more
+                  <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </span>
+              </div>
             </div>
+            <CardDot color={dotFill(cardDotAccents[i % cardDotAccents.length])} />
           </article>
         ))}
       </div>

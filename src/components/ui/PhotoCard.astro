@@ -1,0 +1,50 @@
+---
+// Photo on top, bold heading and a short paragraph below — no card chrome.
+// Without a photo, an `icon` fills the photo slot on a solid tile so rows of
+// cards still line up; with neither, it renders as text only.
+import PhotoTile from "./PhotoTile.astro";
+import Icon from "./Icon.astro";
+import { dotFill, type BrandAccent } from "../../lib/brandAccents";
+
+interface Props {
+  title: string;
+  description?: string;
+  src?: string | null;
+  alt?: string;
+  caption?: string;
+  icon?: string;
+  accent?: BrandAccent;
+  tileColor?: string;
+  headingTag?: "h2" | "h3" | "h4";
+  headingColor?: string;
+  bodyColor?: string;
+}
+
+const {
+  title,
+  description,
+  src,
+  alt,
+  caption,
+  icon,
+  accent = "sky",
+  tileColor = "bg-tolemi-navy",
+  headingTag: Heading = "h3",
+  headingColor = "text-text-primary",
+  bodyColor = "text-text-secondary",
+} = Astro.props;
+---
+
+<div>
+  {src ? (
+    <PhotoTile src={src} alt={alt} caption={caption} class="aspect-[4/3] mb-6" />
+  ) : icon && (
+    <div class={`aspect-[4/3] mb-6 rounded-2xl shadow-lg shadow-black/5 flex items-center justify-center ${tileColor}`}>
+      <Icon name={icon} fill={dotFill(accent)} class="w-20 h-20" />
+    </div>
+  )}
+  <Heading class={`font-heading text-2xl md:text-[1.75rem] font-bold tracking-tight leading-tight mb-3 ${headingColor}`}>
+    {title}
+  </Heading>
+  {description && <p class={`text-base leading-relaxed ${bodyColor}`}>{description}</p>}
+</div>

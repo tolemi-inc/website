@@ -1,5 +1,7 @@
 ---
 import DemoButton from "../ui/DemoButton.astro";
+import AccentPeriod from "../ui/AccentPeriod.astro";
+import AccentBars from "../ui/AccentBars.astro";
 
 interface Props {
   heading: string;
@@ -14,6 +16,7 @@ interface Props {
   highlightColorB?: string;
   highlightColorC?: string;
   highlightOpacity?: string;
+  secondaryDotColor?: string;
 }
 
 const {
@@ -29,6 +32,7 @@ const {
   highlightColorB = "bg-tolemi-yellow",
   highlightColorC = "bg-tolemi-red",
   highlightOpacity = "opacity-60",
+  secondaryDotColor = "bg-tolemi-yellow",
 } = Astro.props;
 
 // SVGs are used as masks so the fill color comes from a Tailwind bg-* class
@@ -55,7 +59,7 @@ const mapLayer = (src: string) =>
   </div>
 
   <div class="relative z-10 max-w-3xl mx-auto text-center reveal">
-    <h2 class="font-heading text-3xl md:text-5xl lg:text-6xl font-bold text-text-primary mb-8">{heading}</h2>
+    <h2 class="font-heading text-3xl md:text-5xl lg:text-6xl font-bold text-text-primary mb-8"><AccentPeriod text={heading} /></h2>
     {text && <p class="text-lg md:text-xl text-text-secondary mb-12 leading-relaxed">{text}</p>}
     <div class="flex flex-wrap items-center justify-center gap-4">
       {buttonText && (
@@ -64,14 +68,15 @@ const mapLayer = (src: string) =>
       {secondaryButtonText && (
         <a
           href={secondaryButtonLink || "#"}
-          class="inline-flex items-center justify-center font-semibold px-8 py-4 text-base rounded-full border-2 border-tolemi-dark text-tolemi-dark hover:border-tolemi-red hover:text-tolemi-red transition-all"
+          class="inline-flex items-center justify-center gap-3 font-semibold px-8 py-4 text-base rounded-full border-2 border-tolemi-dark text-tolemi-dark hover:border-tolemi-red hover:text-tolemi-red transition-all"
         >
+          <span aria-hidden="true" class={`w-2.5 h-2.5 rounded-full ${secondaryDotColor}`}></span>
           {secondaryButtonText}
         </a>
       )}
     </div>
   </div>
 
-  <!-- Bottom gradient bar (coral → indigo → sky) -->
-  <div class="absolute bottom-0 left-0 w-full h-2 bg-gradient-to-r from-tolemi-red via-tolemi-yellow to-tolemi-sky"></div>
+  <!-- Bottom rule: rounded brand-color bars -->
+  <AccentBars class="absolute bottom-6 inset-x-6 max-w-7xl mx-auto" />
 </section>

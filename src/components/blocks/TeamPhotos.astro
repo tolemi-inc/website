@@ -1,0 +1,36 @@
+---
+// Team photos: an optional full-width feature photo over a bento photo mosaic.
+import PhotoMosaic from "../ui/PhotoMosaic.astro";
+import PhotoTile from "../ui/PhotoTile.astro";
+
+type Image = { src: string | null; alt?: string } | null;
+type Photo = {
+  photo?: Image;
+  caption?: string;
+  size?: string;
+};
+interface Props {
+  featurePhoto?: { photo?: Image; caption?: string };
+  photos?: Photo[];
+  background?: string;
+}
+
+const { featurePhoto, photos = [], background = "bg-surface" } = Astro.props;
+---
+
+{(featurePhoto?.photo?.src || photos.length > 0) && (
+  <section class={`pb-20 md:pb-32 px-6 ${background}`}>
+    <div class="max-w-6xl mx-auto">
+      {featurePhoto?.photo?.src && (
+        <PhotoTile
+          src={featurePhoto.photo.src}
+          alt={featurePhoto.photo.alt}
+          caption={featurePhoto.caption}
+          imgPosition="object-[center_80%]"
+          class="aspect-[4/3] md:aspect-[2/1] mb-3 md:mb-4 reveal"
+        />
+      )}
+      {photos.length > 0 && <PhotoMosaic photos={photos} />}
+    </div>
+  </section>
+)}

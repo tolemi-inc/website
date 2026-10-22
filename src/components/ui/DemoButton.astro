@@ -6,6 +6,8 @@ interface Props {
   size?: "sm" | "md" | "lg";
   arrow?: boolean;
   fullWidth?: boolean;
+  dot?: boolean;
+  dotColor?: string;
   class?: string;
 }
 
@@ -16,6 +18,8 @@ const {
   size = "md",
   arrow = false,
   fullWidth = false,
+  dot = true,
+  dotColor = "bg-tolemi-sky",
   class: classAttr = "",
 } = Astro.props;
 
@@ -25,9 +29,11 @@ const sizeClasses = {
   lg: "font-semibold px-8 py-4 text-base",
 }[size];
 
+const dotSize = { sm: "w-1.5 h-1.5", md: "w-2 h-2", lg: "w-2.5 h-2.5" }[size];
+
 const baseClasses = [
   "inline-flex items-center justify-center",
-  arrow && "gap-2",
+  (arrow || dot) && (size === "sm" ? "gap-2" : "gap-3"),
   fullWidth && "w-full",
   sizeClasses,
   "bg-tolemi-dark hover:bg-tolemi-red text-white rounded-full",
@@ -44,6 +50,7 @@ const baseClasses = [
     class={baseClasses}
     {...(href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
   >
+    {dot && <span aria-hidden="true" class={`${dotSize} rounded-full ${dotColor} flex-shrink-0`}></span>}
     <slot />
     {arrow && (
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -53,6 +60,7 @@ const baseClasses = [
   </a>
 ) : (
   <button type={type} id={id} class={baseClasses}>
+    {dot && <span aria-hidden="true" class={`${dotSize} rounded-full ${dotColor} flex-shrink-0`}></span>}
     <slot />
     {arrow && (
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

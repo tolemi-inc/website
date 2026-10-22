@@ -4,10 +4,13 @@
 // layer 3 spans the full width (transparency layer).
 // Animation is a one-time scroll reveal (.reveal), never scroll-linked.
 import SectionHeader from "../../ui/SectionHeader.astro";
+import InfoCard from "../../ui/InfoCard.astro";
+import { accentTextGradients, type BrandAccent } from "../../../lib/brandAccents";
 
 interface Stage {
   label: string;
   detail?: string;
+  icon?: string;
 }
 interface Layer {
   name: string;
@@ -19,7 +22,7 @@ interface Props {
   subheading?: string;
   stages?: Stage[];
   layers?: Layer[];
-  stageAccents?: string[];
+  stageAccents?: BrandAccent[];
   layerGradients?: string[];
 }
 
@@ -28,12 +31,7 @@ const {
   subheading,
   stages = [],
   layers = [],
-  stageAccents = [
-    "from-tolemi-indigo-500 to-tolemi-sky-500",
-    "from-tolemi-sky-500 to-tolemi-green-500",
-    "from-tolemi-green-500 to-tolemi-yellow-400",
-    "from-tolemi-yellow-400 to-tolemi-coral-400",
-  ],
+  stageAccents = ["sky", "yellow", "red", "sky"],
   layerGradients = [
     "from-tolemi-sky-500 to-tolemi-indigo-500",
     "from-tolemi-indigo-500 to-tolemi-coral-500",
@@ -42,6 +40,14 @@ const {
 } = Astro.props;
 
 const [foundation, action, transparency] = layers;
+
+// stage details may mark keywords with **double asterisks**; they render
+// bold in the dimmer text twin of the stage's accent
+const boldify = (s: string, gradient: string) =>
+  s.replace(
+    /\*\*(.+?)\*\*/g,
+    `<strong class="font-bold bg-gradient-to-r ${gradient} bg-clip-text text-transparent">$1</strong>`
+  );
 ---
 
 <section class="py-20 md:py-32 px-6 bg-surface-secondary relative overflow-hidden">
@@ -52,13 +58,16 @@ const [foundation, action, transparency] = layers;
     <div class="grid md:grid-cols-4 gap-4 md:gap-0 reveal">
       {stages.map((stage, i) => (
         <div class="relative flex md:block items-stretch">
-          <div class="flex-1 bg-surface rounded-2xl border border-text-muted/10 shadow-sm p-6 md:mx-3 h-full">
-            <div class={`w-8 h-1 rounded-full bg-gradient-to-r ${stageAccents[i % stageAccents.length]} mb-4`}></div>
-            <h3 class="font-heading text-lg font-bold text-text-primary mb-2">{stage.label}</h3>
+          <InfoCard
+            title={stage.label}
+            icon={stage.icon}
+            accent={stageAccents[i % stageAccents.length]}
+            class="flex-1 md:mx-3"
+          >
             {stage.detail && (
-              <p class="text-sm text-text-secondary leading-relaxed">{stage.detail}</p>
+              <Fragment set:html={boldify(stage.detail, accentTextGradients[stageAccents[i % stageAccents.length]])} />
             )}
-          </div>
+          </InfoCard>
           {i < stages.length - 1 && (
             <div
               class="hidden md:flex absolute top-1/2 -right-2.5 -translate-y-1/2 z-10 w-5 h-5 items-center justify-center text-text-muted"

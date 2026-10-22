@@ -54,6 +54,77 @@ const titledItem = fields.object(
   { label: 'Item' }
 );
 
+// Icon names must match src/components/ui/Icon.astro.
+const iconOptions = [
+  { label: 'None', value: '' },
+  { label: 'workflow', value: 'workflow' },
+  { label: 'sliders', value: 'sliders' },
+  { label: 'bar-chart', value: 'bar-chart' },
+  { label: 'trending-up', value: 'trending-up' },
+  { label: 'map-pin', value: 'map-pin' },
+  { label: 'clipboard-check', value: 'clipboard-check' },
+  { label: 'home', value: 'home' },
+  { label: 'key', value: 'key' },
+  { label: 'building', value: 'building' },
+  { label: 'file-text', value: 'file-text' },
+  { label: 'database', value: 'database' },
+  { label: 'search', value: 'search' },
+  { label: 'users', value: 'users' },
+  { label: 'share', value: 'share' },
+  { label: 'bell', value: 'bell' },
+  { label: 'layers', value: 'layers' },
+  { label: 'tag', value: 'tag' },
+  { label: 'presentation', value: 'presentation' },
+  { label: 'filter', value: 'filter' },
+  { label: 'message', value: 'message' },
+  { label: 'globe', value: 'globe' },
+  { label: 'eye', value: 'eye' },
+  { label: 'user-check', value: 'user-check' },
+  { label: 'shield', value: 'shield' },
+  { label: 'network', value: 'network' },
+  { label: 'briefcase', value: 'briefcase' },
+  { label: 'heart', value: 'heart' },
+  { label: 'alert', value: 'alert' },
+  { label: 'calendar', value: 'calendar' },
+  { label: 'landmark', value: 'landmark' },
+  { label: 'lightbulb', value: 'lightbulb' },
+  { label: 'zap', value: 'zap' },
+  { label: 'link', value: 'link' },
+  { label: 'rocket', value: 'rocket' },
+  { label: 'graduation', value: 'graduation' },
+  { label: 'life-buoy', value: 'life-buoy' },
+  { label: 'target', value: 'target' },
+  { label: 'sun', value: 'sun' },
+  { label: 'laptop', value: 'laptop' },
+  { label: 'monitor', value: 'monitor' },
+];
+
+const iconedItem = fields.object(
+  {
+    title: fields.text({ label: 'Title', validation: { isRequired: true } }),
+    description: fields.text({ label: 'Description', multiline: true }),
+    icon: fields.select({ label: 'Icon', options: iconOptions, defaultValue: '' }),
+  },
+  { label: 'Item' }
+);
+
+// An accordion item whose photo shows beside the accordion while it's open
+// (careers Working at Tolemi section).
+const accordionItem = fields.object(
+  {
+    title: fields.text({ label: 'Title', validation: { isRequired: true } }),
+    description: fields.text({ label: 'Description', multiline: true }),
+    icon: fields.select({ label: 'Icon', options: iconOptions, defaultValue: '' }),
+    photo: imageWithAlt({
+      label: 'Photo (shown while this item is open)',
+      directory: 'public/uploads/careers',
+      publicPath: '/uploads/careers/',
+    }),
+    photoCaption: fields.text({ label: 'Photo Caption (optional)' }),
+  },
+  { label: 'Item' }
+);
+
 const featureBlock = fields.object(
   {
     title: fields.text({ label: 'Title', validation: { isRequired: true } }),
@@ -224,7 +295,12 @@ export default config({
                     fields.object(
                       {
                         label: fields.text({ label: 'Stage Label', validation: { isRequired: true } }),
-                        detail: fields.text({ label: 'Stage Detail', multiline: true }),
+                        detail: fields.text({
+                          label: 'Stage Detail',
+                          description: 'Wrap keywords in **double asterisks** to bold them in the stage color.',
+                          multiline: true,
+                        }),
+                        icon: fields.select({ label: 'Icon', options: iconOptions, defaultValue: '' }),
                       },
                       { label: 'Stage' }
                     ),
@@ -270,14 +346,18 @@ export default config({
                           label: 'Headline accent (second beat, e.g. "BuildingBlocks connects it.")',
                         }),
                         description: fields.text({ label: 'Intro paragraph', multiline: true }),
-                        features: fields.array(titledItem, {
+                        featuresHeading: fields.text({
+                          label: 'Features heading',
+                          defaultValue: 'Key Features',
+                        }),
+                        features: fields.array(iconedItem, {
                           label: 'Key Features',
                           itemLabel: (props) => props.fields.title.value || 'Feature',
                         }),
                         useCasesHeading: fields.text({
                           label: 'Use Cases heading (e.g. "How governments are using Slate")',
                         }),
-                        useCases: fields.array(titledItem, {
+                        useCases: fields.array(iconedItem, {
                           label: 'Use Cases ("what cities are using it for")',
                           itemLabel: (props) => props.fields.title.value || 'Use case',
                         }),
@@ -325,6 +405,7 @@ export default config({
                       {
                         title: fields.text({ label: 'Title', validation: { isRequired: true } }),
                         description: fields.text({ label: 'Description', multiline: true }),
+                        icon: fields.select({ label: 'Icon', options: iconOptions, defaultValue: '' }),
                         dark: fields.checkbox({
                           label: 'Dark card (navy background, light text)',
                           defaultValue: false,
@@ -382,7 +463,31 @@ export default config({
         title: fields.text({ label: 'Page Title', validation: { isRequired: true } }),
         headline: fields.text({ label: 'Headline' }),
         subheadline: fields.text({ label: 'Subheadline' }),
+        teamPhoto: fields.object(
+          {
+            photo: imageWithAlt({
+              directory: 'public/uploads/about',
+              publicPath: '/uploads/about/',
+            }),
+            caption: fields.text({ label: 'Caption (optional)' }),
+          },
+          { label: 'Team Photo (full width, under the headline)' }
+        ),
         historyHeading: fields.text({ label: 'History Heading' }),
+        historyImage: fields.object(
+          {
+            photo: imageWithAlt({
+              directory: 'public/uploads/about',
+              publicPath: '/uploads/about/',
+            }),
+            caption: fields.text({ label: 'Caption' }),
+            credit: fields.text({
+              label: 'Image credit',
+              description: 'Artist/photographer and license, e.g. "André Thevet, 1584, public domain".',
+            }),
+          },
+          { label: 'History Image (left of the first paragraph)' }
+        ),
         historyBody: fields.markdoc({
           label: 'History Body',
           options: {
@@ -392,6 +497,28 @@ export default config({
             },
           },
         }),
+        cityPhotos: fields.array(
+          fields.object(
+            {
+              photo: imageWithAlt({
+                label: 'Photo',
+                directory: 'public/uploads/about',
+                publicPath: '/uploads/about/',
+              }),
+              caption: fields.text({ label: 'Caption' }),
+              credit: fields.text({
+                label: 'Photo credit',
+                description: 'Photographer and license, e.g. "Carol M. Highsmith, public domain".',
+              }),
+            },
+            { label: 'City Photo' }
+          ),
+          {
+            label: 'City Photos',
+            description: 'Shown in a row above the last paragraph of the history body.',
+            itemLabel: (props) => props.fields.caption.value || 'City Photo',
+          }
+        ),
         milestones: fields.array(
           fields.object(
             {
@@ -406,7 +533,7 @@ export default config({
           {
             heading: fields.text({ label: 'Section Heading' }),
             subheading: fields.text({ label: 'Section Subheading', multiline: true }),
-            steps: fields.array(titledItem, {
+            steps: fields.array(iconedItem, {
               label: 'Steps',
               itemLabel: (props) => props.fields.title.value || 'Step',
             }),
@@ -455,7 +582,7 @@ export default config({
         headline: fields.text({ label: 'Headline' }),
         subheadline: fields.text({ label: 'Subheadline' }),
         intro: fields.markdoc({
-          label: 'Intro',
+          label: 'Intro (not currently shown on the page)',
           options: {
             image: {
               directory: 'public/uploads/careers',
@@ -463,17 +590,107 @@ export default config({
             },
           },
         }),
-        cultureHeading: fields.text({ label: 'Culture Heading' }),
-        cultureBody: fields.text({ label: 'Culture Body', multiline: true }),
+        teamPhotos: fields.object(
+          {
+            featurePhoto: fields.object(
+              {
+                photo: imageWithAlt({
+                  directory: 'public/uploads/careers',
+                  publicPath: '/uploads/careers/',
+                }),
+                caption: fields.text({ label: 'Caption (optional)' }),
+              },
+              { label: 'Feature Photo (full width, above the gallery)' }
+            ),
+            photos: fields.array(
+              fields.object(
+                {
+                  photo: imageWithAlt({
+                    directory: 'public/uploads/careers',
+                    publicPath: '/uploads/careers/',
+                  }),
+                  caption: fields.text({ label: 'Caption (optional)' }),
+                  size: fields.select({
+                    label: 'Tile Size',
+                    options: [
+                      { label: 'Standard (1×1)', value: 'standard' },
+                      { label: 'Wide (2×1)', value: 'wide' },
+                      { label: 'Tall (1×2)', value: 'tall' },
+                      { label: 'Large (2×2)', value: 'large' },
+                    ],
+                    defaultValue: 'standard',
+                  }),
+                  focus: fields.select({
+                    label: 'Crop Focus (which part stays in frame)',
+                    options: [
+                      { label: 'Center', value: 'center' },
+                      { label: 'Top', value: 'top' },
+                      { label: 'Bottom', value: 'bottom' },
+                    ],
+                    defaultValue: 'center',
+                  }),
+                },
+                { label: 'Photo' }
+              ),
+              {
+                label: 'Gallery Photos',
+                itemLabel: (props) =>
+                  props.fields.caption.value || props.fields.photo.fields.alt.value || 'Photo',
+              }
+            ),
+          },
+          { label: 'Team Photos (top of page)' }
+        ),
+        culture: fields.object(
+          {
+            heading: fields.text({ label: 'Heading', defaultValue: 'Working at Tolemi' }),
+            items: fields.array(accordionItem, {
+              label: 'Items (accordion; first item starts open)',
+              itemLabel: (props) => props.fields.title.value || 'Item',
+            }),
+          },
+          { label: 'How We Work (accordion)' }
+        ),
+        internship: fields.object(
+          {
+            eyebrow: fields.text({ label: 'Eyebrow' }),
+            heading: fields.text({ label: 'Heading' }),
+            body: fields.text({ label: 'Body', multiline: true }),
+            tracks: fields.array(titledItem, {
+              label: 'Positions',
+              itemLabel: (props) => props.fields.title.value || 'Position',
+            }),
+            outcomes: fields.text({ label: 'Outcomes', multiline: true }),
+            photo: imageWithAlt({
+              label: 'Photo',
+              directory: 'public/uploads/careers',
+              publicPath: '/uploads/careers/',
+            }),
+            photoCaption: fields.text({ label: 'Photo Caption (optional)' }),
+          },
+          { label: 'Internship Program' }
+        ),
+        perksHeading: fields.text({ label: 'Benefits Heading', defaultValue: 'Benefits & Perks' }),
         perks: fields.array(
           fields.object(
             {
               title: fields.text({ label: 'Title', validation: { isRequired: true } }),
               description: fields.text({ label: 'Description', multiline: true }),
+              photo: imageWithAlt({
+                label: 'Photo (shown above the heading)',
+                directory: 'public/uploads/careers',
+                publicPath: '/uploads/careers/',
+              }),
+              photoCaption: fields.text({ label: 'Photo Caption (optional)' }),
+              icon: fields.select({
+                label: 'Icon (shown on a navy tile when there is no photo)',
+                options: iconOptions,
+                defaultValue: '',
+              }),
             },
-            { label: 'Perk' }
+            { label: 'Benefit' }
           ),
-          { label: 'Perks', itemLabel: (props) => props.fields.title.value || 'Perk' }
+          { label: 'Benefits', itemLabel: (props) => props.fields.title.value || 'Benefit' }
         ),
         featuredPosts: fields.array(
           fields.object(

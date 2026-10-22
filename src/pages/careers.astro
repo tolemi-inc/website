@@ -2,19 +2,18 @@
 import Base from "../layouts/Base.astro";
 import PageHero from "../components/blocks/PageHero.astro";
 import CallToAction from "../components/blocks/CallToAction.astro";
+import TeamPhotos from "../components/blocks/TeamPhotos.astro";
+import AccordionSection from "../components/blocks/AccordionSection.astro";
+import BenefitsGrid from "../components/blocks/BenefitsGrid.astro";
+import InternshipSection from "../components/blocks/InternshipSection.astro";
 import { createReader } from "@keystatic/core/reader";
 import keystaticConfig from "../../keystatic.config";
-import { renderRichtext } from "../lib/richtext";
 
 export const prerender = true;
 
 const reader = createReader(process.cwd(), keystaticConfig);
 const careersData = await reader.singletons.careersPage.read();
 if (!careersData) throw new Error("Careers page data not found");
-
-const intro = await careersData.intro();
-const introHtml = renderRichtext(intro.node);
-const perks = careersData.perks || [];
 ---
 
 <Base title={careersData.title}>
@@ -23,52 +22,27 @@ const perks = careersData.perks || [];
     subheadline={careersData.subheadline}
   />
 
-  <!-- Intro + Why -->
-  <section class="py-16 md:py-20 px-6">
-    <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 reveal">
-      <div>
-        <h2 class="font-heading text-3xl font-bold text-text-primary mb-4">
-          About Tolemi
-        </h2>
-        <div class="richtext">
-          <Fragment set:html={introHtml} />
-        </div>
-      </div>
-      <div>
-        <h2 class="font-heading text-3xl font-bold text-text-primary mb-4">
-          {careersData.cultureHeading}
-        </h2>
-        <p class="text-text-secondary text-lg leading-relaxed">
-          {careersData.cultureBody}
-        </p>
-      </div>
-    </div>
-  </section>
+  <TeamPhotos
+    featurePhoto={careersData.teamPhotos.featurePhoto}
+    photos={careersData.teamPhotos.photos}
+  />
 
-  <!-- Perks grid -->
-  {
-    perks.length > 0 && (
-      <section class="py-16 md:py-20 px-6 bg-surface-muted/50">
-        <div class="max-w-5xl mx-auto reveal">
-          <h2 class="font-heading text-3xl font-bold text-text-primary mb-10 text-center">
-            Benefits & Perks
-          </h2>
-          <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {perks.map((perk) => (
-              <div class="bg-white rounded-2xl border border-black/[0.06] p-6 text-center">
-                <h3 class="font-heading text-base font-semibold text-text-primary mb-2">
-                  {perk.title}
-                </h3>
-                <p class="text-sm text-text-secondary leading-relaxed">
-                  {perk.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-    )
-  }
+  <AccordionSection
+    heading={careersData.culture.heading || undefined}
+    items={careersData.culture.items}
+  />
+
+  <BenefitsGrid heading={careersData.perksHeading || undefined} items={careersData.perks} />
+
+  <InternshipSection
+    eyebrow={careersData.internship.eyebrow}
+    heading={careersData.internship.heading}
+    body={careersData.internship.body}
+    tracks={careersData.internship.tracks}
+    outcomes={careersData.internship.outcomes}
+    photo={careersData.internship.photo}
+    photoCaption={careersData.internship.photoCaption}
+  />
 
   <CallToAction
     heading="Want to Join Our Team?"

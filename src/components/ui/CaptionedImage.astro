@@ -1,0 +1,40 @@
+---
+// An image with an optional caption and credit underneath — credits sit in
+// small muted type, matching CityPhotos.
+
+interface Props {
+  src: string;
+  alt?: string;
+  caption?: string;
+  credit?: string;
+  captionColor?: string;
+  creditColor?: string;
+  class?: string;
+}
+
+const {
+  src,
+  alt,
+  caption,
+  credit,
+  captionColor = "text-text-primary",
+  creditColor = "text-text-muted",
+  class: classAttr = "",
+} = Astro.props;
+---
+
+<figure class={classAttr}>
+  <img
+    src={src}
+    alt={alt?.trim() || caption || ""}
+    loading="lazy"
+    decoding="async"
+    class="w-full rounded-xl shadow-sm"
+  />
+  {(caption || credit) && (
+    <figcaption class="mt-2.5">
+      {caption && <span class={`block font-heading text-sm font-semibold ${captionColor}`}>{caption}</span>}
+      {credit && <span class={`block text-xs mt-0.5 ${creditColor}`}>Image: {credit}</span>}
+    </figcaption>
+  )}
+</figure>

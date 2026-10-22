@@ -3,8 +3,12 @@ import Base from "../layouts/Base.astro";
 import PageHero from "../components/blocks/PageHero.astro";
 import HowWeWork from "../components/blocks/HowWeWork.astro";
 import CallToAction from "../components/blocks/CallToAction.astro";
+import CityPhotos from "../components/blocks/CityPhotos.astro";
+import TeamPhotos from "../components/blocks/TeamPhotos.astro";
+import CaptionedImage from "../components/ui/CaptionedImage.astro";
 import { createReader } from '@keystatic/core/reader';
 import keystaticConfig from '../../keystatic.config';
+import Markdoc from '@markdoc/markdoc';
 import { renderRichtext } from '../lib/richtext';
 
 export const prerender = true;
@@ -14,18 +18,54 @@ const aboutData = await reader.singletons.aboutPage.read();
 if (!aboutData) throw new Error('About page data not found');
 
 const historyBody = await aboutData.historyBody();
-const historyHtml = renderRichtext(historyBody.node);
+
+// City photos sit above the last paragraph of the history, so split the
+// body there and render the two halves separately.
+const bodyNodes = historyBody.node.children;
+const lastParagraph = bodyNodes.findLastIndex((n) => n.type === 'paragraph');
+const splitAt = aboutData.cityPhotos.length > 0 && lastParagraph > 0 ? lastParagraph : bodyNodes.length;
+const toHtml = (nodes: typeof bodyNodes) => renderRichtext(new Markdoc.Ast.Node('document', {}, nodes));
+// With a history image, the first paragraph sits beside it and the rest of
+// the history starts below.
+const leadEnd = aboutData.historyImage.photo.src && bodyNodes[0]?.type === 'paragraph' ? 1 : 0;
+const historyLeadHtml = leadEnd ? toHtml(bodyNodes.slice(0, leadEnd)) : '';
+const historyHtml = toHtml(bodyNodes.slice(leadEnd, splitAt));
+const historyClosingHtml = splitAt < bodyNodes.length ? toHtml(bodyNodes.slice(splitAt)) : '';
 ---
 
 <Base title={aboutData.title}>
   <PageHero headline={aboutData.headline} subheadline={aboutData.subheadline} />
 
+  <TeamPhotos featurePhoto={aboutData.teamPhoto} background="" />
+
   <section class="py-16 md:py-20 px-6">
     <div class="max-w-3xl mx-auto reveal">
+      {historyLeadHtml && (
+        <div class="grid sm:grid-cols-[13rem_1fr] md:grid-cols-[15rem_1fr] gap-8 md:gap-10 items-center mb-12 md:mb-16">
+          <CaptionedImage
+            src={aboutData.historyImage.photo.src!}
+            alt={aboutData.historyImage.photo.alt}
+            caption={aboutData.historyImage.caption}
+            credit={aboutData.historyImage.credit}
+            class="max-w-60 mx-auto sm:max-w-none sm:mx-0"
+          />
+          <div class="richtext">
+            <Fragment set:html={historyLeadHtml} />
+          </div>
+        </div>
+      )}
       {aboutData.historyHeading && <h2 class="font-heading text-3xl md:text-4xl font-bold text-text-primary mb-6">{aboutData.historyHeading}</h2>}
       <div class="richtext">
         <Fragment set:html={historyHtml} />
       </div>
+      {historyClosingHtml && (
+        <>
+          <CityPhotos photos={aboutData.cityPhotos} />
+          <div class="richtext">
+            <Fragment set:html={historyClosingHtml} />
+          </div>
+        </>
+      )}
     </div>
   </section>
 

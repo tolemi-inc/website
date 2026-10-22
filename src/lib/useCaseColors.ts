@@ -1,23 +1,19 @@
-export type UseCaseColor = "sky" | "red" | "yellow";
+import { dotFill, type BrandAccent } from "./brandAccents";
 
-// Bold tinted pills with consistent dark text; active state is a solid dark fill
-// (matching the "All" pill) and the brand color lives on in the leading dot.
-export const useCaseColorClasses: Record<UseCaseColor, string> = {
-  sky: "bg-tolemi-sky-200 text-tolemi-dark hover:bg-tolemi-sky-300",
-  red: "bg-tolemi-red-100 text-tolemi-dark hover:bg-tolemi-red-200",
-  yellow: "bg-tolemi-yellow-200 text-tolemi-dark hover:bg-tolemi-yellow-300",
-};
+export type UseCaseColor = BrandAccent;
 
-export const useCaseActiveClasses: Record<UseCaseColor, string> = {
-  sky: "bg-tolemi-dark text-white",
-  red: "bg-tolemi-dark text-white",
-  yellow: "bg-tolemi-dark text-white",
+// Filter pills are solid dark; the brand color lives only in the leading dot,
+// and the active pill picks up a matching ring.
+export const useCaseActiveRingClasses: Record<UseCaseColor, string> = {
+  sky: "ring-2 ring-offset-2 ring-tolemi-sky-500",
+  red: "ring-2 ring-offset-2 ring-tolemi-red-400",
+  yellow: "ring-2 ring-offset-2 ring-tolemi-yellow-400",
 };
 
 export const useCaseDotClasses: Record<UseCaseColor, string> = {
-  sky: "bg-tolemi-sky-500",
-  red: "bg-tolemi-red-400",
-  yellow: "bg-tolemi-yellow-400",
+  sky: dotFill("sky"),
+  red: dotFill("red"),
+  yellow: dotFill("yellow"),
 };
 
 const explicitMap: Record<string, UseCaseColor> = {
