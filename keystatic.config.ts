@@ -187,6 +187,18 @@ export default config({
       format: { data: 'json' },
       schema: {
         companyName: fields.text({ label: 'Company Name' }),
+        siteDescription: fields.text({
+          label: 'Site Description',
+          description:
+            'Default summary shown in search results and link previews (Slack, LinkedIn, etc.). Aim for 110–160 characters.',
+          multiline: true,
+        }),
+        shareImage: fields.image({
+          label: 'Default Share Image',
+          description: 'Image shown in link previews when a page has no image of its own. Use 1200×630.',
+          directory: 'public/uploads/og',
+          publicPath: '/uploads/og/',
+        }),
         demoBookingUrl: fields.url({
           label: 'Demo Booking URL',
           description: 'Google appointment-schedule link. All "Get a Demo" CTAs open this in a new tab.',

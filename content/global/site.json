@@ -1,5 +1,7 @@
 {
   "companyName": "Tolemi",
+  "siteDescription": "Tolemi builds data integration, spatial insights, and workflow automation software that helps local governments protect tenants and revitalize neighborhoods.",
+  "shareImage": "/uploads/og/tolemi-og.png",
   "demoBookingUrl": "https://calendar.app.google/ADWYkErAkBkvTd9C6",
   "nav": [
     {

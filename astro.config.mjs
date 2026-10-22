@@ -7,6 +7,9 @@ import keystatic from '@keystatic/astro';
 
 // https://astro.build/config
 export default defineConfig({
+  // Netlify sets URL to the site's primary domain at build time; used for
+  // canonical and Open Graph URLs, which must be absolute.
+  site: process.env.URL || 'https://tolemi-mkting.netlify.app',
   output: 'server',
   adapter: netlify(),
   integrations: [react(), keystatic()],
