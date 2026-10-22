@@ -45,12 +45,16 @@ const {
                 title={step.title}
                 description={step.description}
                 icon={step.icon}
-                eyebrow={String(i + 1)}
-                eyebrowStyle="text-4xl md:text-5xl font-bold leading-none mb-2"
                 iconSize="w-7 h-7"
-                eyebrowColor={numberColors[i % numberColors.length]}
                 accent={accents[i % accents.length]}
-              />
+              >
+                <span
+                  slot="lead"
+                  class={`font-heading text-4xl md:text-5xl font-bold leading-none lining-nums mr-1 ${numberColors[i % numberColors.length]}`}
+                >
+                  {i + 1}
+                </span>
+              </InfoCard>
             </div>
           </li>
         );

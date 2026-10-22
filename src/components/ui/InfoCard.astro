@@ -3,7 +3,8 @@
 // optional icon inline with the title, on a white background. `accent` picks
 // a logo color for both the dot and the icon: the icon is always painted
 // with the dot's exact gradient so the two never drift apart. Use the "title" slot / default slot instead of the title /
-// description props when the text needs inline HTML.
+// description props when the text needs inline HTML, and the "lead" slot for
+// anything that should sit before the icon on the title line (e.g. a number).
 import CardDot from "./CardDot.astro";
 import Icon from "./Icon.astro";
 import { dotFill, type BrandAccent } from "../../lib/brandAccents";
@@ -18,7 +19,6 @@ interface Props {
   dotColor?: string;
   iconColor?: string;
   eyebrowColor?: string;
-  eyebrowStyle?: string;
   iconSize?: string;
   titleSize?: string;
   bodySize?: string;
@@ -35,7 +35,6 @@ const {
   dotColor = dotFill(accent),
   iconColor = dotColor,
   eyebrowColor = "text-tolemi-sky-600",
-  eyebrowStyle = "text-xs font-semibold uppercase tracking-[0.15em] mb-2",
   iconSize = "w-5 h-5",
   titleSize = "text-lg",
   bodySize = "text-sm",
@@ -51,13 +50,14 @@ const hasBody = description || Astro.slots.has("default");
   <CardDot color={dotColor} size="w-4.5 h-4.5" position="top-[25px] right-6 md:top-[29px] md:right-7" />
   {eyebrow && (
     <p
-      class={`font-heading lining-nums pr-10 ${eyebrowStyle} ${eyebrowColor}`}
+      class={`font-heading text-xs font-semibold uppercase tracking-[0.15em] lining-nums mb-2 pr-10 ${eyebrowColor}`}
     >
       {eyebrow}
     </p>
   )}
   <div class="flex items-center gap-2.5 min-h-7 mb-1.5 pr-10">
-    {icon && <Icon name={icon} fill={iconColor} class={`${iconSize} flex-shrink-0`} />}
+    <slot name="lead" />
+    {icon &&<Icon name={icon} fill={iconColor} class={`${iconSize} flex-shrink-0`} />}
     <Heading class={`font-heading ${titleSize} font-bold leading-snug text-text-primary`}>
       <slot name="title">{title}</slot>
     </Heading>
