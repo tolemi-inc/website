@@ -1,0 +1,45 @@
+---
+// A row of captioned photos of partner places. Stacks on mobile, three-up
+// from `sm`. Credits sit under each caption in small muted type.
+
+interface Photo {
+  photo?: { src: string | null; alt?: string } | null;
+  caption?: string;
+  credit?: string;
+}
+interface Props {
+  photos?: Photo[];
+  captionColor?: string;
+  creditColor?: string;
+}
+
+const {
+  photos = [],
+  captionColor = "text-text-primary",
+  creditColor = "text-text-muted",
+} = Astro.props;
+
+const items = photos.filter((p) => p.photo?.src);
+---
+
+{items.length > 0 && (
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 my-10 md:my-12">
+    {items.map((p) => (
+      <figure>
+        <img
+          src={p.photo!.src}
+          alt={p.photo!.alt?.trim() || p.caption || ""}
+          loading="lazy"
+          decoding="async"
+          class="w-full aspect-[4/3] object-cover rounded-xl shadow-sm"
+        />
+        {(p.caption || p.credit) && (
+          <figcaption class="mt-2.5">
+            {p.caption && <span class={`block font-heading text-sm font-semibold ${captionColor}`}>{p.caption}</span>}
+            {p.credit && <span class={`block text-xs mt-0.5 ${creditColor}`}>Photo: {p.credit}</span>}
+          </figcaption>
+        )}
+      </figure>
+    ))}
+  </div>
+)}

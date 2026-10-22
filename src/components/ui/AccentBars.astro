@@ -1,0 +1,21 @@
+---
+// A row of rounded brand-color bars (charcoal, cyan, yellow, red) — a
+// section-closing rule.
+interface Props {
+  colors?: string[];
+  thickness?: string;
+  class?: string;
+}
+
+const {
+  colors = ["bg-tolemi-dark", "bg-tolemi-sky", "bg-tolemi-yellow", "bg-tolemi-red"],
+  thickness = "h-2",
+  class: classAttr = "",
+} = Astro.props;
+---
+
+<div aria-hidden="true" class={`flex gap-3 md:gap-6 ${classAttr}`}>
+  {colors.map((color) => (
+    <span class={`flex-1 ${thickness} rounded-full ${color}`}></span>
+  ))}
+</div>

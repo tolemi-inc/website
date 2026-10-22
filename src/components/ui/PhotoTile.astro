@@ -1,0 +1,43 @@
+---
+// A rounded photo that fills its box (give it a height via `class`, or let a
+// grid cell size it), with an optional caption on a dark fade at the bottom.
+
+interface Props {
+  src: string;
+  alt?: string;
+  caption?: string;
+  captionColor?: string;
+  imgPosition?: string;
+  position?: string;
+  class?: string;
+  [dataAttr: `data-${string}`]: unknown;
+}
+
+const {
+  src,
+  alt,
+  caption,
+  captionColor = "text-white",
+  imgPosition = "object-center",
+  position = "relative",
+  class: classAttr = "",
+  ...attrs
+} = Astro.props;
+---
+
+<figure class={`${position} overflow-hidden rounded-2xl shadow-lg shadow-black/5 ${classAttr}`} {...attrs}>
+  <img
+    src={src}
+    alt={alt?.trim() || caption || ""}
+    loading="lazy"
+    decoding="async"
+    class={`absolute inset-0 w-full h-full object-cover ${imgPosition}`}
+  />
+  {caption && (
+    <figcaption
+      class={`absolute inset-x-0 bottom-0 px-4 pb-3 pt-10 md:px-5 md:pb-4 text-sm leading-snug font-medium ${captionColor} bg-gradient-to-t from-black/70 to-transparent`}
+    >
+      {caption}
+    </figcaption>
+  )}
+</figure>

@@ -6,10 +6,14 @@
 // renders a stylized workflow card instead of a screenshot.
 import SectionHeader from "../../ui/SectionHeader.astro";
 import DemoButton from "../../ui/DemoButton.astro";
+import AccentLine from "../../ui/AccentLine.astro";
+import InfoCard from "../../ui/InfoCard.astro";
+import { accentGradients, accentTextGradients, dotFill, type BrandAccent } from "../../../lib/brandAccents";
 
 interface TitledItem {
   title: string;
   description?: string;
+  icon?: string;
 }
 interface ProductItem {
   name: string;
@@ -17,7 +21,9 @@ interface ProductItem {
   headline?: string;
   headlineAccent?: string;
   description?: string;
+  featuresHeading?: string;
   features?: TitledItem[];
+  useCasesHeading?: string;
   useCases?: TitledItem[];
   imagePath?: string;
   imageAlt?: string;
@@ -29,7 +35,7 @@ interface Props {
   subheading?: string;
   ctaNote?: string;
   items?: ProductItem[];
-  accentGradients?: string[];
+  accents?: BrandAccent[];
 }
 
 const {
@@ -37,29 +43,26 @@ const {
   subheading,
   ctaNote,
   items = [],
-  accentGradients = [
-    "from-tolemi-indigo-500 to-tolemi-coral-400",
-    "from-tolemi-sky-600 to-tolemi-sky",
-    "from-tolemi-green to-tolemi-sky",
-  ],
+  // one logo dot color per product
+  accents = ["red", "yellow", "sky"],
 } = Astro.props;
 
 const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-");
 const tabs = items.map((item, i) => ({
   ...item,
   slug: slugify(item.name),
-  accent: accentGradients[i % accentGradients.length],
+  accent: accents[i % accents.length],
 }));
 ---
 
 <section id="products" class="py-20 md:py-28 px-6 bg-surface relative overflow-hidden">
   <div class="max-w-7xl mx-auto">
-    <SectionHeader heading={heading} subtitle={subheading} />
+    <SectionHeader heading={heading} subtitle={subheading} subtitleWidth="max-w-4xl" />
 
     {/* Tab buttons */}
     <div class="mb-10 md:mb-14 reveal overflow-x-auto -mx-6 px-6 md:mx-0 md:px-0">
       <div
-        class="flex w-max mx-auto gap-1 p-1 rounded-xl bg-surface-secondary border border-text-muted/10"
+        class="flex w-max mx-auto gap-1.5 p-1.5 rounded-2xl bg-surface-secondary border border-text-muted/10"
         role="tablist"
       >
         {tabs.map((tab, i) => (
@@ -68,10 +71,11 @@ const tabs = items.map((item, i) => ({
             aria-selected={i === 0 ? "true" : "false"}
             data-tab={tab.slug}
             class:list={[
-              "product-tab px-4 md:px-6 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 whitespace-nowrap",
+              "product-tab flex items-center gap-2.5 px-5 md:px-8 py-3 md:py-3.5 rounded-xl font-heading text-base md:text-lg font-bold transition-all duration-200 whitespace-nowrap",
               i === 0 && "product-tab--active",
             ]}
           >
+            <span class={`product-tab-dot w-2.5 h-2.5 rounded-full ${dotFill(tab.accent)}`}></span>
             {tab.name}
           </button>
         ))}
@@ -87,7 +91,7 @@ const tabs = items.map((item, i) => ({
         >
           <div class="grid md:grid-cols-2 gap-10 md:gap-16 items-center">
             <div>
-              <div class={`w-8 h-1 rounded-full bg-gradient-to-r ${tab.accent} mb-6`}></div>
+              <AccentLine color={`bg-gradient-to-r ${accentGradients[tab.accent]}`} class="mb-6" />
               {tab.tagline && (
                 <p class="text-xs font-semibold uppercase tracking-[0.15em] text-text-muted mb-3">
                   {tab.tagline}
@@ -97,7 +101,7 @@ const tabs = items.map((item, i) => ({
                 {tab.headline ? (
                   <>
                     {tab.headline}{" "}
-                    <span class={`bg-gradient-to-r ${tab.accent} bg-clip-text text-transparent`}>
+                    <span class={`bg-gradient-to-r ${accentTextGradients[tab.accent]} bg-clip-text text-transparent`}>
                       {tab.headlineAccent}
                     </span>
                   </>
@@ -136,8 +140,9 @@ const tabs = items.map((item, i) => ({
 
           {tab.features && tab.features.length > 0 && (
             <div class="mt-12 md:mt-16">
-              <h4 class="font-heading text-sm font-semibold uppercase tracking-[0.15em] text-text-muted mb-6">
-                Key Features
+              <h4 class="flex items-center gap-3 font-heading text-xl md:text-2xl font-bold text-text-primary mb-6 md:mb-8">
+                <AccentLine color={`bg-gradient-to-r ${accentGradients[tab.accent]}`} width="w-6" />
+                {tab.featuresHeading || "Key Features"}
               </h4>
               <div
                 class:list={[
@@ -146,12 +151,13 @@ const tabs = items.map((item, i) => ({
                 ]}
               >
                 {tab.features.map((feature) => (
-                  <div class="bg-surface-secondary/60 rounded-xl border border-text-muted/10 p-5 md:p-6">
-                    <h5 class="font-heading font-bold text-text-primary mb-1.5">{feature.title}</h5>
-                    {feature.description && (
-                      <p class="text-sm text-text-secondary leading-relaxed">{feature.description}</p>
-                    )}
-                  </div>
+                  <InfoCard
+                    title={feature.title}
+                    description={feature.description}
+                    icon={feature.icon}
+                    headingTag="h5"
+                    accent={tab.accent}
+                  />
                 ))}
               </div>
             </div>
@@ -159,26 +165,30 @@ const tabs = items.map((item, i) => ({
 
           {tab.useCases && tab.useCases.length > 0 && (
             <div class="mt-12 md:mt-16">
-              <h4 class="font-heading text-sm font-semibold uppercase tracking-[0.15em] text-text-muted mb-6">
-                What governments are using {tab.name} for
+              <h4 class="flex items-center gap-3 font-heading text-xl md:text-2xl font-bold text-text-primary mb-6 md:mb-8">
+                <AccentLine color={`bg-gradient-to-r ${accentGradients[tab.accent]}`} width="w-6" />
+                {tab.useCasesHeading || `How governments are using ${tab.name}`}
               </h4>
               <div
                 class:list={[
-                  "grid sm:grid-cols-2 gap-x-8 gap-y-6",
+                  "grid sm:grid-cols-2 gap-5 md:gap-6",
                   tab.useCases.length % 3 === 0 ? "lg:grid-cols-3" : "lg:grid-cols-2",
                 ]}
               >
-                {tab.useCases.map((useCase) => (
-                  <div class="flex gap-4">
-                    <div class={`w-1 rounded-full bg-gradient-to-b ${tab.accent} flex-shrink-0`}></div>
-                    <div>
-                      <h5 class="font-heading font-bold text-text-primary mb-1">{useCase.title}</h5>
-                      {useCase.description && (
-                        <p class="text-sm text-text-secondary leading-relaxed">{useCase.description}</p>
-                      )}
-                    </div>
-                  </div>
-                ))}
+                {tab.useCases.map((useCase, j) => {
+                  // checkerboard of navy and white cards across the desktop grid
+                  const cols = tab.useCases!.length % 3 === 0 ? 3 : 2;
+                  return (
+                    <InfoCard
+                      title={useCase.title}
+                      description={useCase.description}
+                      icon={useCase.icon}
+                      dark={(Math.floor(j / cols) + (j % cols)) % 2 === 0}
+                      headingTag="h5"
+                      accent={tab.accent}
+                    />
+                  );
+                })}
               </div>
             </div>
           )}

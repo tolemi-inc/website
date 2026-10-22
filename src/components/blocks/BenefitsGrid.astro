@@ -1,0 +1,53 @@
+---
+// Benefits as a three-up grid of photo cards (photo, heading, short
+// paragraph). Items without a photo show their icon on a navy tile instead.
+import PhotoCard from "../ui/PhotoCard.astro";
+import type { BrandAccent } from "../../lib/brandAccents";
+
+type Image = { src: string | null; alt?: string } | null;
+interface Item {
+  title: string;
+  description?: string;
+  photo?: Image;
+  photoCaption?: string;
+  icon?: string;
+}
+interface Props {
+  heading?: string;
+  items?: Item[];
+  background?: string;
+  headingColor?: string;
+  accents?: BrandAccent[];
+}
+
+const {
+  heading = "Benefits & Perks",
+  items = [],
+  background = "bg-surface-secondary",
+  headingColor = "text-text-primary",
+  accents = ["sky", "red", "yellow"],
+} = Astro.props;
+---
+
+{items.length > 0 && (
+  <section class={`py-20 md:py-32 px-6 ${background}`}>
+    <div class="max-w-6xl mx-auto">
+      <h2 class={`font-heading text-3xl md:text-5xl font-bold tracking-tight mb-12 md:mb-16 reveal ${headingColor}`}>
+        {heading}
+      </h2>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-14 md:gap-y-20 reveal">
+        {items.map((item, i) => (
+          <PhotoCard
+            title={item.title}
+            description={item.description}
+            src={item.photo?.src}
+            alt={item.photo?.alt}
+            caption={item.photoCaption}
+            icon={item.icon}
+            accent={accents[i % accents.length]}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+)}

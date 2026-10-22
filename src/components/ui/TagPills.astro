@@ -1,6 +1,6 @@
 ---
 import {
-  useCaseColorClasses,
+  useCaseDotClasses,
   type UseCaseColor,
 } from "../../lib/useCaseColors";
 
@@ -18,10 +18,13 @@ interface Props {
 const { tags, size = "md" } = Astro.props;
 
 const sizeClasses =
-  size === "sm" ? "text-[10px] px-2 py-0.5" : "text-xs px-2.5 py-1";
+  size === "sm" ? "text-[11px] gap-1.5 px-2.5 py-1" : "text-xs gap-2 px-3 py-1.5";
 
-const defaultClasses =
-  "bg-gradient-to-r from-tolemi-sky-100 to-tolemi-yellow-100 text-tolemi-sky-700";
+const dotSize = size === "sm" ? "w-1.5 h-1.5" : "w-2 h-2";
+
+// Neutral chip; the use-case color is carried by the dot alone.
+const chipClasses =
+  "bg-white text-text-secondary ring-1 ring-inset ring-black/10";
 
 const normalized = (tags || []).map((t) =>
   typeof t === "string" ? { label: t } : t
@@ -31,22 +34,23 @@ const normalized = (tags || []).map((t) =>
 {normalized.length > 0 && (
   <ul class="flex flex-wrap gap-1.5">
     {normalized.map((tag) => {
-      const colorClasses = tag.color
-        ? useCaseColorClasses[tag.color]
-        : defaultClasses;
-      const baseClasses = `${sizeClasses} inline-block rounded-full font-semibold tracking-wide shadow-sm shadow-black/5 ${colorClasses}`;
+      const baseClasses = `${sizeClasses} inline-flex items-center rounded-full font-heading font-semibold ${chipClasses}`;
+      const dot = tag.color && (
+        <span class={`${dotSize} rounded-full shrink-0 ${useCaseDotClasses[tag.color]}`} aria-hidden="true"></span>
+      );
       return (
         <li>
           {tag.href ? (
             <a
               href={tag.href}
-              class={`${baseClasses} transition-colors`}
+              class={`${baseClasses} transition-colors hover:text-text-primary hover:ring-black/25`}
               data-use-case-tag
             >
+              {dot}
               {tag.label}
             </a>
           ) : (
-            <span class={baseClasses}>{tag.label}</span>
+            <span class={baseClasses}>{dot}{tag.label}</span>
           )}
         </li>
       );

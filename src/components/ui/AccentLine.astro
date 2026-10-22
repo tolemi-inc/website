@@ -1,0 +1,19 @@
+---
+// Rounded-end accent line — short colored bars above headings, or full-width
+// dividers inside cards.
+interface Props {
+  color?: string;
+  width?: string;
+  thickness?: string;
+  class?: string;
+}
+
+const {
+  color = "bg-tolemi-sky",
+  width = "w-8",
+  thickness = "h-1",
+  class: classAttr = "",
+} = Astro.props;
+---
+
+<span aria-hidden="true" class={`block ${width} ${thickness} rounded-full ${color} ${classAttr}`}></span>

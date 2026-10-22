@@ -79,14 +79,15 @@
   --color-tolemi-red-500: #dd0020;
   --color-tolemi-red-600: #b3001a;
 
-  /* Yellow scale (data viz only) */
+  /* Yellow scale (data viz only) — darker steps warm into orange, never mustard */
   --color-tolemi-yellow-50: #fffbeb;
   --color-tolemi-yellow-100: #fff0c2;
   --color-tolemi-yellow-200: #ffe494;
   --color-tolemi-yellow-300: #ffd75c;
   --color-tolemi-yellow-400: #FFCB1B;
-  --color-tolemi-yellow-500: #e6b200;
-  --color-tolemi-yellow-600: #b38a00;
+  --color-tolemi-yellow-500: #FFA31A;
+  --color-tolemi-yellow-600: #F97316;
+  --color-tolemi-yellow-700: #C2410C;
 
   --animate-float: float 6s ease-in-out infinite;
   --animate-float-delayed: float 6s ease-in-out 3s infinite;
@@ -311,12 +312,14 @@ html {
   font-style: italic;
 }
 
+/* Rounded-end accent line, matching the site's AccentLine motif */
 .richtext hr {
   border: none;
-  height: 1px;
-  background: linear-gradient(to right, transparent, var(--color-tolemi-light), transparent);
+  height: 4px;
+  border-radius: 9999px;
+  background: var(--color-tolemi-sky);
   margin: 3em auto;
-  width: 60%;
+  width: 3rem;
 }
 
 .richtext code {

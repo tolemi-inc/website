@@ -1,0 +1,142 @@
+---
+// Heading and a photo on the left, a stack of expandable items on the right,
+// each under a rounded multi-stop gradient rule (its icon wears the same
+// gradient). One item is open at a time (exclusive <details name>); on
+// desktop the photo on the left crossfades to the open item's photo, on
+// mobile the photo sits inside the open item. The first item starts open.
+// Works without JavaScript apart from the desktop photo swap.
+import Icon from "../ui/Icon.astro";
+import AccentLine from "../ui/AccentLine.astro";
+import PhotoTile from "../ui/PhotoTile.astro";
+
+type Image = { src: string | null; alt?: string } | null;
+interface Item {
+  title: string;
+  description?: string;
+  icon?: string;
+  photo?: Image;
+  photoCaption?: string;
+}
+interface Props {
+  heading?: string;
+  items?: Item[];
+  background?: string;
+  ruleThickness?: string;
+  headingColor?: string;
+  bodyColor?: string;
+  gradients?: string[];
+}
+
+const {
+  heading = "Working at Tolemi",
+  items = [],
+  background = "bg-surface",
+  ruleThickness = "h-1.5",
+  headingColor = "text-text-primary",
+  bodyColor = "text-text-secondary",
+  gradients = [
+    "from-tolemi-sky-300 via-tolemi-indigo-300 to-tolemi-coral-300",
+    "from-tolemi-coral-300 via-tolemi-red-300 to-tolemi-yellow-300",
+    "from-tolemi-yellow-300 via-tolemi-green-300 to-tolemi-sky-300",
+    "from-tolemi-indigo-300 via-tolemi-coral-300 to-tolemi-yellow-300",
+  ],
+} = Astro.props;
+
+const gradient = (i: number) => gradients[i % gradients.length];
+// shared `name` makes the <details> mutually exclusive
+const group = `accordion-${heading.toLowerCase().replace(/\W+/g, "-")}`;
+const hasPhotos = items.some((item) => item.photo?.src);
+---
+
+{items.length > 0 && (
+  <section class={`py-20 md:py-32 px-6 ${background}`} data-accordion>
+    <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 md:gap-16 reveal">
+      <div class="md:sticky md:top-28 self-start">
+        <h2 class={`font-heading text-3xl md:text-5xl font-bold tracking-tight ${headingColor}`}>
+          {heading}
+        </h2>
+        {hasPhotos && (
+          <div class="hidden md:block relative aspect-[4/3] mt-10">
+            {items.map((item, i) =>
+              item.photo?.src && (
+                <PhotoTile
+                  src={item.photo.src}
+                  alt={item.photo.alt}
+                  caption={item.photoCaption}
+                  position="absolute"
+                  class={`inset-0 transition-opacity duration-500 ${i === 0 ? "opacity-100" : "opacity-0"}`}
+                  data-accordion-photo={i}
+                />
+              )
+            )}
+          </div>
+        )}
+      </div>
+      <div>
+        {items.map((item, i) => (
+          <div>
+            <AccentLine
+              color={`bg-gradient-to-r ${gradient(i)}`}
+              width="w-full"
+              thickness={ruleThickness}
+            />
+            <details class="group" name={group} open={i === 0} data-accordion-item={i}>
+              <summary class="flex items-center gap-3 py-6 md:py-7 cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+                {item.icon && (
+                  <Icon name={item.icon} fill={`bg-gradient-to-br ${gradient(i)}`} class="w-6 h-6 flex-shrink-0" />
+                )}
+                <span class={`flex-1 font-heading text-xl md:text-2xl font-bold ${headingColor}`}>
+                  {item.title}
+                </span>
+                <svg
+                  class={`w-6 h-6 flex-shrink-0 transition-transform duration-200 group-open:rotate-45 ${headingColor}`}
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                  aria-hidden="true"
+                >
+                  <path d="M12 5v14M5 12h14" />
+                </svg>
+              </summary>
+              <div class="pb-8 -mt-1">
+                {item.description && (
+                  <p class={`text-base md:text-lg leading-relaxed ${bodyColor}`}>{item.description}</p>
+                )}
+                {item.photo?.src && (
+                  <PhotoTile
+                    src={item.photo.src}
+                    alt={item.photo.alt}
+                    caption={item.photoCaption}
+                    class="md:hidden aspect-[4/3] mt-6"
+                  />
+                )}
+              </div>
+            </details>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+)}
+
+<script>
+  // Crossfade the left-hand photo to whichever item is open. Closing the open
+  // item leaves its photo up.
+  document.querySelectorAll<HTMLElement>("[data-accordion]").forEach((section) => {
+    const photos = section.querySelectorAll<HTMLElement>("[data-accordion-photo]");
+    section.querySelectorAll<HTMLDetailsElement>("[data-accordion-item]").forEach((item) => {
+      item.addEventListener("toggle", () => {
+        if (!item.open) return;
+        const index = item.dataset.accordionItem;
+        if (![...photos].some((p) => p.dataset.accordionPhoto === index)) return;
+        photos.forEach((p) => {
+          const active = p.dataset.accordionPhoto === index;
+          p.classList.toggle("opacity-100", active);
+          p.classList.toggle("opacity-0", !active);
+        });
+      });
+    });
+  });
+</script>

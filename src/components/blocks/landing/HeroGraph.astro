@@ -3,6 +3,8 @@
 // Fictional demo data lives in the inline script's NODES constant; all real copy
 // (headline, subheadline, CTA) comes from Keystatic via props.
 import DemoButton from "../../ui/DemoButton.astro";
+import AccentPeriod from "../../ui/AccentPeriod.astro";
+import { accentGradients } from "../../../lib/brandAccents";
 
 interface Props {
   headline: string;
@@ -11,6 +13,9 @@ interface Props {
   ctaLink?: string;
   eyebrow?: string;
   eyebrowColor?: string;
+  periodColor?: string;
+  highlightColor?: string;
+  listColors?: string[];
 }
 
 const {
@@ -20,32 +25,40 @@ const {
   ctaLink,
   eyebrow = "Our Mission",
   eyebrowColor = "text-tolemi-sky-600",
+  periodColor = `bg-gradient-to-br ${accentGradients.red} bg-clip-text text-transparent`,
+  // full class string for a lone **phrase**; add bg-clip-text etc. for gradient text
+  highlightColor = "text-text-primary",
+  // the logo's dots, cool to warm: sky, yellow, orange (yellow into red), red.
+  // Sky starts a step deeper than the rest; at 400 it glares next to the warms.
+  listColors = [
+    "bg-gradient-to-r from-tolemi-sky-500 to-tolemi-sky-600",
+    "bg-gradient-to-r from-tolemi-yellow-400 to-tolemi-yellow-500",
+    "bg-gradient-to-r from-tolemi-yellow-500 to-tolemi-red-400",
+    "bg-gradient-to-r from-tolemi-red-400 to-tolemi-red-500",
+  ],
 } = Astro.props;
+
+// gradient text; clone the background per line so wrapped phrases keep the full sweep
+const gradientText = "bg-clip-text text-transparent box-decoration-clone";
+
+// the headline may mark key phrases with **double asterisks**; they render
+// extra-bold in the highlight color. A comma-separated series of them
+// ("**a**, **b**, and **c**") stacks one per line, each in its own list color.
+const headlineHtml = headline
+  .replace(/&/g, "&amp;")
+  .replace(/</g, "&lt;")
+  .replace(/\s*\*\*[^*]+?\*\*(?:,\s*(?:and\s+)?\*\*[^*]+?\*\*)+/g, (series) => {
+    let i = 0;
+    return series.replace(/\s*((?:and\s+)?)\*\*(.+?)\*\*/g, (_, and, phrase) =>
+      `<br>${and}<strong class="font-extrabold ${gradientText} ${listColors[i++ % listColors.length]}">${phrase}</strong>`);
+  })
+  .replace(/\*\*(.+?)\*\*/g, `<strong class="font-extrabold ${highlightColor}">$1</strong>`);
 ---
 
 <section class="relative overflow-hidden pt-28 pb-4 px-6 bg-surface">
-  <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 md:gap-14 items-center">
-    {/* the mission, left */}
-    <div class="py-8">
-      <p class={`font-heading text-sm font-semibold uppercase tracking-[0.2em] ${eyebrowColor} mb-5 reveal`}>
-        {eyebrow}
-      </p>
-      <h1 class="font-heading text-2xl md:text-3xl lg:text-4xl font-bold text-text-primary tracking-tight leading-snug mb-6 reveal">
-        {headline}
-      </h1>
-      {subheadline && (
-        <p class="text-lg md:text-xl text-text-secondary leading-relaxed mb-9 reveal">
-          {subheadline}
-        </p>
-      )}
-      {ctaText && (
-        <div class="reveal text-center md:text-left">
-          <DemoButton href={ctaLink || "#"} size="lg" arrow>{ctaText}</DemoButton>
-        </div>
-      )}
-    </div>
-    {/* the graph, right */}
-    <div class="gstage order-first md:order-none" id="herograph-stage">
+  <div class="max-w-7xl mx-auto flex flex-col items-center gap-6 md:gap-10">
+    {/* the graph, top */}
+    <div class="gstage w-full max-w-2xl" id="herograph-stage">
       <svg id="herograph-svg" viewBox="0 0 560 560"
         aria-label="Scattered facts spring into an ownership graph; labeled identifiers — a shared phone number and mailing address — draw three owners together into one portfolio"
       ></svg>
@@ -61,6 +74,25 @@ const {
         <span class="tsl-label">Tolemi insights</span>
       </div>
     </div>
+    {/* the mission, below */}
+    <div class="w-full text-center pb-8">
+      <p class={`font-heading text-sm font-semibold uppercase tracking-[0.2em] ${eyebrowColor} mb-5 reveal`}>
+        {eyebrow}
+      </p>
+      <h1 class="font-heading text-[clamp(1.75rem,8vw,3rem)] md:text-[clamp(2.5rem,5vw,3.75rem)] font-bold text-text-primary tracking-tight leading-[1.1] mb-6 reveal">
+        <AccentPeriod text={headlineHtml} color={periodColor} html />
+      </h1>
+      {subheadline && (
+        <p class="max-w-3xl mx-auto text-base md:text-lg text-text-secondary leading-relaxed mb-9 reveal">
+          {subheadline}
+        </p>
+      )}
+      {ctaText && (
+        <div class="reveal">
+          <DemoButton href={ctaLink || "#"} size="lg" arrow>{ctaText}</DemoButton>
+        </div>
+      )}
+    </div>
   </div>
 </section>
 
@@ -74,7 +106,7 @@ const {
   #herograph-svg .hg-sub { fill: #8b909a; font-size: 10.5px; text-anchor: middle; }
   #herograph-svg .hg-glyph { fill: #0a5568; font-weight: 700; text-anchor: middle; }
   #herograph-svg .hg-own { stroke: #d9dce4; stroke-width: 1.8; }
-  #herograph-svg .hg-link { stroke: #4CD5FF; stroke-width: 2.4; stroke-dasharray: 5 5; }
+  #herograph-svg .hg-link { stroke-width: 2.8; stroke-dasharray: 6 5; stroke-linecap: round; }
   #herograph-svg .hg-node { cursor: pointer; }
   #herograph-svg .hg-node:focus { outline: none; }
   #herograph-svg .hg-node:focus-visible circle { stroke: #343332; stroke-width: 2; }
@@ -86,79 +118,87 @@ const {
     border-left: 0.3em solid var(--acc, #e4e6ee);
     padding: 0.65em 1em; cursor: pointer; will-change: transform;
     box-shadow: 0 10px 22px -14px rgba(52, 51, 50, 0.35);
-    transition: opacity 0.5s, border-color 0.4s;
+    transition: opacity 0.5s, border-color 0.4s, background-color 0.4s, box-shadow 0.4s;
   }
-  .gcard.shell { opacity: 0; }
   .gcard.flag { border-style: dashed; border-left-style: solid; border-color: #FFCB1B; }
   .gcard.ghost { border-color: #c8ccd6; border-style: dashed; border-left-style: solid; }
   .gcard.dim { opacity: 0.14; }
+  /* before every cell has landed, only the landed cells show — no box yet */
+  .gcard.shell { background-color: transparent; border-color: transparent; box-shadow: none; }
+  .gcard.shell .ic, .gcard.shell .lb { opacity: 0; }
+  .gcard.shell .gc-table { border-top-color: transparent; }
   .gcard:focus-visible { outline: 2px solid #0e9bc4; outline-offset: 2px; }
   .gcard .ic {
     width: 2em; height: 2em; border-radius: 50%; flex: none;
     display: flex; align-items: center; justify-content: center;
-    transition: background 0.4s;
+    transition: background 0.4s, opacity 0.4s;
   }
   .gcard .gc-head { display: flex; align-items: center; gap: 0.8em; }
-  .gcard .nm {
-    font: 700 1.15em/1.3 var(--font-sans); color: #26272b; white-space: nowrap;
-    min-width: 9em; opacity: 0; transform: translateX(-4px);
-    transition: opacity 0.35s, transform 0.35s;
+  /* names and pills share one look wherever they sit, so a cell that leaves
+     its table arrives in a card as the same object */
+  .gstage .gnm { font: 700 1em/1.3 var(--font-sans); color: #26272b; white-space: nowrap; }
+  .gstage .pill {
+    display: inline-block; font: 600 0.95em/1.5 var(--font-sans); color: #33353a;
+    white-space: nowrap; padding: 0 0.7em; border-radius: 999px; background: #f2f3f6;
   }
-  .gcard .nm.in { opacity: 1; transform: none; }
+  .gstage .pill.t-reg { background: #d4f4ff; color: #0a7a9e; }
+  /* identifiers and "Linked" are what tie owners together — they wear the
+     link lines' sky-to-indigo gradient */
+  .gstage .pill.t-id {
+    background: linear-gradient(90deg, #d4f4ff, #e0e3ff); color: #3b44c4;
+    box-shadow: inset 0 0 0 1px rgba(99, 102, 241, 0.22);
+  }
+  .gstage .pill.t-use { background: #f0f0ee; color: #55565a; }
+  .gstage .pill.warn { background: #fff0c2; color: #C2410C; }
+  .gstage .pill.t-alert { background: #ffe0e4; color: #b3001a; }
+
+  .gcard .nm { font-size: 1.15em; min-width: 9em; opacity: 0; }
+  .gcard .nm.in { opacity: 1; }
   .gcard .gc-table {
     display: flex; flex-direction: column; gap: 0.3em;
-    border-top: 1px solid #eef0f4; margin-top: 0.5em; padding-top: 0.5em; min-width: 11.5em;
+    border-top: 1px solid #eef0f4; transition: border-color 0.4s; margin-top: 0.5em; padding-top: 0.5em; min-width: 11.5em;
   }
   .gcard .gc-row { display: flex; justify-content: space-between; gap: 1.6em; align-items: baseline; }
   .gcard .gc-row .lb {
     font: 600 0.8em/1.4 var(--font-sans); letter-spacing: 0.06em; text-transform: uppercase;
-    color: #9aa0ab; white-space: nowrap;
+    color: #9aa0ab; white-space: nowrap; transition: opacity 0.4s;
   }
-  .gcard .gc-row .vl {
-    font: 600 0.95em/1.5 var(--font-sans); color: #33353a; white-space: nowrap;
-    padding: 0 0.7em; border-radius: 999px; background: #f2f3f6;
-    min-height: 1.3em; opacity: 0; transform: translateX(-4px);
-    transition: opacity 0.35s, transform 0.35s;
-  }
-  .gcard .gc-row .vl.t-reg { background: #d4f4ff; color: #0a7a9e; }
-  .gcard .gc-row .vl.t-id { background: #d4f4ff; color: #0a7a9e; }
-  .gcard .gc-row .vl.t-use { background: #f0f0ee; color: #55565a; }
-  .gcard .gc-row .vl.warn { background: #fff0c2; color: #8a6d00; }
-  .gcard .gc-row .vl.t-alert { background: #ffe0e4; color: #b3001a; }
+  .gcard .gc-row .vl { min-height: 1.3em; opacity: 0; transform: translateX(-4px);
+    transition: opacity 0.35s, transform 0.35s; }
+  .gcard .gc-row .vl.src { transform: none; transition: none; }
   .gcard .gc-row .vl.in { opacity: 1; transform: none; }
 
-  /* the flying fact */
-  .gfact {
-    position: absolute; display: flex; align-items: center; gap: 0.5em; white-space: nowrap;
-    background: #ffffff; border: 1px solid #e4e6ee; border-radius: 999px;
-    padding: 0.3em 0.9em; font: 600 0.95em/1 var(--font-sans); color: #5b6068;
-    pointer-events: none;
-    transition: opacity 0.3s;
+  /* a cell in flight: the real cell hides while this stands in for it */
+  .gfly {
+    position: absolute; left: 0; top: 0; z-index: 3; pointer-events: none;
+    opacity: 0; will-change: transform;
   }
-  .gfact i { width: 0.5em; height: 0.5em; border-radius: 50%; flex: none; }
-  .gfact.warn { color: #8a6d00; }
 
   /* the disjointed source tables — where every record starts */
   .gsrc {
-    position: absolute; left: 0; top: 0; background: #ffffff; font-size: 1.15em;
+    position: absolute; left: 0; top: 0; z-index: 1; background: #ffffff; font-size: 1.05em;
     border: 1px solid #e4e6ee; border-top: 0.32em solid var(--tc, #d5d8de);
-    border-radius: 1em; padding: 0 0 0.7em; min-width: 17em; overflow: hidden;
+    border-radius: 0.8em; padding: 0 0 0.35em; overflow: hidden;
     box-shadow: 0 12px 26px -14px rgba(52, 51, 50, 0.32);
-    pointer-events: none; transition: opacity 0.35s;
+    pointer-events: none;
   }
   .gsrc-title {
-    font: 700 0.9em/1.3 var(--font-sans); letter-spacing: 0.09em; text-transform: uppercase;
+    display: flex; align-items: center; gap: 0.55em;
+    font: 700 0.85em/1.3 var(--font-sans); letter-spacing: 0.09em; text-transform: uppercase;
     color: var(--tink, #9aa0ab); background: var(--tbg, #f6f6f4);
-    padding: 0.75em 1.45em 0.65em; margin-bottom: 0.5em;
+    padding: 0.7em 1.4em 0.6em 1.2em;
   }
-  .gsrc-row {
-    font: 600 1em/1.95 var(--font-sans); color: #494b51; padding: 0 1.45em;
-    white-space: nowrap; display: flex; align-items: center; gap: 0.6em;
+  .gsrc-grid { display: grid; grid-template-columns: auto auto; column-gap: 1.6em; padding: 0 1.2em; }
+  .gsrc-th {
+    font: 600 0.72em/1 var(--font-sans); letter-spacing: 0.08em; text-transform: uppercase;
+    color: #9aa0ab; padding: 0.9em 0 0.6em; border-bottom: 1px solid #e4e6ee;
   }
-  .gsrc-row i {
-    width: 0.5em; height: 0.5em; border-radius: 50%;
-    background: var(--tc, #d5d8de); flex: none;
+  .gsrc-td {
+    display: flex; align-items: center; min-height: 2em;
+    border-bottom: 1px solid #f0f1f4;
   }
+  .gsrc-td.last { border-bottom: 0; }
+  .gcard { z-index: 2; }
 
 
   /* tooltip */
@@ -233,78 +273,78 @@ const {
     const ICON_HOUSE =
       '<svg viewBox="-7.5 -7 15 14" width="1.2em" height="1.2em" aria-hidden="true"><path d="M-5.4,-0.4 L0,-5.4 L5.4,-0.4 L5.4,5 L-5.4,5 Z" fill="#fff"/></svg>';
 
-    // rows carry an `at` threshold: the slider position where they reveal.
-    // Sourced facts land at 0.24 (end of extraction); derived facts later.
+    // rows with no `at` are filled by a cell flying in from a source table;
+    // rows with `at` are derived by Tolemi and reveal at that slider position.
     const NODES = [
       { id: "e1", kind: "owner", lx: 140, ly: 170, ox: 115, oy: 185,
         name: "Maple Grove Rentals LLC",
         rows: [
-          { lb: "Properties", vl: "3", at: 0.55 },
-          { lb: "Portfolio", vl: "Linked", at: 0.88 },
+          { lb: "Properties", vl: "3", at: 0.58 },
+          { lb: "Portfolio", vl: "Linked", at: 0.7 },
         ],
         tip: "Owns three registered rentals · part of one linked portfolio" },
       { id: "e2", kind: "owner", lx: 330, ly: 90, ox: 355, oy: 80,
         name: "MG Holdings LLC",
         rows: [
-          { lb: "Properties", vl: "2", at: 0.55 },
-          { lb: "Portfolio", vl: "Linked", at: 0.88 },
+          { lb: "Properties", vl: "2", at: 0.58 },
+          { lb: "Portfolio", vl: "Linked", at: 0.7 },
         ],
         tip: "Three owner identities, one portfolio — Tolemi links them" },
       { id: "e3", kind: "owner", lx: 440, ly: 265, ox: 470, oy: 285,
         name: "J. Harmon",
         rows: [
-          { lb: "Properties", vl: "2", at: 0.55 },
-          { lb: "Portfolio", vl: "Linked", at: 0.88 },
+          { lb: "Properties", vl: "2", at: 0.58 },
+          { lb: "Portfolio", vl: "Linked", at: 0.7 },
         ],
         tip: "A personal name on the filings — same portfolio" },
 
       { id: "p1", kind: "prop", reg: true, owner: "e1", lx: 75, ly: 335,
         name: "27 Winslow Ave",
         rows: [
-          { lb: "Current use", vl: "2-Fam Res", at: 0.24 },
-          { lb: "Registered", vl: "2025", at: 0.24 },
+          { lb: "Current use", vl: "2-Fam Res" },
+          { lb: "Registered", vl: "2025" },
         ],
         tip: "Active rental registration" },
       { id: "p2", kind: "prop", reg: true, owner: "e1", lx: 185, ly: 455,
         name: "118 Elm St",
         rows: [
-          { lb: "Current use", vl: "3-Fam Res", at: 0.24 },
-          { lb: "Registered", vl: "2024", at: 0.24 },
+          { lb: "Current use", vl: "3-Fam Res" },
+          { lb: "Registered", vl: "2024" },
         ],
         tip: "Active rental registration" },
       { id: "p3", kind: "prop", reg: true, owner: "e1", lx: 260, ly: 305,
         name: "112 Elm St",
         rows: [
-          { lb: "Current use", vl: "2-Fam Res", at: 0.24 },
-          { lb: "Registered", vl: "2024", at: 0.24 },
+          { lb: "Current use", vl: "2-Fam Res" },
+          { lb: "Registered", vl: "2024" },
         ],
         tip: "Active rental registration" },
       { id: "p5", kind: "prop", reg: true, owner: "e2", lx: 300, ly: 235,
         name: "301 Court St",
         rows: [
-          { lb: "Current use", vl: "2-Fam Res", at: 0.24 },
-          { lb: "Registered", vl: "2025", at: 0.24 },
+          { lb: "Current use", vl: "2-Fam Res" },
+          { lb: "Registered", vl: "2025" },
         ],
         tip: "Active rental registration" },
       { id: "p4", kind: "prop", reg: false, owner: "e2", lx: 430, ly: 380,
-        pk: [80, 520], name: "44 Brayton Rd",
+        late: [80, 520], name: "44 Brayton Rd",
         rows: [
-          { lb: "Current use", vl: "1-Fam Res", at: 0.24 },
+          { lb: "Current use", vl: "1-Fam Res" },
           { lb: "Registered", vl: "Never", at: 0.45, warn: true },
         ],
         tip: "Never registered — claimed by the linked portfolio" },
       { id: "p6", kind: "prop", reg: false, owner: "e3", lx: 340, ly: 490,
-        pk: [470, 530], name: "52 Delano St",
+        late: [470, 530], name: "52 Delano St",
         rows: [
-          { lb: "311 calls", vl: "5 in 12 mo", at: 0.45 },
+          { lb: "311 calls", vl: "5 in 12 mo" },
           { lb: "Registered", vl: "Never", at: 0.45, warn: true },
         ],
         tip: "Never registered — five code calls in twelve months" },
       { id: "p7", kind: "prop", reg: true, owner: "e3", lx: 490, ly: 425,
         name: "9 Falmouth St",
         rows: [
-          { lb: "Current use", vl: "1-Fam Res", at: 0.24 },
-          { lb: "Registered", vl: "2023", at: 0.24 },
+          { lb: "Current use", vl: "1-Fam Res" },
+          { lb: "Registered", vl: "2023" },
         ],
         tip: "Active rental registration" },
     ];
@@ -313,56 +353,56 @@ const {
       if (n.kind === "owner") { n.gx = n.ox; n.gy = n.oy; }
       else {
         const o = byId[n.owner];
-        if (n.pk) { n.gx = n.pk[0]; n.gy = n.pk[1]; }
-        else { n.gx = n.lx + (o.ox - o.lx); n.gy = n.ly + (o.oy - o.ly); }
+        n.gx = n.lx + (o.ox - o.lx); n.gy = n.ly + (o.oy - o.ly);
       }
     });
 
-    // the disjointed databases: where every sourced fact starts
-    // each source system wears its own brand color, carried by its records
+    // the ownership timeline: each owner in turn grows a line to each of its
+    // properties and reels them in; then the owners link and pull together;
+    // last, the portfolio claims the never-registered (`late`) properties.
+    const OWN = 0.3, GROW = 0.06, PULL = 0.15;
+    const LINK = 0.62, MERGE = 0.72, CLAIM = 0.86;
+    ["e1", "e2", "e3"].forEach((id, k) => (byId[id].grow = OWN + k * 0.04));
+
+    // the disjointed databases: four systems that never talk to each other.
+    // Each row is [record id, value]; the address cell carries the record's
+    // name. Every cell leaves its table and lands in a card, so addresses
+    // filed in several systems merge into one profile.
     const TABLES = [
-      { title: "Addresses", x: 16, y: 20,
-        c: "#4CD5FF", ink: "#0a7a9e", bg: "#eefbff", rows: [
-        { text: "27 Winslow Ave", to: "p1", slot: "nm" },
-        { text: "118 Elm St", to: "p2", slot: "nm" },
-        { text: "112 Elm St", to: "p3", slot: "nm" },
-        { text: "301 Court St", to: "p5", slot: "nm" },
-        { text: "44 Brayton Rd", to: "p4", slot: "nm" },
-        { text: "52 Delano St", to: "p6", slot: "nm" },
-        { text: "9 Falmouth St", to: "p7", slot: "nm" },
+      { title: "Current use", cols: ["Address", "Use"], lb: "Current use", slot: "use",
+        x: 18, y: 44, c: "#6366F1", ink: "#4338ca", bg: "#eef2ff", rows: [
+        ["p1", "2-Fam Res"], ["p2", "3-Fam Res"], ["p3", "2-Fam Res"],
+        ["p5", "2-Fam Res"], ["p4", "1-Fam Res"], ["p7", "1-Fam Res"],
       ] },
-      { title: "Current use", rx: 16, y: 20,
-        c: "#6366F1", ink: "#4338ca", bg: "#eef2ff", rows: [
-        { text: "27 Winslow · 2-Fam Res", chip: "2-Fam Res", to: "p1", slot: "use" },
-        { text: "118 Elm · 3-Fam Res", chip: "3-Fam Res", to: "p2", slot: "use" },
-        { text: "112 Elm · 2-Fam Res", chip: "2-Fam Res", to: "p3", slot: "use" },
-        { text: "301 Court · 2-Fam Res", chip: "2-Fam Res", to: "p5", slot: "use" },
-        { text: "44 Brayton · 1-Fam Res", chip: "1-Fam Res", to: "p4", slot: "use" },
-        { text: "9 Falmouth · 1-Fam Res", chip: "1-Fam Res", to: "p7", slot: "use" },
+      { title: "Rental registry", cols: ["Address", "Year"], lb: "Registered", slot: "reg",
+        rx: 18, y: 128, c: "#37A04F", ink: "#246b35", bg: "#f0faf2", rows: [
+        ["p1", "2025"], ["p2", "2024"], ["p3", "2024"], ["p5", "2025"], ["p7", "2023"],
       ] },
-      { title: "Rental registrations", x: 16, y: 352,
-        c: "#37A04F", ink: "#246b35", bg: "#f0faf2", rows: [
-        { text: "27 Winslow Ave · 2025", chip: "2025", to: "p1", slot: "reg" },
-        { text: "118 Elm St · 2024", chip: "2024", to: "p2", slot: "reg" },
-        { text: "112 Elm St · 2024", chip: "2024", to: "p3", slot: "reg" },
-        { text: "301 Court St · 2025", chip: "2025", to: "p5", slot: "reg" },
-        { text: "9 Falmouth St · 2023", chip: "2023", to: "p7", slot: "reg" },
+      { title: "Assessments", cols: ["Address", "Owner"], slot: "nm",
+        x: 30, y: 336, c: "#FFCB1B", ink: "#C2410C", bg: "#fffbeb", rows: [
+        ["p3", "e1"], ["p5", "e2"], ["p7", "e3"],
       ] },
-      { title: "Assessments", rx: 16, y: 380,
-        c: "#FFCB1B", ink: "#8a6d00", bg: "#fffbeb", rows: [
-        { text: "112 Elm St · Maple Grove Rentals LLC", chip: "Maple Grove Rentals LLC", to: "e1", slot: "nm" },
-        { text: "301 Court St · MG Holdings LLC", chip: "MG Holdings LLC", to: "e2", slot: "nm" },
-        { text: "9 Falmouth St · J. Harmon", chip: "J. Harmon", to: "e3", slot: "nm" },
+      { title: "311 requests", cols: ["Address", "Calls"], lb: "311 calls", slot: "calls",
+        rx: 40, y: 440, c: "#FF0025", ink: "#b3001a", bg: "#fff1f3", rows: [
+        ["p6", "5 in 12 mo"],
       ] },
     ];
 
     const EDGES = [];
     NODES.filter(n => n.kind === "prop").forEach(p =>
-      EDGES.push({ a: p.owner, b: p.id, kind: "own",
+      EDGES.push({ a: p.owner, b: p.id, kind: "own", g: 0,
+        at: p.late ? CLAIM : byId[p.owner].grow,
         l: mk("line", { class: "gel hg-own" }) }));
-    [["e1", "e2"], ["e2", "e3"]].forEach(([a, b]) =>
-      EDGES.push({ a, b, kind: "link",
-        l: mk("line", { class: "gel hg-link" }) }));
+    // portfolio links run sky into indigo; each gradient tracks its own line's
+    // endpoints (userSpaceOnUse), so it never collapses on a flat line
+    const defs = mk("defs", {});
+    [["e1", "e2"], ["e2", "e3"]].forEach(([a, b], k) => {
+      const grad = mk("linearGradient", { id: `hg-link-grad-${k}`, gradientUnits: "userSpaceOnUse" }, defs);
+      mk("stop", { offset: "0", "stop-color": "#4CD5FF" }, grad);
+      mk("stop", { offset: "1", "stop-color": "#6366F1" }, grad);
+      EDGES.push({ a, b, kind: "link", g: 0, at: LINK + k * 0.04, grad,
+        l: mk("line", { class: "gel hg-link", stroke: `url(#hg-link-grad-${k})` }) });
+    });
     EDGES.forEach(e => (e.l.style.opacity = 0));
     const neighbors = {};
     EDGES.forEach(e => {
@@ -370,13 +410,16 @@ const {
       (neighbors[e.b] = neighbors[e.b] || new Set()).add(e.a);
     });
 
-    // ---- render: profile cards (kept clear of the corner tables at start) ----
+    // ---- render: profile cards ----
     const TONE = { "Registered": "t-reg", "Phone": "t-id", "Mailing": "t-id",
       "Current use": "t-use", "Properties": "t-use", "Portfolio": "t-id",
       "311 calls": "t-alert" };
+    const SLOT = { "Current use": "use", "Registered": "reg", "311 calls": "calls" };
     NODES.forEach((n, i) => {
-      n.sx = 55 + (hash(i * 17 + 3) / 100) * (VW - 110);
-      n.sy = 160 + (hash(i * 29 + 11) / 100) * 190;
+      // scattered, then spread apart by resolve() once card sizes are known;
+      // unclaimed (`late`) properties wait at their parking spot out on the edge
+      n.sx0 = n.sx = n.late ? n.late[0] : 70 + (hash(i * 17 + 3) / 100) * (VW - 140);
+      n.sy0 = n.sy = n.late ? n.late[1] : 60 + (hash(i * 29 + 11) / 100) * (VH - 120);
       n.x = n.sx; n.y = n.sy; n.tx = n.sx; n.ty = n.sy; n.vx = 0; n.vy = 0;
 
       const el = document.createElement("div");
@@ -386,14 +429,15 @@ const {
       el.setAttribute("aria-label", `${n.name} — ${n.tip}`);
       const rowsHtml = n.rows.map(r =>
         `<div class="gc-row"><span class="lb">${r.lb}</span>` +
-        `<span class="vl ${r.warn ? "warn" : TONE[r.lb] || ""}" data-at="${r.at}">${r.vl}</span></div>`
+        `<span class="vl pill ${r.warn ? "warn" : TONE[r.lb] || ""}"${
+          r.at != null ? ` data-at="${r.at}"` : ""}>${r.vl}</span></div>`
       ).join("");
       el.innerHTML =
         `<div class="gc-head"><span class="ic" style="background:${
           n.kind === "owner" ? COL.owner : n.reg ? COL.reg : COL.unreg}">${
           n.kind === "owner" ? ICON_PERSON
           : ICON_HOUSE.replace('#fff', n.reg ? '#0a3a47' : '#6b5500')}</span>` +
-        `<span class="nm" data-at="0.24">${n.name}</span></div>` +
+        `<span class="nm gnm">${n.name}</span></div>` +
         `<div class="gc-table">${rowsHtml}</div>`;
       el.style.setProperty("--acc",
         n.kind === "owner" ? COL.owner : n.reg ? COL.reg : COL.unreg);
@@ -402,37 +446,54 @@ const {
       n.icEl = el.querySelector(".ic");
       n.slotEls = { nm: el.querySelector(".nm") };
       el.querySelectorAll(".gc-row").forEach((row, k) => {
-        const lb = n.rows[k].lb;
-        if (lb === "Current use") n.slotEls.use = row.querySelector(".vl");
-        if (lb === "Registered") n.slotEls.reg = row.querySelector(".vl");
+        const r = n.rows[k];
+        if (SLOT[r.lb] && r.at == null) n.slotEls[SLOT[r.lb]] = row.querySelector(".vl");
       });
     });
     const cards = NODES;
 
-    // ---- the source tables ----
-    TABLES.forEach(t => {
+    // ---- the source tables, and a mover for every cell ----
+    const DB_ICON =
+      '<svg viewBox="0 0 16 16" width="1.15em" height="1.15em" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><ellipse cx="8" cy="3.6" rx="5.6" ry="2.1"/><path d="M2.4 3.6v8.8c0 1.2 2.5 2.1 5.6 2.1s5.6-.9 5.6-2.1V3.6M2.4 8c0 1.2 2.5 2.1 5.6 2.1s5.6-.9 5.6-2.1"/></svg>';
+    const MOVERS = [], FLY = 0.12; // FLY: slider span of one cell's flight
+    TABLES.forEach((t, ti) => {
       const el = document.createElement("div");
       el.className = "gsrc";
       el.style.setProperty("--tc", t.c);
       el.style.setProperty("--tink", t.ink);
       el.style.setProperty("--tbg", t.bg);
-      el.innerHTML = `<div class="gsrc-title">${t.title}</div>` +
-        t.rows.map(r => `<div class="gsrc-row"><i></i>${r.text}</div>`).join("");
+      const last = t.rows.length - 1;
+      el.innerHTML = `<div class="gsrc-title">${DB_ICON}${t.title}</div>` +
+        `<div class="gsrc-grid">${t.cols.map(c => `<span class="gsrc-th">${c}</span>`).join("")}` +
+        t.rows.map(([id, v], k) => {
+          const td = `gsrc-td${k === last ? " last" : ""}`;
+          const val = t.slot === "nm"
+            ? `<span class="gnm">${byId[v].name}</span>`
+            : `<span class="pill ${TONE[t.lb]}">${v}</span>`;
+          return `<span class="${td}"><span class="gnm">${byId[id].name}</span></span>` +
+            `<span class="${td}">${val}</span>`;
+        }).join("") + `</div>`;
       wrap.appendChild(el);
       t.el = el;
-      el.querySelectorAll(".gsrc-row").forEach((rowEl, k) => (t.rows[k].el = rowEl));
+      // each table empties in turn; its cells leave a beat apart
+      t.st = 0.02 + ti * 0.025;
+      const cells = el.querySelectorAll(".gsrc-td > span");
+      t.rows.forEach(([id, v], k) => {
+        const st = t.st + k * 0.004;
+        const pairs = [[cells[2 * k], byId[id], "nm"],
+          [cells[2 * k + 1], t.slot === "nm" ? byId[v] : byId[id], t.slot]];
+        pairs.forEach(([src, node, slot]) => {
+          const fly = src.cloneNode(true);
+          fly.classList.add("gfly");
+          wrap.appendChild(fly);
+          node.slotEls[slot].classList.add("src");
+          MOVERS.push({ src, fly, node, dst: node.slotEls[slot], st });
+        });
+      });
+      t.end = t.st + last * 0.004;
     });
-
-    // ---- the records in flight: one chip per sourced fact ----
-    const CHIPS = [];
-    TABLES.forEach(t => t.rows.forEach(r => {
-      const chip = document.createElement("div");
-      chip.className = "gfact";
-      chip.innerHTML = `<i style="background:${t.c}"></i>${r.chip || r.text}`;
-      wrap.appendChild(chip);
-      CHIPS.push({ chip, srcEl: r.el, node: byId[r.to], slot: r.slot,
-        st: 0.02 + (hash(CHIPS.length * 7 + 3) % 100) * 0.0007 });
-    }));
+    // the boxes draw in together, once the last cell has landed
+    const SHOW_AT = Math.max(...MOVERS.map(m => m.st)) + FLY;
     const REVEALS = [...wrap.querySelectorAll("[data-at]")];
 
     const setGhost = (n, ghost) => {
@@ -490,14 +551,12 @@ const {
     // flight paths are measured with the cards at their scattered positions
     function measureFlight() {
       const w = wrap.getBoundingClientRect();
-      CHIPS.forEach(c => {
-        const s = c.srcEl.getBoundingClientRect();
-        const d = c.node.slotEls[c.slot].getBoundingClientRect();
-        const h = c.chip.offsetHeight;
-        c.fx = s.left - w.left + 10;
-        c.fy = s.top - w.top + (s.height - h) / 2;
-        c.tx = d.left - w.left - 4;
-        c.ty = d.top - w.top + (d.height - h) / 2;
+      MOVERS.forEach(m => {
+        const s = m.src.getBoundingClientRect(), d = m.dst.getBoundingClientRect();
+        m.fx = s.left - w.left; m.fy = s.top - w.top;
+        m.tx = d.left - w.left; m.ty = d.top - w.top;
+        m.fs = parseFloat(getComputedStyle(m.src).fontSize);
+        m.ts = parseFloat(getComputedStyle(m.dst).fontSize);
       });
     }
 
@@ -521,27 +580,35 @@ const {
             Math.abs(n.tx - n.x) + Math.abs(n.ty - n.y) > 0.25) live = true;
         render(n);
       });
-      EDGES.forEach(e => {
-        const A = byId[e.a], B = byId[e.b];
-        e.l.setAttribute("x1", A.x); e.l.setAttribute("y1", A.y);
-        e.l.setAttribute("x2", B.x); e.l.setAttribute("y2", B.y);
-      });
+      EDGES.forEach(drawEdge);
       raf = live || pending ? requestAnimationFrame(frame) : null;
       if (!raf) last = 0;
+    }
+    // a line runs from its owner out to the tip, `g` of the way to the property
+    function drawEdge(e) {
+      const A = byId[e.a], B = byId[e.b];
+      e.l.setAttribute("x1", A.x); e.l.setAttribute("y1", A.y);
+      e.l.setAttribute("x2", A.x + (B.x - A.x) * e.g);
+      e.l.setAttribute("y2", A.y + (B.y - A.y) * e.g);
+      if (e.grad) {
+        e.grad.setAttribute("x1", A.x); e.grad.setAttribute("y1", A.y);
+        e.grad.setAttribute("x2", B.x); e.grad.setAttribute("y2", B.y);
+      }
     }
     function wake() { if (!raf) { last = 0; raf = requestAnimationFrame(frame); } }
 
     // ---- the Tolemi slider: disjointed databases → Tolemi insights ----
-    // 0 → 0.25 records slide out of their tables; 0.25 → 0.6 profiles cluster
-    // by owner; 0.6 → 1 the owners link into one portfolio. Fully reversible.
+    // 0 → 0.3 cells leave their tables for the cards; 0.3 → 0.6 owners reel in
+    // their properties; 0.6 → 1 the owners link into one portfolio. Reversible.
     const track = document.getElementById("herograph-track");
     const knobEl = document.getElementById("herograph-knob");
     const veil = document.getElementById("herograph-veil");
-    const E = 0.25, O = 0.6;
     let V = 0, autoRaf = null;
     const cancelAuto = () => { if (autoRaf) cancelAnimationFrame(autoRaf); autoRaf = null; };
     const mixv = (a, b, u) => a + (b - a) * u;
     const clamp01 = v => Math.max(0, Math.min(1, v));
+    const ease = u => (u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2);
+    const span = (a, d) => ease(clamp01((V - a) / d));
     function setV(v) {
       V = clamp01(v);
       knobEl.style.left = V * 100 + "%";
@@ -550,32 +617,36 @@ const {
       NODES.forEach(n => {
         const gx = n.gx2 ?? n.gx, gy = n.gy2 ?? n.gy;
         const lx = n.lx2 ?? n.lx, ly = n.ly2 ?? n.ly;
-        if (V < E) { n.tx = n.sx; n.ty = n.sy; }
-        else if (V < O) {
-          const u = (V - E) / (O - E);
-          n.tx = mixv(n.sx, gx, u); n.ty = mixv(n.sy, gy, u);
-        } else {
-          const u = (V - O) / (1 - O);
-          n.tx = mixv(gx, lx, u); n.ty = mixv(gy, ly, u);
-        }
-        n.el.classList.toggle("shell", V < 0.045);
-        setGhost(n, V < 0.85);
+        // a property moves only once its owner's line has reached it
+        const o = n.kind === "owner" ? n : byId[n.owner];
+        const u1 = n.late ? span(OWN, 0.3) : span(o.grow + GROW, PULL);
+        const u2 = n.late ? span(CLAIM + GROW, 1 - CLAIM - GROW) : span(MERGE, 0.16);
+        n.tx = mixv(mixv(n.sx, gx, u1), lx, u2);
+        n.ty = mixv(mixv(n.sy, gy, u1), ly, u2);
+        n.el.classList.toggle("shell", V < SHOW_AT);
+        setGhost(n, V < CLAIM);
       });
       REVEALS.forEach(el => el.classList.toggle("in", V >= +el.dataset.at));
-      TABLES.forEach(t => {
-        const op = 1 - clamp01((V - 0.2) / 0.12);
-        t.el.style.opacity = op;
+      // a cell hides in its table the moment it leaves; its slot fills on landing
+      const landed = new Set();
+      MOVERS.forEach(m => {
+        const u = clamp01((V - m.st) / FLY);
+        const e = u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2;
+        m.src.style.visibility = u > 0 ? "hidden" : "";
+        m.fly.style.opacity = u > 0 && u < 1 ? 1 : 0;
+        m.fly.style.fontSize = mixv(m.fs, m.ts, e) + "px";
+        m.fly.style.transform =
+          `translate(${mixv(m.fx, m.tx, e)}px, ${mixv(m.fy, m.ty, e)}px)`;
+        if (u >= 1) landed.add(m.dst);
       });
-      CHIPS.forEach(c => {
-        const u = clamp01((V - c.st) / 0.2);
-        const e = 1 - Math.pow(1 - u, 2);
-        c.chip.style.left = mixv(c.fx, c.tx, e) + "px";
-        c.chip.style.top = mixv(c.fy, c.ty, e) + "px";
-        c.chip.style.opacity = V < 0.005 || u >= 1 || V > 0.32 ? 0 : 1;
+      MOVERS.forEach(m => m.dst.classList.toggle("in", landed.has(m.dst)));
+      // an emptied table folds away
+      TABLES.forEach(t => {
+        t.el.style.opacity = 1 - clamp01((V - t.end - 0.01) / 0.05);
       });
       EDGES.forEach(e => {
-        const late = e.kind === "link" || byId[e.b].pk;
-        e.l.style.opacity = late ? clamp01((V - 0.85) / 0.1) : clamp01((V - 0.42) / 0.12);
+        e.g = span(e.at, GROW);
+        e.l.style.opacity = e.g > 0 ? 1 : 0;
       });
       wake();
     }
@@ -600,6 +671,14 @@ const {
       if (ev.key === "ArrowRight") { cancelAuto(); setV(V + 0.05); ev.preventDefault(); }
     });
 
+    function layout() {
+      resolve("sx0", "sy0", "sx", "sy");
+      // unclaimed properties hold their scattered spot until the portfolio claims them
+      NODES.forEach(n => { if (n.late) { n.gx = n.sx; n.gy = n.sy; } });
+      resolve("gx", "gy", "gx2", "gy2");
+      resolve("lx", "ly", "lx2", "ly2");
+    }
+
     // ---- sequencing ----
     let timers = [];
     function reset() {
@@ -608,8 +687,7 @@ const {
       cancelAuto();
       measure();
       placeTables();
-      resolve("gx", "gy", "gx2", "gy2");
-      resolve("lx", "ly", "lx2", "ly2");
+      layout();
       NODES.forEach(n => {
         n.x = n.tx = n.sx; n.y = n.ty = n.sy; n.vx = n.vy = 0;
         render(n);
@@ -621,15 +699,10 @@ const {
       cancelAuto();
       measure();
       placeTables();
-      resolve("gx", "gy", "gx2", "gy2");
-      resolve("lx", "ly", "lx2", "ly2");
+      layout();
       setV(1);
       NODES.forEach(n => { n.x = n.tx; n.y = n.ty; n.vx = n.vy = 0; render(n); });
-      EDGES.forEach(e => {
-        const A = byId[e.a], B = byId[e.b];
-        e.l.setAttribute("x1", A.x); e.l.setAttribute("y1", A.y);
-        e.l.setAttribute("x2", B.x); e.l.setAttribute("y2", B.y);
-      });
+      EDGES.forEach(drawEdge);
     }
     function play() {
       reset();
@@ -679,11 +752,10 @@ const {
     window.addEventListener("resize", () => {
       measure();
       placeTables();
-      resolve("gx", "gy", "gx2", "gy2");
-      resolve("lx", "ly", "lx2", "ly2");
+      layout();
+      NODES.forEach(render);
       if (V < 0.01) measureFlight();
       setV(V);
-      NODES.forEach(render);
     });
 
     reset();

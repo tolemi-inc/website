@@ -4,7 +4,7 @@
     {
       "discriminant": "hero",
       "value": {
-        "headline": "We help local governments create and run data-driven programs that protect tenants, increase housing supply, preserve affordability, and revitalize neighborhoods.",
+        "headline": "We help local governments create and run **data-driven** programs that **protect tenants**, **increase housing supply**, **preserve affordability**, and **revitalize neighborhoods**.",
         "subheadline": "Tolemi is a civic technology company that builds data integration, spatial insights, and workflow automation software for state and local governments. We unlock the wealth of municipal data so agencies can ensure safe, stable housing and build stronger neighborhoods.",
         "ctaText": "Talk to Us",
         "ctaLink": "https://calendar.app.google/ADWYkErAkBkvTd9C6"
@@ -14,23 +14,27 @@
       "discriminant": "story",
       "value": {
         "heading": "From Data to Action",
-        "subheading": "We integrate with your data, enhance it with externally sourced datasets, connect the dots, and derive the insights that make smart workflows.",
+        "subheading": "Tolemi’s software platform integrates your siloed data, connects the dots you can’t see, and delivers the insights that drive smarter decisions and more efficient workflows.",
         "stages": [
           {
             "label": "Data",
-            "detail": "Property, sales, assessment, code violations, 311 service calls, rental records, all connected across every department."
+            "detail": "Ownership, sales, police & fire, code enforcement, permits, 311 complaints, utilities, business licenses—**all connected** across every department & agency.",
+            "icon": "database"
           },
           {
             "label": "Insights",
-            "detail": "Owner timelines, linked portfolios, likely rentals, and vacant-structure flags derived automatically from your data."
+            "detail": "Owner timelines, linked LLC’s, suspected rentals, vacancy indicators—**derived automatically** from your data and external sources.",
+            "icon": "lightbulb"
           },
           {
             "label": "Workflows",
-            "detail": "Integrated registration portal, inspections, email and mail campaigns, payment collection, and compliance."
+            "detail": "**End-to-end** property registrations, inspections, email and snail mail campaigns, payment collection, asset management, and compliance.",
+            "icon": "workflow"
           },
           {
             "label": "Automation",
-            "detail": "Outreach, renewals, and escalations run automatically, so programs launch fast and run efficiently."
+            "detail": "Internal & external communications, renewal notifications, non-compliance flags, task tracking, performance dashboards—all **fully automated**.",
+            "icon": "zap"
           }
         ],
         "layers": []
@@ -39,186 +43,216 @@
     {
       "discriminant": "products",
       "value": {
-        "heading": "One Platform, Three Layers",
-        "subheading": "State and local governments care about launching and efficiently running housing programs. The application matters less. Our products are the enablers, part of the package we provide.",
-        "ctaNote": "Book a 30-minute demo to see how it works for a program like yours.",
+        "heading": "An Integrated Platform, a Modular Approach",
+        "subheading": "We help state & local governments create, launch, and run effective programs that advance smart housing policies. For some, doing so requires our end-to-end platform. Others utilize specific Tolemi software applications to address key pain points with existing systems. We work with our partners to design the right solution for today’s challenges.",
         "items": [
           {
             "name": "Slate",
-            "tagline": "Workflow & Registration Management: Acquisition · Disposition · Compliance",
+            "tagline": "Data-Driven Workflow Automation",
             "headline": "Your agency runs on processes.",
             "headlineAccent": "Slate runs them for you.",
-            "description": "Slate replaces disconnected spreadsheets and generic project tools with purpose-built workflows tied directly to parcels, so your team can track every property, task, and deadline in one place, and nothing falls through the cracks.",
+            "description": "Slate replaces disconnected spreadsheets and generic case management systems with purpose-built workflows tied directly to parcels, so your team can track every property, task, and deadline in one place. Nothing falls through the cracks.",
             "features": [
               {
-                "title": "Operationalize Data",
-                "description": "Slate connects directly to parcels of record and integrates with your data, so your team can analyze and act on property information without switching systems."
+                "title": "Automate Workflows",
+                "description": "Slate connects directly to parcel-level systems of record to kick off and route workflows based on data like code violations, property sales, and constituent inquiries.",
+                "icon": "workflow"
               },
               {
                 "title": "Custom Configuration",
-                "description": "Tolemi works with your team to understand the workflows, registries, and data you need, then builds Slate to match, so it's intuitive from day one rather than adapted after the fact."
+                "description": "Tolemi works with your team to understand the workflows, registries, and data you need, then builds Slate to match, so it's intuitive from day one rather than adapted after the fact.",
+                "icon": "sliders"
               },
               {
-                "title": "Manage Team Workflows",
-                "description": "Delegate tasks, track workflow progress by stage, and view automated reports on your team's output."
+                "title": "Performance Management",
+                "description": "Delegate tasks, track workflow progress by stage, and view automated reports on your team's output.",
+                "icon": "bar-chart"
               },
               {
                 "title": "Analyze Data",
-                "description": "Layer data created in Slate with BuildingBlocks to see how your programs and teams are impacting your community, connecting operational work to citywide spatial analysis."
+                "description": "Layer data created in Slate with BuildingBlocks to see how your programs and teams are impacting your community, connecting operational work to citywide spatial analysis.",
+                "icon": "trending-up"
               },
               {
                 "title": "Map-Based Tracking",
-                "description": "Every property and project is geocoded and visualized on a map, so your team sees where work is happening, not just a list of addresses in a spreadsheet."
+                "description": "Every property and project is geocoded and visualized on a map, so your team sees where work is happening, not just a list of addresses in a spreadsheet.",
+                "icon": "map-pin"
               },
               {
                 "title": "Registration & Compliance",
-                "description": "Run permit, licensing, and registry programs end-to-end, from online application intake and fee collection to renewal tracking, follow-up workflows, and enforcement."
+                "description": "Run permit, licensing, and registry programs end-to-end, from online application intake and fee collection to renewal tracking, follow-up workflows, and enforcement.",
+                "icon": "clipboard-check"
               }
             ],
+            "useCasesHeading": "How governments are using Slate",
             "useCases": [
               {
-                "title": "Short-Term Rental Registry",
-                "description": "Registration portal built to your ordinance, with intake, renewals, fee collection, and compliance workflows in one place."
+                "title": "Long-Term Rental Registration, Licensing, and Inspections",
+                "description": "Launch permit or licensing programs quickly with configurable intake forms, payments, and automated renewals.",
+                "icon": "home"
               },
               {
-                "title": "Rental Licensing",
-                "description": "Manage landlord and property registration programs, track compliance, and flag non-compliant properties."
+                "title": "Short-Term Rental Identification & Registration",
+                "description": "Keep STR’s compliant with best-in-class identification along with intake, renewals, fee collection, and compliance workflows in one place.",
+                "icon": "key"
               },
               {
-                "title": "Property Acquisition & Disposition",
-                "description": "Track publicly owned properties through acquisition, disposition, or redevelopment with automated workflows and reporting."
+                "title": "Asset Management",
+                "description": "Streamline workflows for public sector redevelopment agencies through entire property lifecycle: acquisition, maintenance, construction, disposition, and compliance.",
+                "icon": "building"
               },
               {
-                "title": "Land Bank Operations",
-                "description": "Manage parcel intake, maintenance, marketing, and sale workflows in a single system."
-              },
-              {
-                "title": "Permit & License Programs",
-                "description": "Launch permit or licensing programs quickly with configurable intake forms, payments, and automated renewals."
+                "title": "Vacant and Foreclosure Registries",
+                "description": "Identify suspected vacant properties using proprietary Tolemi insights, then automate noticing, manage registrations, and maintain compliance in a single platform.",
+                "icon": "file-text"
               }
             ],
-            "imagePath": "",
-            "imageAlt": "",
-            "ctaText": "See Slate running your workflows",
-            "ctaLink": "https://calendar.app.google/ADWYkErAkBkvTd9C6"
+            "imagePath": "/screenshots/slate-rental-registration.png",
+            "imageAlt": "Slate rental registration workflow for a property at the inspection stage, with linked owner and task progress",
+            "featuresHeading": "Key Features"
           },
           {
             "name": "BuildingBlocks",
-            "tagline": "Property Data & Spatial Analytics: Integration · Analysis · Automation",
-            "headline": "Your data is already there,",
+            "tagline": "Data Integration and Insights",
+            "headline": "Your data is already there.",
             "headlineAccent": "BuildingBlocks connects it.",
-            "description": "BuildingBlocks brings every property, owner, and department dataset into one map-based interface, so your staff can find the answers they need in seconds.",
+            "description": "BuildingBlocks brings every property, owner, and department dataset into one map-based interface and delivers your team the answers they need in seconds.",
             "features": [
               {
                 "title": "One-Click Property Data",
-                "description": "A complete, up-to-date profile for every property in your municipality: ownership, condition, permits, violations, and more. Pulled automatically from any connected system."
+                "description": "A complete, up-to-date profile for every property in your municipality: ownership, condition, permits, violations, and more. Pulled automatically from any connected system.",
+                "icon": "database"
               },
               {
                 "title": "Search & Filter Properties",
-                "description": "Easy-to-use filters to quickly surface properties that meet specific criteria: vacant, non-compliant, investor-owned, or any combination your work requires."
+                "description": "Easy-to-use filters to quickly surface properties that meet specific criteria: vacant, non-compliant, investor-owned, or any combination your work requires.",
+                "icon": "search"
               },
               {
                 "title": "Research & Link Owners",
-                "description": "Comprehensive data on every owner in your municipality with smart linking that identifies related owners across shell LLCs and fragmented portfolios."
+                "description": "Comprehensive data on every owner in your municipality with smart linking that identifies related owners across shell LLCs and fragmented portfolios.",
+                "icon": "users"
               },
               {
                 "title": "Build & Share Reports",
-                "description": "Customizable reports and data visualizations, shareable as dashboards that automatically refresh when the underlying data changes."
+                "description": "Customizable reports and data visualizations, shareable as dashboards that automatically refresh when the underlying data changes.",
+                "icon": "share"
               },
               {
                 "title": "Set Alerts",
-                "description": "Get notified when properties hit custom-defined triggers: a change in ownership, a new violation, a permit filed. Your team stays ahead of changing conditions."
+                "description": "Get notified when properties hit custom-defined triggers: a change in ownership, a new violation, a permit filed. Your team stays ahead of changing conditions.",
+                "icon": "bell"
               },
               {
                 "title": "Spatial Analysis",
-                "description": "Map-based analysis at the parcel, block, neighborhood, and citywide level, so you can see patterns and direct resources where they'll be most impactful."
+                "description": "Map-based analysis at the parcel, block, neighborhood, and citywide level, so you can see patterns and direct resources where they'll be most impactful.",
+                "icon": "layers"
               }
             ],
             "useCases": [
               {
                 "title": "Investor Tracking",
-                "description": "See through shell LLC structures to identify who controls large rental portfolios and how they're maintaining properties."
+                "description": "See through shell LLC structures to identify who controls large rental portfolios and how they're maintaining properties.",
+                "icon": "briefcase"
               },
               {
                 "title": "Cross-Department Operations",
-                "description": "Close gaps between planning, enforcement, police, and fire with a shared data layer."
+                "description": "Close gaps between planning, enforcement, police, and fire with a shared data layer.",
+                "icon": "network"
               },
               {
-                "title": "Short-Term Rentals",
-                "description": "Surface unregistered STRs and overlay against your registry to close compliance gaps."
+                "title": "Rental Identification",
+                "description": "Surface unregistered long-term rentals and STRs and overlay against your registry to close compliance gaps.",
+                "icon": "key"
               },
               {
                 "title": "Affordable Housing",
-                "description": "Map publicly owned land, identify site assembly opportunities, and match underutilized parcels to funding incentives."
+                "description": "Map publicly owned land, identify site assembly opportunities, and match underutilized parcels to funding incentives.",
+                "icon": "heart"
               },
               {
                 "title": "Code Enforcement",
-                "description": "Flag non-compliant properties, track violation history, and route cases without manual research."
+                "description": "Flag non-compliant properties, track violation history, and route cases without manual research.",
+                "icon": "shield"
               },
               {
                 "title": "Housing & Blight",
-                "description": "Identify vacant and distressed properties, track absentee ownership, and prioritize intervention."
+                "description": "Identify vacant and distressed properties, track absentee ownership, and prioritize intervention.",
+                "icon": "alert"
               }
             ],
             "imagePath": "/screenshots/bbmap.png",
             "imageAlt": "BuildingBlocks map view of connected city property data",
-            "ctaText": "See every property in one place",
-            "ctaLink": "https://calendar.app.google/ADWYkErAkBkvTd9C6"
+            "featuresHeading": "Key Features"
           },
           {
             "name": "PubliCity",
-            "tagline": "Public-Facing Property Portal: Transparency · Engagement · Applications",
+            "tagline": "Property Listing and Transparency Portal",
             "headline": "Your community has questions.",
             "headlineAccent": "PubliCity answers them.",
-            "description": "Most municipalities and agencies field the same property questions from residents, developers, and buyers over and over. By phone, by email, in person. PubliCity puts that information on a public map so anyone can find it, and channels applications and feedback directly to your staff.",
+            "description": "Most municipalities and agencies field the same property questions from residents, developers, and buyers over and over. PubliCity broadcasts property information on a user-friendly map and kicks off workflows with digital applications.",
             "features": [
               {
                 "title": "List Properties for Sale",
-                "description": "Allow prospective buyers to browse available properties on an interactive map, view parcel details, and submit purchase applications directly through the portal."
+                "description": "Allow prospective buyers to browse available properties on an interactive map, view parcel details, and submit purchase applications directly through the portal.",
+                "icon": "tag"
               },
               {
                 "title": "Present Major Projects to the Public",
-                "description": "Publish development projects, redevelopment plans, and major city initiatives to keep your community informed. Status updates, location context, and project details, all in one place."
+                "description": "Publish development projects, redevelopment plans, and major city initiatives to keep your community informed. Status updates, location context, and project details, all in one place.",
+                "icon": "presentation"
               },
               {
                 "title": "Customizable Search Filters",
-                "description": "Configurable filters help buyers and community members narrow down properties by type, status, location, or any criteria relevant to your programs, so they can find what they're looking for without staff assistance."
+                "description": "Configurable filters help buyers and community members narrow down properties by type, status, location, or any criteria relevant to your programs, so they can find what they're looking for without staff assistance.",
+                "icon": "filter"
               },
               {
                 "title": "Collect Applications & Feedback",
-                "description": "Residents and applicants can submit purchase applications, development inquiries, or community feedback directly through PubliCity, routed straight to the right staff member in Slate."
+                "description": "Residents and applicants can submit purchase applications, development inquiries, or community feedback directly through PubliCity, routed straight to the right staff member in Slate.",
+                "icon": "message"
               }
             ],
             "useCases": [
               {
+                "title": "Property Listing Portal",
+                "description": "List city-owned and land bank properties for public purchase, with applications routed directly to staff.",
+                "icon": "globe"
+              },
+              {
+                "title": "Vacant and Foreclosure Registration",
+                "description": "Identify non-compliant properties and ease the registration process to collect fees.",
+                "icon": "file-text"
+              },
+              {
                 "title": "Community Feedback",
-                "description": "Collect structured input from residents on properties and projects, tied directly to parcel records in your system."
+                "description": "Collect structured input from residents on properties and projects, tied directly to parcel records in your system.",
+                "icon": "message"
               },
               {
                 "title": "Constituent Self-Service",
-                "description": "Reduce inbound calls and emails by giving residents the answers they need without having to wait for staff."
+                "description": "Reduce inbound calls and emails by giving residents the answers they need without having to wait for staff.",
+                "icon": "user-check"
               },
               {
                 "title": "Code Violation Transparency",
-                "description": "Give residents access to property violation history to empower informed decisions about where to live and rent."
+                "description": "Give residents access to property violation history to empower informed decisions about where to live and rent.",
+                "icon": "eye"
               },
               {
                 "title": "Affordable Housing Search",
-                "description": "Help residents and developers find affordable housing opportunities, filtered by type, location, and eligibility."
-              },
-              {
-                "title": "Land Bank Property Sales",
-                "description": "List city-owned and land bank properties for public purchase, with applications routed directly to staff."
+                "description": "Help residents and developers find affordable housing opportunities, filtered by type, location, and eligibility.",
+                "icon": "heart"
               },
               {
                 "title": "Development Transparency",
-                "description": "Publish major projects and keep the community informed on status, location, and development type in real time."
+                "description": "Publish major projects and keep the community informed on status, location, and development type in real time.",
+                "icon": "building"
               }
             ],
             "imagePath": "/screenshots/publicity.png",
             "imageAlt": "PubliCity public portal for property lookup",
-            "ctaText": "See what PubliCity can do for you",
-            "ctaLink": "https://calendar.app.google/ADWYkErAkBkvTd9C6"
+            "featuresHeading": "Key Features"
           }
         ]
       }
@@ -243,8 +277,8 @@
             "description": "The worst properties are seen the most, while well-maintained units can self-inspect most years. Inspector time goes where the data says it matters."
           }
         ],
-        "imagePath": "",
-        "imageAlt": "",
+        "imagePath": "/screenshots/slate-tasks.png",
+        "imageAlt": "Slate task list showing assigned tasks across rental registration, vacant building, and property maintenance workflows",
         "ctaText": "Get a Demo",
         "ctaLink": "https://calendar.app.google/ADWYkErAkBkvTd9C6"
       }
@@ -258,20 +292,19 @@
           {
             "title": "10+ years",
             "description": "working with local governments and housing programs",
-            "dark": true
+            "dark": true,
+            "icon": "calendar"
           },
           {
             "title": "100+ government partners",
-            "description": "using data to inform decisions and improve housing outcomes across the US"
+            "description": "using data to inform decisions and improve housing outcomes across the US",
+            "icon": "landmark"
           },
           {
             "title": "9K+ scheduled datasets",
-            "description": "pulling **2 billion+** rows daily",
-            "dark": true
-          },
-          {
-            "title": "$12.9M+",
-            "description": "in payments processed through Slate"
+            "description": "pulling **2 billion+** records daily",
+            "dark": true,
+            "icon": "database"
           }
         ]
       }

@@ -1,0 +1,19 @@
+---
+// Decorative dot pinned to a card's corner. The card must be `relative`, and
+// content on the dot's row needs right padding to clear it.
+import { dotFill } from "../../lib/brandAccents";
+
+interface Props {
+  color?: string;
+  size?: string;
+  position?: string;
+}
+
+const {
+  color = dotFill("sky"),
+  size = "w-6 h-6",
+  position = "top-6 right-6",
+} = Astro.props;
+---
+
+<span aria-hidden="true" class={`absolute ${position} ${size} rounded-full ${color} pointer-events-none`}></span>

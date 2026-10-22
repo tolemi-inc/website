@@ -6,6 +6,7 @@ interface Props {
   subtitleColor?: string;
   align?: "center" | "left";
   size?: "lg" | "md";
+  subtitleWidth?: string;
 }
 const {
   heading,
@@ -14,6 +15,7 @@ const {
   subtitleColor = "text-text-secondary",
   align = "center",
   size = "lg",
+  subtitleWidth,
 } = Astro.props;
 
 const alignClass = align === "center" ? "text-center" : "";
@@ -22,7 +24,9 @@ const headingSize =
     ? "text-3xl md:text-5xl lg:text-6xl"
     : "text-2xl md:text-3xl lg:text-4xl";
 const subtitleMaxW =
-  align === "center" ? "max-w-2xl mx-auto" : "max-w-sm";
+  align === "center"
+    ? `${subtitleWidth ?? "max-w-2xl"} mx-auto`
+    : (subtitleWidth ?? "max-w-sm");
 ---
 
 <div class={`${alignClass} mb-14 md:mb-20 reveal`}>

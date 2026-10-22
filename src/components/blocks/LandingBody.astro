@@ -1,7 +1,7 @@
 ---
 // LandingBody — all sections on the landing page, in narrative order:
 // mission → story graph (data → automation) → products → registration → why us
-// → cities → investors → CTA.
+// → cities → CTA.
 
 import HeroGraph from "./landing/HeroGraph.astro";
 import StoryGraph from "./landing/StoryGraph.astro";
@@ -10,7 +10,6 @@ import RegistrationSpotlight from "./landing/RegistrationSpotlight.astro";
 import WhyUs from "./landing/WhyUs.astro";
 import CityLogos from "./CityLogos.astro";
 import Stats from "./landing/Stats.astro";
-import Investors from "./Investors.astro";
 import CallToAction from "./CallToAction.astro";
 
 interface Props {
@@ -56,9 +55,6 @@ const { hero, story, products, registration, whyUs, logos, stats, cta } = Astro.
 
 {/* Stats — only renders if a stats block exists in the CMS */}
 {stats && <Stats {...stats} />}
-
-{/* Investors */}
-<Investors />
 
 {/* CTA */}
 {cta && <CallToAction {...cta} />}

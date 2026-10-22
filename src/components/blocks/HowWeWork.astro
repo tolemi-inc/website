@@ -3,18 +3,23 @@
 // page in two columns: odd rows read left→right, even rows right→left (so
 // step 3 sits directly under step 2), with arrows tracing the path.
 import SectionHeader from "../ui/SectionHeader.astro";
+import InfoCard from "../ui/InfoCard.astro";
+import { accentSolids, type BrandAccent } from "../../lib/brandAccents";
 
 interface Step {
   title: string;
   description?: string;
+  icon?: string;
 }
 interface Props {
   heading?: string;
   subheading?: string;
   steps?: Step[];
   closing?: string;
-  headingGradients?: string[];
-  numberColor?: string;
+  stepLabel?: string;
+  accents?: BrandAccent[];
+  stepLabelColor?: string;
+  darkStepLabelColor?: string;
   arrowColors?: string[];
 }
 
@@ -23,21 +28,13 @@ const {
   subheading,
   steps = [],
   closing,
-  // three alternating brand gradients (same trio as the Why Us dividers and
-  // registration bullets), in deep shades so the gradient text stays readable
-  // on the light card background
-  headingGradients = [
-    "from-tolemi-indigo-600 to-tolemi-sky-600",
-    "from-tolemi-sky-600 to-tolemi-green-600",
-    "from-tolemi-coral-600 to-tolemi-yellow-600",
-  ],
-  numberColor = "bg-tolemi-dark text-white",
-  // each arrow wears the color its step's gradient ends on
-  arrowColors = [
-    "text-tolemi-sky-600",
-    "text-tolemi-green-600",
-    "text-tolemi-yellow-600",
-  ],
+  stepLabel = "Step",
+  // corner-dot colors — the same trio as the product tabs
+  accents = ["red", "yellow", "sky"],
+  stepLabelColor = "text-tolemi-sky-600",
+  darkStepLabelColor = "text-tolemi-sky",
+  // each arrow wears its step's dot color
+  arrowColors = accents.map((a) => accentSolids[a]),
 } = Astro.props;
 
 // Arrow after step i (0-based), following the snake: → at the end of a
@@ -58,7 +55,7 @@ const ARROW_PATHS = {
 };
 ---
 
-<section class="py-20 md:py-32 px-6 bg-surface">
+<section class="py-20 md:py-32 px-6 bg-surface-secondary">
   <div class="max-w-5xl mx-auto">
     <SectionHeader heading={heading} subtitle={subheading} />
 
@@ -66,26 +63,20 @@ const ARROW_PATHS = {
       {steps.map((step, i) => {
         const arrow = arrowFor(i, steps.length);
         const arrowColor = arrowColors[i % arrowColors.length];
+        // odd steps navy — the snake turns this into a checkerboard
+        const dark = i % 2 === 0;
         return (
           <div class="relative">
-            <div class="h-full rounded-2xl bg-surface-secondary p-6 md:p-8">
-              <div class="flex items-center gap-3 mb-3">
-                {/* lining-nums: Raleway's default old-style figures sit off-center in the circle */}
-                <div
-                  class={`w-9 h-9 rounded-full ${numberColor} font-heading font-bold leading-none lining-nums tabular-nums flex items-center justify-center flex-shrink-0`}
-                >
-                  {i + 1}
-                </div>
-                <h3
-                  class={`font-heading text-lg font-bold bg-gradient-to-r ${headingGradients[i % headingGradients.length]} bg-clip-text text-transparent`}
-                >
-                  {step.title}
-                </h3>
-              </div>
-              {step.description && (
-                <p class="text-sm md:text-base text-text-secondary leading-relaxed">{step.description}</p>
-              )}
-            </div>
+            <InfoCard
+              title={step.title}
+              description={step.description}
+              icon={step.icon}
+              eyebrow={`${stepLabel} ${i + 1}`}
+              dark={dark}
+              accent={accents[i % accents.length]}
+              eyebrowColor={stepLabelColor}
+              darkEyebrowColor={darkStepLabelColor}
+            />
 
             {/* snake arrows (2-column layout) */}
             {arrow === "right" && (

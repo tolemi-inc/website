@@ -1,0 +1,25 @@
+---
+// Colored closing punctuation on a heading ("A better city."). Colors the
+// text's own final . ? or ! — or adds a decorative dot when there is none.
+// Reserve for a few key headings so it stays special.
+// Pass `html` when the text carries trusted inline markup (e.g. <strong>).
+import { accentGradients } from "../../lib/brandAccents";
+
+interface Props {
+  text: string;
+  color?: string;
+  html?: boolean;
+}
+
+const {
+  text,
+  color = `bg-gradient-to-br ${accentGradients.sky} bg-clip-text text-transparent`,
+  html = false,
+} = Astro.props;
+
+const match = text.trim().match(/^([\s\S]*?)([.?!])$/);
+const body = match ? match[1] : text.trim();
+const mark = match ? match[2] : ".";
+---
+
+{html ? <Fragment set:html={body} /> : body}<span class={color} aria-hidden={match ? undefined : "true"}>{mark}</span>
