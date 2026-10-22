@@ -50,34 +50,9 @@ const {
           {heading}
         </h2>
         {body && (
-          <p class="text-base md:text-lg text-text-secondary leading-relaxed mb-10">{body}</p>
+          <p class="text-base md:text-lg text-text-secondary leading-relaxed">{body}</p>
         )}
         </div>
-
-        {/* stacked beside an image; a full-width row of cards without one */}
-        <div class={`mb-10 ${imagePath ? "flex flex-col gap-6" : "grid md:grid-cols-3 gap-6"}`}>
-          {bullets.map((bullet, i) => (
-            <div class="relative h-full rounded-2xl bg-surface shadow-lg shadow-black/5">
-              <CardDot
-                color={dotFill(bulletAccents[i % bulletAccents.length])}
-                size="w-4.5 h-4.5"
-                position="top-5 right-5"
-              />
-              <div class="p-5">
-                <h3 class="font-heading text-xl font-bold text-text-primary mb-1 pr-10">{bullet.title}</h3>
-                {bullet.description && (
-                  <p class="text-sm md:text-base text-text-secondary leading-relaxed">{bullet.description}</p>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {ctaText && (
-          <div class="text-center md:text-left">
-            <DemoButton href={ctaLink || "#"} arrow>{ctaText}</DemoButton>
-          </div>
-        )}
       </div>
 
       {imagePath && (
@@ -91,5 +66,32 @@ const {
         </div>
       )}
     </div>
+
+    {/* a full-width row of cards under the text and screenshot */}
+    {bullets.length > 0 && (
+      <div class="grid md:grid-cols-3 gap-6 mt-14 md:mt-16 reveal">
+        {bullets.map((bullet, i) => (
+          <div class="relative h-full rounded-2xl bg-surface shadow-lg shadow-black/5">
+            <CardDot
+              color={dotFill(bulletAccents[i % bulletAccents.length])}
+              size="w-4.5 h-4.5"
+              position="top-5 right-5"
+            />
+            <div class="p-5">
+              <h3 class="font-heading text-xl font-bold text-text-primary mb-1 pr-10">{bullet.title}</h3>
+              {bullet.description && (
+                <p class="text-sm md:text-base text-text-secondary leading-relaxed">{bullet.description}</p>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    )}
+
+    {ctaText && (
+      <div class="text-center mt-10 md:mt-12">
+        <DemoButton href={ctaLink || "#"} arrow>{ctaText}</DemoButton>
+      </div>
+    )}
   </div>
 </section>
