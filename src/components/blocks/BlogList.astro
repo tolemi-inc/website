@@ -63,7 +63,7 @@ const formatDate = (iso?: string | null) => {
             <div class="p-8 flex flex-col flex-1">
               <AccentLine color={`bg-gradient-to-r ${cardGradients[i % cardGradients.length]}`} class="mb-5" />
               {(item.publishedDate || item.meta) && (
-                <p class="text-xs font-semibold tracking-widest uppercase text-tolemi-sky-600 mb-3">
+                <p class="text-xs font-semibold tracking-widest uppercase text-tolemi-sky-700 mb-3">
                   {item.meta || formatDate(item.publishedDate)}
                 </p>
               )}

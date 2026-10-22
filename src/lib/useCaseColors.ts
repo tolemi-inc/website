@@ -3,11 +3,12 @@ import { dotFill, type BrandAccent } from "./brandAccents";
 export type UseCaseColor = BrandAccent;
 
 // Filter pills are solid dark; the brand color lives only in the leading dot,
-// and the active pill picks up a matching ring.
+// and the active pill picks up a matching ring. Ring shades are dark enough
+// to hit 3:1 against white (WCAG 1.4.11).
 export const useCaseActiveRingClasses: Record<UseCaseColor, string> = {
-  sky: "ring-2 ring-offset-2 ring-tolemi-sky-500",
-  red: "ring-2 ring-offset-2 ring-tolemi-red-400",
-  yellow: "ring-2 ring-offset-2 ring-tolemi-yellow-400",
+  sky: "ring-2 ring-offset-2 ring-tolemi-sky-700",
+  red: "ring-2 ring-offset-2 ring-tolemi-red-500",
+  yellow: "ring-2 ring-offset-2 ring-tolemi-yellow-700",
 };
 
 export const useCaseDotClasses: Record<UseCaseColor, string> = {
