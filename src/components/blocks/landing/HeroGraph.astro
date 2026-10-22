@@ -41,7 +41,8 @@ const {
 // the headline may mark key phrases with **double asterisks**; they render
 // extra-bold in the highlight color. A comma-separated series of them
 // ("**a**, **b**, and **c**") stacks one per line, each led by its own icon
-// painted in that line's list color.
+// painted in that line's list color. A line never wraps; on a narrow
+// column it shrinks to fit instead (.hero-line in the styles below).
 const headlineHtml = headline
   .replace(/&/g, "&amp;")
   .replace(/</g, "&lt;")
@@ -53,7 +54,7 @@ const headlineHtml = headline
       const icon = mask
         ? `<span aria-hidden="true" class="inline-block w-[0.8em] h-[0.8em] mr-[0.35em] align-[-0.05em] ${color}" style='-webkit-mask: ${mask} center / contain no-repeat; mask: ${mask} center / contain no-repeat;'></span>`
         : "";
-      return `<br>${icon}${and}<strong class="font-bold ${highlightColor}">${phrase}</strong>`;
+      return `<br><span class="hero-line">${icon}${and}<strong class="font-bold ${highlightColor}">${phrase}</strong></span>`;
     });
   })
   .replace(/\*\*(.+?)\*\*/g, `<strong class="font-bold ${highlightColor}">$1</strong>`);
@@ -62,7 +63,7 @@ const headlineHtml = headline
 <section class="relative overflow-hidden pt-24 lg:pt-28 pb-12 px-6 bg-surface">
   <div class="max-w-7xl mx-auto grid lg:grid-cols-2 items-center gap-10 lg:gap-14">
     {/* the mission, left */}
-    <div class="w-full text-left">
+    <div class="w-full text-left @container">
       <h1 class="font-heading text-[clamp(1.5rem,6.5vw,2.5rem)] lg:text-[clamp(2rem,3vw,2.875rem)] font-bold text-text-primary tracking-tight leading-[1.15] mb-6 reveal">
         <AccentPeriod text={headlineHtml} color={periodColor} html />
       </h1>
@@ -97,6 +98,10 @@ const headlineHtml = headline
 </section>
 
 <style is:global>
+  /* each headline list line stays on one line, shrinking with the column
+     (cqi) once the column is too narrow for the heading's own size */
+  .hero-line { white-space: nowrap; font-size: min(1em, 6.4cqi); }
+
   .gstage { position: relative; width: 100%; }
   #herograph-svg { cursor: pointer; display: block; width: 100%; height: auto; }
   #herograph-svg .gel { transition: opacity 0.55s ease; }
