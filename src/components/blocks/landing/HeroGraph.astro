@@ -82,7 +82,6 @@ const headlineHtml = headline
       <svg id="herograph-svg" viewBox="0 0 560 560"
         aria-label="Scattered facts spring into an ownership graph; labeled identifiers — a shared phone number and mailing address — draw three owners together into one portfolio"
       ></svg>
-      <div class="mini-tt" id="herograph-tt"></div>
       <div class="tslider">
         <span class="tsl-label">Disjointed databases</span>
         <div class="tsl-track" id="herograph-track" role="slider" tabindex="0"
@@ -204,16 +203,6 @@ const headlineHtml = headline
   .gcard { z-index: 2; }
 
 
-  /* tooltip */
-  .mini-tt {
-    position: absolute; pointer-events: none; z-index: 5; max-width: 230px;
-    background: #101d33f2; border-radius: 9px; padding: 8px 11px;
-    font-size: 12px; line-height: 1.45; color: #dbe4f0;
-    opacity: 0; transform: translateY(4px); transition: opacity 0.15s, transform 0.15s;
-  }
-  .mini-tt.show { opacity: 1; transform: translateY(0); }
-  .mini-tt .tt-title { font-weight: 600; color: #fff; }
-
   /* the Tolemi slider — a soft brand rainbow; vividness follows the knob */
   .tslider { display: flex; align-items: center; gap: 16px; margin-top: 14px; padding: 0 2px; }
   .tsl-label {
@@ -260,7 +249,6 @@ const headlineHtml = headline
   // source row — "Registered: Never", "311 calls" — appear later, derived.
   (() => {
     const svg = document.getElementById("herograph-svg");
-    const tt = document.getElementById("herograph-tt");
     const wrap = document.getElementById("herograph-stage");
     const VW = 560, VH = 560;
     const mk = (tag, attrs, parent) => {
@@ -752,18 +740,9 @@ const headlineHtml = headline
     function clearIso() {
       NODES.forEach(n => n.el.classList.remove("dim"));
       EDGES.forEach(e => e.l.classList.remove("dim"));
-      tt.classList.remove("show");
     }
     NODES.forEach(n => {
-      const show = () => {
-        isolate(n.id);
-        const r = svg.getBoundingClientRect(), w = wrap.getBoundingClientRect();
-        tt.innerHTML = `<div class="tt-title">${n.name}</div>${n.tip}`;
-        tt.style.left = Math.min(w.width - 240, Math.max(6,
-          (r.left - w.left) + n.x * SC.sx - 40)) + "px";
-        tt.style.top = Math.max(2, (r.top - w.top) + n.y * SC.sy - 62) + "px";
-        tt.classList.add("show");
-      };
+      const show = () => isolate(n.id);
       n.el.addEventListener("mouseenter", show);
       n.el.addEventListener("focus", show);
       n.el.addEventListener("mouseleave", clearIso);
