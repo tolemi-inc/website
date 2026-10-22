@@ -1,15 +1,17 @@
 export type UseCaseColor = "sky" | "red" | "yellow";
 
+// Single-hue pills: soft tint + ring when inactive, solid fill when active.
+// Pair with `ring-1 ring-inset` on the element so the ring color can swap.
 export const useCaseColorClasses: Record<UseCaseColor, string> = {
-  sky: "bg-gradient-to-r from-tolemi-sky-100 to-tolemi-yellow-100 text-tolemi-sky-700 hover:from-tolemi-sky-200 hover:to-tolemi-yellow-200",
-  red: "bg-gradient-to-r from-tolemi-red-100 to-tolemi-yellow-100 text-tolemi-dark hover:from-tolemi-red-200 hover:to-tolemi-yellow-200",
-  yellow: "bg-gradient-to-r from-tolemi-yellow-100 to-tolemi-sky-100 text-tolemi-dark hover:from-tolemi-yellow-200 hover:to-tolemi-sky-200",
+  sky: "bg-tolemi-sky-50 text-tolemi-sky-700 ring-tolemi-sky-200 hover:bg-tolemi-sky-100",
+  red: "bg-tolemi-red-50 text-tolemi-red-600 ring-tolemi-red-200 hover:bg-tolemi-red-100",
+  yellow: "bg-tolemi-yellow-50 text-tolemi-dark ring-tolemi-yellow-300 hover:bg-tolemi-yellow-100",
 };
 
 export const useCaseActiveClasses: Record<UseCaseColor, string> = {
-  sky: "bg-gradient-to-r from-tolemi-sky-600 to-tolemi-sky text-white",
-  red: "bg-gradient-to-r from-tolemi-red to-tolemi-yellow text-white",
-  yellow: "bg-gradient-to-r from-tolemi-yellow to-tolemi-sky text-tolemi-dark",
+  sky: "bg-tolemi-sky-600 text-white ring-tolemi-sky-600",
+  red: "bg-tolemi-red-500 text-white ring-tolemi-red-500",
+  yellow: "bg-tolemi-yellow-400 text-tolemi-dark ring-tolemi-yellow-400",
 };
 
 const explicitMap: Record<string, UseCaseColor> = {
