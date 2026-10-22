@@ -62,7 +62,7 @@ const otherPosts = allPosts
   });
 ---
 
-<Base title={post.title}>
+<Base title={post.title} description={post.description || undefined} image={post.image?.src || undefined} type="article">
   <PageHero headline={post.title} subheadline={post.description} />
 
   {post.image?.src && (

@@ -8,7 +8,9 @@
       "Bash(ls:*)",
       "Bash(pip3 list:*)",
       "Bash(docker compose:*)",
-      "Bash(git -C /Users/silvia/Documents/website log --oneline -15)"
+      "Bash(git -C /Users/silvia/Documents/website log --oneline -15)",
+      "Bash(git commit *)",
+      "Bash(git push *)"
     ]
   }
 }
