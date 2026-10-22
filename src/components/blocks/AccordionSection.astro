@@ -1,12 +1,10 @@
 ---
 // Heading and a photo on the left, a stack of expandable items on the right,
-// each under a rounded multi-stop gradient rule (its icon wears the same
-// gradient). One item is open at a time (exclusive <details name>); on
+// each under a thin dark rule, with a gradient icon. One item is open at a time (exclusive <details name>); on
 // desktop the photo on the left crossfades to the open item's photo, on
 // mobile the photo sits inside the open item. The first item starts open.
 // Works without JavaScript apart from the desktop photo swap.
 import Icon from "../ui/Icon.astro";
-import AccentLine from "../ui/AccentLine.astro";
 import PhotoTile from "../ui/PhotoTile.astro";
 
 type Image = { src: string | null; alt?: string } | null;
@@ -21,7 +19,7 @@ interface Props {
   heading?: string;
   items?: Item[];
   background?: string;
-  ruleThickness?: string;
+  ruleColor?: string;
   headingColor?: string;
   bodyColor?: string;
   gradients?: string[];
@@ -31,7 +29,7 @@ const {
   heading = "Working at Tolemi",
   items = [],
   background = "bg-surface",
-  ruleThickness = "h-1.5",
+  ruleColor = "bg-tolemi-dark",
   headingColor = "text-text-primary",
   bodyColor = "text-text-secondary",
   gradients = [
@@ -75,11 +73,7 @@ const hasPhotos = items.some((item) => item.photo?.src);
       <div>
         {items.map((item, i) => (
           <div>
-            <AccentLine
-              color={`bg-gradient-to-r ${gradient(i)}`}
-              width="w-full"
-              thickness={ruleThickness}
-            />
+            <div class={`h-px ${ruleColor}`} aria-hidden="true"></div>
             <details class="group" name={group} open={i === 0} data-accordion-item={i}>
               <summary class="flex items-center gap-3 py-6 md:py-7 cursor-pointer list-none [&::-webkit-details-marker]:hidden">
                 {item.icon && (

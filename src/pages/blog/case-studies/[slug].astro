@@ -2,7 +2,6 @@
 import Base from "../../../layouts/Base.astro";
 import PageHero from "../../../components/blocks/PageHero.astro";
 import BlogList from "../../../components/blocks/BlogList.astro";
-import LearnMoreSection from "../../../components/blocks/LearnMoreSection.astro";
 import TagPills from "../../../components/ui/TagPills.astro";
 import CallToAction from "../../../components/blocks/CallToAction.astro";
 import { colorForUseCase } from "../../../lib/useCaseColors";
@@ -47,35 +46,6 @@ const formattedDate = post.publishedDate
 const relatedSolutionSlugs = (post.relatedSolutions || []).filter(
   (s): s is string => typeof s === "string"
 );
-const relatedProductSlugs = (post.relatedProducts || []).filter(
-  (s): s is string => typeof s === "string"
-);
-
-const relatedSolutionEntries = await Promise.all(
-  relatedSolutionSlugs.map(async (s) => ({ slug: s, entry: await reader.collections.solutions.read(s) }))
-);
-const relatedProductEntries = await Promise.all(
-  relatedProductSlugs.map(async (s) => ({ slug: s, entry: await reader.collections.products.read(s) }))
-);
-
-const learnMoreItems = [
-  ...relatedSolutionEntries
-    .filter((r) => r.entry)
-    .map((r) => ({
-      title: r.entry!.headline || r.slug,
-      slug: r.slug,
-      subheadline: r.entry!.subheadline,
-      basePath: "/solutions",
-    })),
-  ...relatedProductEntries
-    .filter((r) => r.entry)
-    .map((r) => ({
-      title: r.entry!.headline || r.slug,
-      slug: r.slug,
-      subheadline: r.entry!.subheadline,
-      basePath: "/products",
-    })),
-];
 
 const postUseCaseTags = buildUseCaseTags(relatedSolutionSlugs);
 
@@ -119,7 +89,7 @@ const otherPosts = allPosts
   <section class="pt-6 pb-16 md:pt-8 md:pb-20 px-6">
     <div class="max-w-3xl mx-auto reveal">
       {(post.client || formattedDate) && (
-        <p class="text-xs font-semibold tracking-widest uppercase text-tolemi-sky-600 mb-3">
+        <p class="text-xs font-semibold tracking-widest uppercase text-tolemi-sky-700 mb-3">
           {[post.client, formattedDate].filter(Boolean).join(" • ")}
         </p>
       )}
@@ -133,8 +103,6 @@ const otherPosts = allPosts
       )}
     </div>
   </section>
-
-  <LearnMoreSection items={learnMoreItems} />
 
   {otherPosts.length > 0 && (
     <section class="py-16 md:py-20 px-6 bg-surface-muted/50">

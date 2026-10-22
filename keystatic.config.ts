@@ -409,10 +409,6 @@ export default config({
                         title: fields.text({ label: 'Title', validation: { isRequired: true } }),
                         description: fields.text({ label: 'Description', multiline: true }),
                         icon: fields.select({ label: 'Icon', options: iconOptions, defaultValue: '' }),
-                        dark: fields.checkbox({
-                          label: 'Dark card (navy background, light text)',
-                          defaultValue: false,
-                        }),
                       },
                       { label: 'Point' }
                     ),

@@ -8,7 +8,7 @@ import SectionHeader from "../../ui/SectionHeader.astro";
 import DemoButton from "../../ui/DemoButton.astro";
 import AccentLine from "../../ui/AccentLine.astro";
 import InfoCard from "../../ui/InfoCard.astro";
-import { accentGradients, accentTextGradients, dotFill, type BrandAccent } from "../../../lib/brandAccents";
+import { accentTextGradients, dotFill, type BrandAccent } from "../../../lib/brandAccents";
 
 interface TitledItem {
   title: string;
@@ -37,7 +37,6 @@ interface Props {
   items?: ProductItem[];
   accents?: BrandAccent[];
   headlineAccentGradients?: Record<BrandAccent, string>;
-  headlineAccentShadow?: string;
 }
 
 const {
@@ -47,11 +46,7 @@ const {
   items = [],
   // one logo dot color per product
   accents = ["red", "yellow", "sky"],
-  // the headline's second beat; yellow leans further into orange than the
-  // shared text gradient so it reads as a warm headline, not a highlight
-  headlineAccentGradients = { ...accentTextGradients, yellow: "from-orange-400 to-orange-600" },
-  // filter shadow, not text-shadow: text-shadow paints over clipped gradient text
-  headlineAccentShadow = "drop-shadow-[0_2px_3px_rgba(52,51,50,0.18)]",
+  headlineAccentGradients = accentTextGradients,
 } = Astro.props;
 
 const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-");
@@ -60,6 +55,8 @@ const tabs = items.map((item, i) => ({
   slug: slugify(item.name),
   accent: accents[i % accents.length],
 }));
+// Panel accents (lines, card dots, icons) match the headline accent's color.
+const panelAccent = (accent: BrandAccent) => headlineAccentGradients[accent];
 ---
 
 <section id="products" class="py-16 md:py-24 px-6 bg-surface relative overflow-hidden">
@@ -98,7 +95,7 @@ const tabs = items.map((item, i) => ({
         >
           <div class="grid md:grid-cols-2 gap-10 md:gap-16 items-center">
             <div>
-              <AccentLine color={`bg-gradient-to-r ${accentGradients[tab.accent]}`} class="mb-6" />
+              <AccentLine color={`bg-gradient-to-r ${panelAccent(tab.accent)}`} class="mb-6" />
               {tab.tagline && (
                 <p class="text-xs font-semibold uppercase tracking-[0.15em] text-text-muted mb-3">
                   {tab.tagline}
@@ -108,7 +105,7 @@ const tabs = items.map((item, i) => ({
                 {tab.headline ? (
                   <>
                     {tab.headline}{" "}
-                    <span class={`bg-gradient-to-r ${headlineAccentGradients[tab.accent]} bg-clip-text text-transparent ${headlineAccentShadow}`}>
+                    <span class={`bg-gradient-to-r ${headlineAccentGradients[tab.accent]} bg-clip-text text-transparent`}>
                       {tab.headlineAccent}
                     </span>
                   </>
@@ -148,7 +145,7 @@ const tabs = items.map((item, i) => ({
           {tab.useCases && tab.useCases.length > 0 && (
             <div class="mt-12 md:mt-16">
               <h4 class="flex items-center gap-3 font-heading text-xl md:text-2xl font-bold text-text-primary mb-6 md:mb-8">
-                <AccentLine color={`bg-gradient-to-r ${accentGradients[tab.accent]}`} width="w-6" />
+                <AccentLine color={`bg-gradient-to-r ${panelAccent(tab.accent)}`} width="w-6" />
                 {tab.useCasesHeading || `How governments are using ${tab.name}`}
               </h4>
               <div
@@ -163,7 +160,7 @@ const tabs = items.map((item, i) => ({
                     description={useCase.description}
                     icon={useCase.icon}
                     headingTag="h5"
-                    accent={tab.accent}
+                    dotColor={`bg-gradient-to-br ${panelAccent(tab.accent)}`}
                   />
                 ))}
               </div>
@@ -173,7 +170,7 @@ const tabs = items.map((item, i) => ({
           {tab.features && tab.features.length > 0 && (
             <div class="mt-12 md:mt-16">
               <h4 class="flex items-center gap-3 font-heading text-xl md:text-2xl font-bold text-text-primary mb-6 md:mb-8">
-                <AccentLine color={`bg-gradient-to-r ${accentGradients[tab.accent]}`} width="w-6" />
+                <AccentLine color={`bg-gradient-to-r ${panelAccent(tab.accent)}`} width="w-6" />
                 {tab.featuresHeading || "Key Features"}
               </h4>
               <div
@@ -188,7 +185,7 @@ const tabs = items.map((item, i) => ({
                     description={feature.description}
                     icon={feature.icon}
                     headingTag="h5"
-                    accent={tab.accent}
+                    dotColor={`bg-gradient-to-br ${panelAccent(tab.accent)}`}
                   />
                 ))}
               </div>
