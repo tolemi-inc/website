@@ -18,6 +18,7 @@ interface ProductItem {
   headlineAccent?: string;
   description?: string;
   features?: TitledItem[];
+  useCasesHeading?: string;
   useCases?: TitledItem[];
   imagePath?: string;
   imageAlt?: string;
@@ -160,7 +161,7 @@ const tabs = items.map((item, i) => ({
           {tab.useCases && tab.useCases.length > 0 && (
             <div class="mt-12 md:mt-16">
               <h4 class="font-heading text-sm font-semibold uppercase tracking-[0.15em] text-text-muted mb-6">
-                What governments are using {tab.name} for
+                {tab.useCasesHeading || `How governments are using ${tab.name}`}
               </h4>
               <div
                 class:list={[

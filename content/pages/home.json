@@ -14,23 +14,23 @@
       "discriminant": "story",
       "value": {
         "heading": "From Data to Action",
-        "subheading": "We integrate with your data, enhance it with externally sourced datasets, connect the dots, and derive the insights that make smart workflows.",
+        "subheading": "Tolemi’s software platform integrates your siloed data, connects the dots you can’t see, and delivers the insights that drive smarter decisions and more efficient workflows.",
         "stages": [
           {
             "label": "Data",
-            "detail": "Property, sales, assessment, code violations, 311 service calls, rental records, all connected across every department."
+            "detail": "Ownership, sales, police & fire, code enforcement, permits, 311 complaints, utilities, business licenses—all connected across every department & agency."
           },
           {
             "label": "Insights",
-            "detail": "Owner timelines, linked portfolios, likely rentals, and vacant-structure flags derived automatically from your data."
+            "detail": "Owner timelines, linked LLC’s, suspected rentals, vacancy indicators—derived automatically from your data and external sources."
           },
           {
             "label": "Workflows",
-            "detail": "Integrated registration portal, inspections, email and mail campaigns, payment collection, and compliance."
+            "detail": "End-to-end property registrations, inspections, email and snail mail campaigns, payment collection, asset management, and compliance."
           },
           {
             "label": "Automation",
-            "detail": "Outreach, renewals, and escalations run automatically, so programs launch fast and run efficiently."
+            "detail": "Internal & external communications, renewal notifications, non-compliance flags, task tracking, performance dashboards—all fully automated."
           }
         ],
         "layers": []
@@ -39,16 +39,16 @@
     {
       "discriminant": "products",
       "value": {
-        "heading": "One Platform, Three Layers",
-        "subheading": "State and local governments care about launching and efficiently running housing programs. The application matters less. Our products are the enablers, part of the package we provide.",
+        "heading": "An Integrated Platform, a Modular Approach",
+        "subheading": "We help state & local governments create, launch, and run effective programs that advance smart housing policies. For some, doing so requires our end-to-end platform. Others utilize specific Tolemi software applications to address key pain points with existing systems. We work with our partners to design the right solution for today’s challenges.",
         "ctaNote": "Book a 30-minute demo to see how it works for a program like yours.",
         "items": [
           {
             "name": "Slate",
-            "tagline": "Workflow & Registration Management: Acquisition · Disposition · Compliance",
+            "tagline": "Workflow automation: Registration, compliance, asset management",
             "headline": "Your agency runs on processes.",
             "headlineAccent": "Slate runs them for you.",
-            "description": "Slate replaces disconnected spreadsheets and generic project tools with purpose-built workflows tied directly to parcels, so your team can track every property, task, and deadline in one place, and nothing falls through the cracks.",
+            "description": "Slate replaces generic community development software and disconnected spreadsheets with purpose-built, customizable workflows designed specifically for property registration and asset management. Everything is tied to a parcel and linked to your agency’s existing data systems so your team can track every property, task, and deadline in one place.",
             "features": [
               {
                 "title": "Operationalize Data",
@@ -75,26 +75,23 @@
                 "description": "Run permit, licensing, and registry programs end-to-end, from online application intake and fee collection to renewal tracking, follow-up workflows, and enforcement."
               }
             ],
+            "useCasesHeading": "How governments are using Slate",
             "useCases": [
               {
-                "title": "Short-Term Rental Registry",
-                "description": "Registration portal built to your ordinance, with intake, renewals, fee collection, and compliance workflows in one place."
+                "title": "Rental Licensing & Inspections",
+                "description": "Enable user-friendly landlord and property registration, track compliance, manage inspections, and flag unlicensed properties."
               },
               {
-                "title": "Rental Licensing",
-                "description": "Manage landlord and property registration programs, track compliance, and flag non-compliant properties."
+                "title": "Short-Term Rental Identification & Registration",
+                "description": "Keep STR’s compliant with best-in-class identification along with intake, renewals, fee collection, and compliance workflows in one place."
               },
               {
-                "title": "Property Acquisition & Disposition",
-                "description": "Track publicly owned properties through acquisition, disposition, or redevelopment with automated workflows and reporting."
+                "title": "Asset Management",
+                "description": "Streamline workflows for public sector redevelopment agencies through entire property lifecycle: acquisition, maintenance, construction, disposition, and compliance."
               },
               {
-                "title": "Land Bank Operations",
-                "description": "Manage parcel intake, maintenance, marketing, and sale workflows in a single system."
-              },
-              {
-                "title": "Permit & License Programs",
-                "description": "Launch permit or licensing programs quickly with configurable intake forms, payments, and automated renewals."
+                "title": "Vacant and Foreclosure Registries",
+                "description": "Identify suspected vacant properties using proprietary Tolemi insights, then automate noticing, manage registrations, and maintain compliance in a single platform."
               }
             ],
             "imagePath": "",

@@ -274,6 +274,9 @@ export default config({
                           label: 'Key Features',
                           itemLabel: (props) => props.fields.title.value || 'Feature',
                         }),
+                        useCasesHeading: fields.text({
+                          label: 'Use Cases heading (e.g. "How governments are using Slate")',
+                        }),
                         useCases: fields.array(titledItem, {
                           label: 'Use Cases ("what cities are using it for")',
                           itemLabel: (props) => props.fields.title.value || 'Use case',
