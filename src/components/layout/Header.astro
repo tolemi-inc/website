@@ -22,12 +22,12 @@ const { companyName = "Tolemi", nav = [], demoBookingUrl = "#" } = Astro.props;
 ---
 
 <header id="site-header" class="fixed top-0 w-full z-50 backdrop-blur-2xl border-b transition-colors duration-300" style="background: linear-gradient(180deg, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0.7) 100%); box-shadow: 0 4px 30px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.15); border-color: rgba(0,0,0,0.06);">
-  <div class="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
+  <div class="max-w-7xl mx-auto px-6 py-2.5 flex items-center justify-between">
     <a href="/" class="flex items-center">
       {/* The logo SVG is mostly transparent padding (wordmark is a small band of the
           viewBox); negative margins trim that padding out of the mobile header height
           without shrinking the visible mark. */}
-      <img src="/logos/dark_tolemi_gradient.svg" alt={companyName} class="h-27 -my-7 md:my-0" />
+      <img src="/logos/dark_tolemi_gradient.svg" alt={companyName} class="h-27 -my-8" />
     </a>
 
     {/* Desktop nav */}
@@ -42,7 +42,7 @@ const { companyName = "Tolemi", nav = [], demoBookingUrl = "#" } = Astro.props;
               class="nav-dropdown-btn font-heading text-sm font-medium text-text-primary hover:text-tolemi-sky-600 transition-colors flex items-center gap-1 py-2"
             >
               {link.label}
-              <svg class="w-3.5 h-3.5 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg aria-hidden="true" class="w-3.5 h-3.5 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
               </svg>
             </button>
@@ -98,7 +98,7 @@ const { companyName = "Tolemi", nav = [], demoBookingUrl = "#" } = Astro.props;
               class="mobile-dropdown-btn w-full flex items-center justify-between py-3 font-heading text-sm font-medium text-text-primary"
             >
               {link.label}
-              <svg class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg aria-hidden="true" class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
               </svg>
             </button>

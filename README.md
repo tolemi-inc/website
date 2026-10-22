@@ -15,6 +15,10 @@ All commands are run from the root of the project:
 
 Running `npm run dev` starts both Astro and the TinaCMS local server. The CMS admin UI is available at `localhost:4321/admin/`.
 
+## Commits
+
+**NEVER put AI attribution on ANY commit.** No `Co-Authored-By` trailers, "Generated with" lines, or other AI credit in commit messages or PR descriptions.
+
 ## Project Structure
 
 ```

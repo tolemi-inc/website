@@ -95,8 +95,11 @@ const iconOptions = [
   { label: 'life-buoy', value: 'life-buoy' },
   { label: 'target', value: 'target' },
   { label: 'sun', value: 'sun' },
+  { label: 'sprout', value: 'sprout' },
+  { label: 'flower', value: 'flower' },
   { label: 'laptop', value: 'laptop' },
   { label: 'monitor', value: 'monitor' },
+  { label: 'piggy-bank', value: 'piggy-bank' },
 ];
 
 const iconedItem = fields.object(
