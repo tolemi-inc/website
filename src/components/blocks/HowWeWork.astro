@@ -1,10 +1,9 @@
 ---
-// How we work — the turnkey lifecycle as numbered steps that snake down the
-// page in two columns: odd rows read left→right, even rows right→left (so
-// step 3 sits directly under step 2), with arrows tracing the path.
+// How we work — the turnkey lifecycle as numbered cards that alternate
+// left and right down the page, so the eye zigzags from one step to the next.
 import SectionHeader from "../ui/SectionHeader.astro";
 import InfoCard from "../ui/InfoCard.astro";
-import { accentSolids, type BrandAccent } from "../../lib/brandAccents";
+import { accentTextGradients, type BrandAccent } from "../../lib/brandAccents";
 
 interface Step {
   title: string;
@@ -16,10 +15,8 @@ interface Props {
   subheading?: string;
   steps?: Step[];
   closing?: string;
-  stepLabel?: string;
   accents?: BrandAccent[];
-  stepLabelColor?: string;
-  arrowColors?: string[];
+  numberColors?: string[];
 }
 
 const {
@@ -27,97 +24,38 @@ const {
   subheading,
   steps = [],
   closing,
-  stepLabel = "Step",
   // corner-dot colors — the same trio as the product tabs
   accents = ["red", "yellow", "sky"],
-  stepLabelColor = "text-tolemi-sky-600",
-  // each arrow wears its step's dot color
-  arrowColors = accents.map((a) => accentSolids[a]),
+  // each number wears its step's dot color
+  numberColors = accents.map((a) => `bg-gradient-to-br ${accentTextGradients[a]} bg-clip-text text-transparent`),
 } = Astro.props;
-
-// Arrow after step i (0-based), following the snake: → at the end of a
-// left→right cell, ↓ at the end of a row, ← in right→left rows. Repeats
-// every 4 steps (two rows). The last step gets no arrow.
-const arrowFor = (i: number, count: number): "right" | "down" | "left" | null => {
-  if (i === count - 1) return null;
-  const m = (i + 1) % 4;
-  if (m === 1) return "right";
-  if (m === 3) return "left";
-  return "down";
-};
-
-const ARROW_PATHS = {
-  right: "M9 5l7 7-7 7",
-  left: "M15 19l-7-7 7-7",
-  down: "M19 9l-7 7-7-7",
-};
 ---
 
-<section class="py-20 md:py-32 px-6 bg-surface-secondary">
+<section class="py-16 md:py-24 px-6 bg-surface-secondary">
   <div class="max-w-5xl mx-auto">
     <SectionHeader heading={heading} subtitle={subheading} />
 
-    <div class="hww-snake grid sm:grid-cols-2 gap-6 md:gap-8 reveal">
+    <ol class="space-y-4 md:space-y-5 reveal">
       {steps.map((step, i) => {
-        const arrow = arrowFor(i, steps.length);
-        const arrowColor = arrowColors[i % arrowColors.length];
+        const onLeft = i % 2 === 0;
         return (
-          <div class="relative">
-            <InfoCard
-              title={step.title}
-              description={step.description}
-              icon={step.icon}
-              eyebrow={`${stepLabel} ${i + 1}`}
-              accent={accents[i % accents.length]}
-              eyebrowColor={stepLabelColor}
-            />
-
-            {/* snake arrows (2-column layout) */}
-            {arrow === "right" && (
-              <div
-                class={`hidden sm:flex absolute top-1/2 -translate-y-1/2 left-full w-6 md:w-8 items-center justify-center ${arrowColor}`}
-                aria-hidden="true"
-              >
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={ARROW_PATHS.right}></path>
-                </svg>
-              </div>
-            )}
-            {arrow === "left" && (
-              <div
-                class={`hidden sm:flex absolute top-1/2 -translate-y-1/2 right-full w-6 md:w-8 items-center justify-center ${arrowColor}`}
-                aria-hidden="true"
-              >
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={ARROW_PATHS.left}></path>
-                </svg>
-              </div>
-            )}
-            {arrow === "down" && (
-              <div
-                class={`hidden sm:flex absolute left-1/2 -translate-x-1/2 top-full h-6 md:h-8 items-center justify-center ${arrowColor}`}
-                aria-hidden="true"
-              >
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={ARROW_PATHS.down}></path>
-                </svg>
-              </div>
-            )}
-            {/* single-column (mobile): every step flows straight down */}
-            {arrow && (
-              <div
-                class={`sm:hidden absolute left-1/2 -translate-x-1/2 top-full h-6 flex items-center justify-center ${arrowColor}`}
-                aria-hidden="true"
-              >
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={ARROW_PATHS.down}></path>
-                </svg>
-              </div>
-            )}
-          </div>
+          <li>
+            <div class={`sm:w-[60%] ${onLeft ? "" : "sm:ml-auto"}`}>
+              <InfoCard
+                title={step.title}
+                description={step.description}
+                icon={step.icon}
+                eyebrow={String(i + 1)}
+                eyebrowStyle="text-4xl md:text-5xl font-bold leading-none mb-2"
+                iconSize="w-7 h-7"
+                eyebrowColor={numberColors[i % numberColors.length]}
+                accent={accents[i % accents.length]}
+              />
+            </div>
+          </li>
         );
       })}
-    </div>
+    </ol>
 
     {closing && (
       <p class="text-center font-heading text-lg md:text-xl font-semibold text-text-primary mt-14 reveal">
@@ -126,20 +64,3 @@ const ARROW_PATHS = {
     )}
   </div>
 </section>
-
-<style>
-  /* Boustrophedon grid: every second row is reversed so the numbered path
-     snakes — step 3 lands directly under step 2, step 4 under step 1.
-     grid-auto-flow: dense backfills the column-pinned cells. */
-  @media (min-width: 640px) {
-    .hww-snake {
-      grid-auto-flow: dense;
-    }
-    .hww-snake > div:nth-child(4n + 3) {
-      grid-column: 2;
-    }
-    .hww-snake > div:nth-child(4n + 4) {
-      grid-column: 1;
-    }
-  }
-</style>
