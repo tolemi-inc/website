@@ -23,6 +23,7 @@ interface Props {
   stages?: Stage[];
   layers?: Layer[];
   stageAccents?: BrandAccent[];
+  keywordGradients?: Record<BrandAccent, string>;
   layerGradients?: string[];
 }
 
@@ -32,6 +33,13 @@ const {
   stages = [],
   layers = [],
   stageAccents = ["sky", "yellow", "red", "sky"],
+  // body-size keywords on white: the bright orange and red fall under 4.5:1,
+  // so those two take deeper flats
+  keywordGradients = {
+    ...accentTextGradients,
+    yellow: "from-orange-700 to-orange-700",
+    red: "from-tolemi-red-500 to-tolemi-red-500",
+  },
   layerGradients = [
     "from-tolemi-sky-500 to-tolemi-indigo-500",
     "from-tolemi-indigo-500 to-tolemi-coral-500",
@@ -42,7 +50,7 @@ const {
 const [foundation, action, transparency] = layers;
 
 // stage details may mark keywords with **double asterisks**; they render
-// bold in the dimmer text twin of the stage's accent
+// bold in a legible text shade of the stage's accent
 const boldify = (s: string, gradient: string) =>
   s.replace(
     /\*\*(.+?)\*\*/g,
@@ -65,7 +73,7 @@ const boldify = (s: string, gradient: string) =>
             class="flex-1 md:mx-3"
           >
             {stage.detail && (
-              <Fragment set:html={boldify(stage.detail, accentTextGradients[stageAccents[i % stageAccents.length]])} />
+              <Fragment set:html={boldify(stage.detail, keywordGradients[stageAccents[i % stageAccents.length]])} />
             )}
           </InfoCard>
           {i < stages.length - 1 && (
