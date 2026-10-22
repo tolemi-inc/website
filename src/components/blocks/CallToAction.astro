@@ -40,7 +40,7 @@ const mapLayer = (src: string) =>
   `mask: url(${src}) center / cover no-repeat; -webkit-mask: url(${src}) center / cover no-repeat;`;
 ---
 
-<section id="contact" class="relative py-32 md:py-40 px-6 overflow-hidden">
+<section id="contact" class="relative py-20 md:py-28 px-6 overflow-hidden">
   <!-- Light background with subtle gradient -->
   <div class="absolute inset-0 bg-gradient-to-br from-surface via-surface-secondary to-surface"></div>
 
@@ -59,8 +59,8 @@ const mapLayer = (src: string) =>
   </div>
 
   <div class="relative z-10 max-w-3xl mx-auto text-center reveal">
-    <h2 class="font-heading text-3xl md:text-5xl lg:text-6xl font-bold text-text-primary mb-8"><AccentPeriod text={heading} /></h2>
-    {text && <p class="text-lg md:text-xl text-text-secondary mb-12 leading-relaxed">{text}</p>}
+    <h2 class="font-heading text-3xl md:text-5xl lg:text-6xl font-bold text-text-primary mb-6"><AccentPeriod text={heading} /></h2>
+    {text && <p class="text-lg md:text-xl text-text-secondary mb-8 leading-relaxed">{text}</p>}
     <div class="flex flex-wrap items-center justify-center gap-4">
       {buttonText && (
         <DemoButton href={buttonLink || "#"} size="lg" arrow>{buttonText}</DemoButton>

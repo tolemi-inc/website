@@ -88,7 +88,7 @@ const hasPhotos = items.some((item) => item.photo?.src);
                 <span class={`flex-1 font-heading text-xl md:text-2xl font-bold ${headingColor}`}>
                   {item.title}
                 </span>
-                <svg
+                <svg aria-hidden="true"
                   class={`w-6 h-6 flex-shrink-0 transition-transform duration-200 group-open:rotate-45 ${headingColor}`}
                   viewBox="0 0 24 24"
                   fill="none"

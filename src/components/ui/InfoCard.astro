@@ -21,6 +21,7 @@ interface Props {
   eyebrowColor?: string;
   darkEyebrowColor?: string;
   titleSize?: string;
+  bodySize?: string;
   class?: string;
 }
 
@@ -37,6 +38,7 @@ const {
   eyebrowColor = "text-tolemi-sky-600",
   darkEyebrowColor = "text-tolemi-sky",
   titleSize = "text-lg",
+  bodySize = "text-sm",
   class: classAttr = "",
 } = Astro.props;
 
@@ -67,7 +69,7 @@ const hasBody = description || Astro.slots.has("default");
     </Heading>
   </div>
   {hasBody && (
-    <p class={`text-sm leading-relaxed ${dark ? "text-white/75" : "text-text-secondary"}`}>
+    <p class={`${bodySize} leading-relaxed ${dark ? "text-white/75" : "text-text-secondary"}`}>
       <slot>{description}</slot>
     </p>
   )}

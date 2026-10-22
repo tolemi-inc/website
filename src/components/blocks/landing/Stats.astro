@@ -14,10 +14,10 @@ interface Props {
 const { heading, items = [] } = Astro.props;
 ---
 
-<section class="py-32 md:py-40 px-6 relative overflow-hidden bg-surface">
+<section class="py-20 md:py-28 px-6 relative overflow-hidden bg-surface">
   <div class="max-w-7xl mx-auto relative z-10">
     {heading && (
-      <div class="text-center mb-20 md:mb-24 reveal">
+      <div class="text-center mb-12 md:mb-16 reveal">
         <h2 class="font-heading text-3xl md:text-5xl lg:text-6xl font-bold text-text-primary">{heading}</h2>
       </div>
     )}
