@@ -2,7 +2,7 @@
 // Why us — humans and citizens who care, not another generic software vendor.
 import AccentLine from "../../ui/AccentLine.astro";
 import InfoCard from "../../ui/InfoCard.astro";
-import { accentGradients, accentTextGradients, type BrandAccent } from "../../../lib/brandAccents";
+import { accentGradients, accentDarkTextGradients, accentTextGradients, type BrandAccent } from "../../../lib/brandAccents";
 
 interface Point {
   title: string;
@@ -70,7 +70,7 @@ const {
       {points.map((point, i) => {
         const accent = pointAccents[i % pointAccents.length];
         // bright on navy, the dimmer twin on white so the text stays legible
-        const textGradient = (point.dark ? accentGradients : accentTextGradients)[accent];
+        const textGradient = (point.dark ? accentDarkTextGradients : accentTextGradients)[accent];
         return (
           <InfoCard icon={point.icon} dark={point.dark} accent={accent} titleSize={titleSize} bodySize={bodySize}>
             <Fragment slot="title" set:html={statify(point.title, textGradient)} />
