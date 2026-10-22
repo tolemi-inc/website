@@ -18,6 +18,8 @@ interface Props {
   dotColor?: string;
   iconColor?: string;
   eyebrowColor?: string;
+  eyebrowStyle?: string;
+  iconSize?: string;
   titleSize?: string;
   bodySize?: string;
   class?: string;
@@ -33,6 +35,8 @@ const {
   dotColor = dotFill(accent),
   iconColor = dotColor,
   eyebrowColor = "text-tolemi-sky-600",
+  eyebrowStyle = "text-xs font-semibold uppercase tracking-[0.15em] mb-2",
+  iconSize = "w-5 h-5",
   titleSize = "text-lg",
   bodySize = "text-sm",
   class: classAttr = "",
@@ -47,13 +51,13 @@ const hasBody = description || Astro.slots.has("default");
   <CardDot color={dotColor} size="w-4.5 h-4.5" position="top-[25px] right-6 md:top-[29px] md:right-7" />
   {eyebrow && (
     <p
-      class={`font-heading text-xs font-semibold uppercase tracking-[0.15em] lining-nums mb-2 pr-10 ${eyebrowColor}`}
+      class={`font-heading lining-nums pr-10 ${eyebrowStyle} ${eyebrowColor}`}
     >
       {eyebrow}
     </p>
   )}
   <div class="flex items-center gap-2.5 min-h-7 mb-1.5 pr-10">
-    {icon && <Icon name={icon} fill={iconColor} class="w-5 h-5 flex-shrink-0" />}
+    {icon && <Icon name={icon} fill={iconColor} class={`${iconSize} flex-shrink-0`} />}
     <Heading class={`font-heading ${titleSize} font-bold leading-snug text-text-primary`}>
       <slot name="title">{title}</slot>
     </Heading>
