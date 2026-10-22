@@ -21,7 +21,7 @@ const sizeClasses =
   size === "sm" ? "text-[10px] px-2 py-0.5" : "text-xs px-2.5 py-1";
 
 const defaultClasses =
-  "bg-tolemi-sky-50 text-tolemi-sky-700 ring-tolemi-sky-200";
+  "bg-tolemi-sky-200 text-tolemi-dark";
 
 const normalized = (tags || []).map((t) =>
   typeof t === "string" ? { label: t } : t
@@ -34,7 +34,7 @@ const normalized = (tags || []).map((t) =>
       const colorClasses = tag.color
         ? useCaseColorClasses[tag.color]
         : defaultClasses;
-      const baseClasses = `${sizeClasses} inline-block rounded-full font-semibold tracking-wide ring-1 ring-inset ${colorClasses}`;
+      const baseClasses = `${sizeClasses} inline-block rounded-full font-heading font-bold ${colorClasses}`;
       return (
         <li>
           {tag.href ? (

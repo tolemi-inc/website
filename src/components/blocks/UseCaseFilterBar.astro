@@ -2,6 +2,7 @@
 import {
   useCaseColorClasses,
   useCaseActiveClasses,
+  useCaseDotClasses,
   type UseCaseColor,
 } from "../../lib/useCaseColors";
 
@@ -29,9 +30,9 @@ const { basePath, options } = Astro.props;
       <a
         href={basePath}
         data-filter=""
-        class="filter-pill text-xs px-4 py-2 rounded-full font-semibold tracking-wide transition-colors ring-1 ring-inset bg-white text-text-secondary ring-black/10 hover:bg-tolemi-light"
-        data-inactive-class="bg-white text-text-secondary ring-black/10 hover:bg-tolemi-light"
-        data-active-class="bg-tolemi-dark text-white ring-tolemi-dark"
+        class="filter-pill inline-flex items-center text-sm px-5 py-2.5 rounded-full font-heading font-bold transition-all hover:-translate-y-0.5 bg-tolemi-light text-tolemi-dark hover:bg-black/10"
+        data-inactive-class="bg-tolemi-light text-tolemi-dark hover:bg-black/10"
+        data-active-class="bg-tolemi-dark text-white"
       >
         All
       </a>
@@ -39,10 +40,11 @@ const { basePath, options } = Astro.props;
         <a
           href={`${basePath}?tag=${encodeURIComponent(opt.slug)}`}
           data-filter={opt.slug}
-          class={`filter-pill text-xs px-4 py-2 rounded-full font-semibold tracking-wide transition-colors ring-1 ring-inset ${useCaseColorClasses[opt.color]}`}
+          class={`filter-pill inline-flex items-center gap-2 text-sm px-5 py-2.5 rounded-full font-heading font-bold transition-all hover:-translate-y-0.5 ${useCaseColorClasses[opt.color]}`}
           data-inactive-class={useCaseColorClasses[opt.color]}
           data-active-class={useCaseActiveClasses[opt.color]}
         >
+          <span class={`w-2.5 h-2.5 rounded-full ${useCaseDotClasses[opt.color]}`} aria-hidden="true"></span>
           {opt.label}
         </a>
       ))}

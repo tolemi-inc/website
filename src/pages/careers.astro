@@ -2,15 +2,15 @@
 import Base from "../layouts/Base.astro";
 import PageHero from "../components/blocks/PageHero.astro";
 import CallToAction from "../components/blocks/CallToAction.astro";
-import { createReader } from '@keystatic/core/reader';
-import keystaticConfig from '../../keystatic.config';
-import { renderRichtext } from '../lib/richtext';
+import { createReader } from "@keystatic/core/reader";
+import keystaticConfig from "../../keystatic.config";
+import { renderRichtext } from "../lib/richtext";
 
 export const prerender = true;
 
 const reader = createReader(process.cwd(), keystaticConfig);
 const careersData = await reader.singletons.careersPage.read();
-if (!careersData) throw new Error('Careers page data not found');
+if (!careersData) throw new Error("Careers page data not found");
 
 const intro = await careersData.intro();
 const introHtml = renderRichtext(intro.node);
@@ -18,64 +18,64 @@ const perks = careersData.perks || [];
 ---
 
 <Base title={careersData.title}>
-  <PageHero headline={careersData.headline} subheadline={careersData.subheadline} />
+  <PageHero
+    headline={careersData.headline}
+    subheadline={careersData.subheadline}
+  />
 
   <!-- Intro + Why -->
   <section class="py-16 md:py-20 px-6">
     <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 reveal">
       <div>
-        <h2 class="font-heading text-3xl font-bold text-text-primary mb-4">About Tolemi</h2>
+        <h2 class="font-heading text-3xl font-bold text-text-primary mb-4">
+          About Tolemi
+        </h2>
         <div class="richtext">
           <Fragment set:html={introHtml} />
         </div>
       </div>
       <div>
-        <h2 class="font-heading text-3xl font-bold text-text-primary mb-4">{careersData.cultureHeading}</h2>
-        <p class="text-text-secondary text-lg leading-relaxed">{careersData.cultureBody}</p>
+        <h2 class="font-heading text-3xl font-bold text-text-primary mb-4">
+          {careersData.cultureHeading}
+        </h2>
+        <p class="text-text-secondary text-lg leading-relaxed">
+          {careersData.cultureBody}
+        </p>
       </div>
     </div>
   </section>
 
   <!-- Perks grid -->
-  {perks.length > 0 && (
-    <section class="py-16 md:py-20 px-6 bg-surface-muted/50">
-      <div class="max-w-5xl mx-auto reveal">
-        <h2 class="font-heading text-3xl font-bold text-text-primary mb-10 text-center">Benefits & Perks</h2>
-        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {perks.map((perk) => (
-            <div class="bg-white rounded-2xl border border-black/[0.06] p-6 text-center">
-              <h3 class="font-heading text-base font-semibold text-text-primary mb-2">{perk.title}</h3>
-              <p class="text-sm text-text-secondary leading-relaxed">{perk.description}</p>
-            </div>
-          ))}
+  {
+    perks.length > 0 && (
+      <section class="py-16 md:py-20 px-6 bg-surface-muted/50">
+        <div class="max-w-5xl mx-auto reveal">
+          <h2 class="font-heading text-3xl font-bold text-text-primary mb-10 text-center">
+            Benefits & Perks
+          </h2>
+          <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {perks.map((perk) => (
+              <div class="bg-white rounded-2xl border border-black/[0.06] p-6 text-center">
+                <h3 class="font-heading text-base font-semibold text-text-primary mb-2">
+                  {perk.title}
+                </h3>
+                <p class="text-sm text-text-secondary leading-relaxed">
+                  {perk.description}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
-    </section>
-  )}
-
-  <!-- Open roles -->
-  <section class="py-16 md:py-20 px-6">
-    <div class="max-w-3xl mx-auto text-center reveal">
-      <h2 class="font-heading text-3xl md:text-4xl font-bold text-text-primary mb-4">Open Positions</h2>
-      <p class="text-text-secondary text-lg leading-relaxed mb-8">See our current openings and apply on Indeed.</p>
-      <a
-        href="https://www.indeed.com/cmp/Tolemi"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="inline-flex items-center gap-2 bg-gradient-to-r from-tolemi-sky-600 to-tolemi-sky-700 text-white font-medium text-sm px-6 py-3 rounded-full hover:shadow-lg hover:shadow-tolemi-sky-600/20 transition-all"
-      >
-        View Open Roles
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-        </svg>
-      </a>
-    </div>
-  </section>
+      </section>
+    )
+  }
 
   <CallToAction
-    heading="Don't See Your Role?"
-    text="We're always interested in hearing from great people. Send us your resume."
-    buttonText="Get in Touch"
-    buttonLink="mailto:careers@tolemi.com"
+    heading="Want to Join Our Team?"
+    text="If you care about housing and love solving interesting problems and making a difference, we would love to hear from you. See our current openings on Indeed — or if you don't see your role, drop us a line."
+    buttonText="View Open Roles"
+    buttonLink="https://www.indeed.com/cmp/Tolemi"
+    secondaryButtonText="Get in Touch"
+    secondaryButtonLink="mailto:careers@tolemi.com"
   />
 </Base>
