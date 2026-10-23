@@ -60,11 +60,11 @@
     "legal": [
       {
         "label": "Privacy Policy",
-        "href": "/about/privacypolicy"
+        "href": "/privacy"
       },
       {
         "label": "Terms of Service",
-        "href": "/about/termsofservice"
+        "href": "/terms"
       }
     ]
   },

@@ -733,7 +733,7 @@ export default config({
     privacyPolicy: singleton({
       label: 'Privacy Policy',
       path: 'content/about/privacy-policy',
-      previewUrl: 'https://{branch}--tolemi.netlify.app/about/privacypolicy',
+      previewUrl: 'https://{branch}--tolemi.netlify.app/privacy',
       format: { contentField: 'body' },
       schema: {
         title: fields.text({ label: 'Page Title', validation: { isRequired: true } }),
@@ -746,7 +746,7 @@ export default config({
     termsOfService: singleton({
       label: 'Terms of Service',
       path: 'content/about/terms-of-service',
-      previewUrl: 'https://{branch}--tolemi.netlify.app/about/termsofservice',
+      previewUrl: 'https://{branch}--tolemi.netlify.app/terms',
       format: { contentField: 'body' },
       schema: {
         title: fields.text({ label: 'Page Title', validation: { isRequired: true } }),
