@@ -61,25 +61,17 @@ const headlineHtml = headline
 ---
 
 <section class="relative overflow-hidden pt-24 lg:pt-28 pb-12 px-6 bg-surface">
-  <div class="max-w-7xl mx-auto grid lg:grid-cols-2 items-center gap-10 lg:gap-14">
-    {/* the mission, left */}
-    <div class="w-full text-left @container">
-      <h1 class="font-heading text-[length:min(clamp(1.5rem,6.5vw,2.5rem),6.4cqi)] lg:text-[length:min(clamp(2rem,3vw,2.875rem),6.4cqi)] font-bold text-text-primary tracking-tight leading-[1.15] mb-6 reveal">
+  {/* on mobile: mission, graph, then the subtitle, so the graph shows on landing.
+      On desktop the text stacks on the left, centered against the graph. */}
+  <div class="max-w-7xl mx-auto grid lg:grid-cols-2 lg:grid-rows-[1fr_auto_auto_1fr] gap-8 lg:gap-x-14 lg:gap-y-0">
+    {/* the mission */}
+    <div class="w-full text-left @container lg:col-start-1 lg:row-start-2">
+      <h1 class="font-heading text-[length:min(clamp(1.5rem,6.5vw,2.5rem),6.4cqi)] lg:text-[length:min(clamp(2rem,3vw,2.875rem),6.4cqi)] font-bold text-text-primary tracking-tight leading-[1.15] lg:mb-6 reveal">
         <AccentPeriod text={headlineHtml} color={periodColor} html />
       </h1>
-      {subheadline && (
-        <p class="max-w-2xl text-base md:text-lg text-text-secondary leading-relaxed mb-9 reveal">
-          {subheadline}
-        </p>
-      )}
-      {ctaText && (
-        <div class="reveal">
-          <DemoButton href={ctaLink || "#"} size="lg" arrow>{ctaText}</DemoButton>
-        </div>
-      )}
     </div>
-    {/* the graph, right */}
-    <div class="gstage w-full max-w-2xl mx-auto" id="herograph-stage">
+    {/* the graph */}
+    <div class="gstage w-full max-w-2xl mx-auto self-center lg:col-start-2 lg:row-start-1 lg:row-span-4" id="herograph-stage">
       <svg id="herograph-svg" viewBox="0 0 560 560"
         aria-label="Scattered facts spring into an ownership graph; labeled identifiers — a shared phone number and mailing address — draw three owners together into one portfolio"
       ></svg>
@@ -93,6 +85,19 @@ const headlineHtml = headline
         </div>
         <span class="tsl-label">Tolemi insights</span>
       </div>
+    </div>
+    {/* the subtitle and CTA */}
+    <div class="w-full text-left lg:col-start-1 lg:row-start-3">
+      {subheadline && (
+        <p class="max-w-2xl text-base md:text-lg text-text-secondary leading-relaxed mb-9 reveal">
+          {subheadline}
+        </p>
+      )}
+      {ctaText && (
+        <div class="reveal">
+          <DemoButton href={ctaLink || "#"} size="lg" arrow>{ctaText}</DemoButton>
+        </div>
+      )}
     </div>
   </div>
 </section>
