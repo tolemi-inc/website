@@ -11,3 +11,14 @@
 #   KEYSTATIC_GITHUB_CLIENT_ID     — from your GitHub OAuth App
 #   KEYSTATIC_GITHUB_CLIENT_SECRET — from your GitHub OAuth App
 #   KEYSTATIC_SECRET    — any random 32+ char string (used to sign cookies)
+
+# Legal pages moved from /about/* — keep old links (e.g. tolemi.com/about/privacypolicy/) working.
+[[redirects]]
+  from = "/about/privacypolicy"
+  to = "/privacy"
+  status = 301
+
+[[redirects]]
+  from = "/about/termsofservice"
+  to = "/terms"
+  status = 301
