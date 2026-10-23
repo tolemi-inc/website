@@ -14,7 +14,14 @@
       "Bash(magick identify *)",
       "Bash(rsvg-convert -w 1200 public/logos/light_gradient.svg -o /private/tmp/claude-501/-Users-silvia-Documents-website/c6253623-0c50-4b4e-bc29-242d55253bb5/scratchpad/lg.png)",
       "Bash(magick /private/tmp/claude-501/-Users-silvia-Documents-website/c6253623-0c50-4b4e-bc29-242d55253bb5/scratchpad/lg.png -trim +repage /private/tmp/claude-501/-Users-silvia-Documents-website/c6253623-0c50-4b4e-bc29-242d55253bb5/scratchpad/lg-trim.png)",
-      "Bash(curl -s -o /dev/null -w \"careers: %{http_code}\\\\n\" localhost:4321/careers)"
+      "Bash(curl -s -o /dev/null -w \"careers: %{http_code}\\\\n\" localhost:4321/careers)",
+      "Bash(git checkout *)",
+      "Bash(git add *)",
+      "Read(//Users/silvia/Library/Caches/ms-playwright/**)",
+      "Read(//Applications/Google Chrome.app/**)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" localhost:4321/)",
+      "Bash(mkdir -p shots)",
+      "Bash(node scan.mjs / /about /team /careers /about/privacypolicy /about/termsofservice /blog/case-studies /blog/spotlight /blog/case-studies/city-of-buffalo-ny /blog/spotlight/october-spotlight-slate /products/slate /solutions/code-enforcement)"
     ]
   }
 }
