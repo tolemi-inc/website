@@ -23,9 +23,6 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 
-# TinaCMS generated files
-tina/__generated__/
-
 # catch all .env variants
 .env.*
 .env.local
