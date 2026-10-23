@@ -379,6 +379,29 @@ html {
   }
 }
 
+/* Legal documents (privacy policy, terms): denser reference typography —
+   smaller headings, no paragraph indent, h5 support for deep outlines. */
+.richtext-legal { font-size: 1rem; }
+.richtext-legal p { font-size: 1rem; text-indent: 0; }
+.richtext-legal > * + * { margin-top: 1em; }
+.richtext-legal h2 { font-size: 1.625rem; margin-top: 2.25em; margin-bottom: 0.5em; }
+.richtext-legal h3 { font-size: 1.25rem; margin-top: 1.75em; margin-bottom: 0.4em; }
+.richtext-legal h4 { font-size: 1.0625rem; margin-top: 1.5em; margin-bottom: 0.4em; }
+.richtext-legal h5 {
+  font-family: var(--font-heading);
+  color: var(--color-text-primary);
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 1.25em;
+}
+.richtext-legal li::marker { font-size: 1em; }
+
+@media (max-width: 640px) {
+  .richtext-legal h2 { font-size: 1.375rem; }
+  .richtext-legal h3 { font-size: 1.125rem; }
+  .richtext-legal h4 { font-size: 1rem; }
+}
+
 /* Feature cards stack: each card is sticky and the next slides up to cover it */
 .feature-cards-stack {
   /* No overflow clipping — sticky needs to reach viewport edges */
