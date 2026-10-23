@@ -39,14 +39,14 @@ const {
 } = Astro.props;
 
 // the headline may mark key phrases with **double asterisks**; they render
-// extra-bold in the highlight color. A comma-separated series of them
-// ("**a**, **b**, and **c**") stacks one per line, each led by its own icon
+// extra-bold in the highlight color. A series of them, with or without
+// commas ("**a**, **b**, and **c**" or "**a** **b** **c**"), stacks one per line, each led by its own icon
 // painted in that line's list color. A line never wraps; on a narrow
-// column it shrinks to fit instead (.hero-line in the styles below).
+// column the whole headline shrinks to fit instead (see the h1 size).
 const headlineHtml = headline
   .replace(/&/g, "&amp;")
   .replace(/</g, "&lt;")
-  .replace(/\s*\*\*[^*]+?\*\*(?:,\s*(?:and\s+)?\*\*[^*]+?\*\*)+/g, (series) => {
+  .replace(/\s*\*\*[^*]+?\*\*(?:,?\s*(?:and\s+)?\*\*[^*]+?\*\*)+/g, (series) => {
     let i = 0;
     return series.replace(/\s*((?:and\s+)?)\*\*(.+?)\*\*/g, (_, and, phrase) => {
       const color = listColors[i % listColors.length];
@@ -64,7 +64,7 @@ const headlineHtml = headline
   <div class="max-w-7xl mx-auto grid lg:grid-cols-2 items-center gap-10 lg:gap-14">
     {/* the mission, left */}
     <div class="w-full text-left @container">
-      <h1 class="font-heading text-[clamp(1.5rem,6.5vw,2.5rem)] lg:text-[clamp(2rem,3vw,2.875rem)] font-bold text-text-primary tracking-tight leading-[1.15] mb-6 reveal">
+      <h1 class="font-heading text-[length:min(clamp(1.5rem,6.5vw,2.5rem),6.4cqi)] lg:text-[length:min(clamp(2rem,3vw,2.875rem),6.4cqi)] font-bold text-text-primary tracking-tight leading-[1.15] mb-6 reveal">
         <AccentPeriod text={headlineHtml} color={periodColor} html />
       </h1>
       {subheadline && (
@@ -98,9 +98,9 @@ const headlineHtml = headline
 </section>
 
 <style is:global>
-  /* each headline list line stays on one line, shrinking with the column
-     (cqi) once the column is too narrow for the heading's own size */
-  .hero-line { white-space: nowrap; font-size: min(1em, 6.4cqi); }
+  /* each headline list line stays on one line; the whole h1 shrinks with the
+     column (6.4cqi) so the list never wraps and matches the lead sentence */
+  .hero-line { white-space: nowrap; }
 
   .gstage { position: relative; width: 100%; }
   #herograph-svg { cursor: pointer; display: block; width: 100%; height: auto; }
