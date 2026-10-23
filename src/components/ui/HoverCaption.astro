@@ -1,0 +1,23 @@
+---
+// A caption that fades in over a photo, on a dark filter, when the photo is
+// hovered. Place it inside a `group relative overflow-hidden` box that holds
+// the image; it covers that box.
+
+interface Props {
+  text: string;
+  textColor?: string;
+  overlayColor?: string;
+}
+
+const {
+  text,
+  textColor = "text-white",
+  overlayColor = "bg-tolemi-dark/65",
+} = Astro.props;
+---
+
+<div class={`absolute inset-0 flex items-center justify-center p-4 text-center opacity-0 transition-opacity duration-300 group-hover:opacity-100 ${overlayColor}`}>
+  <p class={`font-heading font-medium text-base md:text-lg leading-snug ${textColor}`}>
+    {text}
+  </p>
+</div>
