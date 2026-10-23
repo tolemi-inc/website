@@ -1,6 +1,7 @@
 ---
-// An image with an optional caption and credit underneath — credits sit in
-// small muted type, matching CityPhotos.
+// An image whose optional caption fades in over it on hover, with an optional
+// credit underneath in small muted type, matching CityPhotos.
+import HoverCaption from "./HoverCaption.astro";
 
 interface Props {
   src: string;
@@ -17,24 +18,24 @@ const {
   alt,
   caption,
   credit,
-  captionColor = "text-text-primary",
+  captionColor,
   creditColor = "text-text-muted",
   class: classAttr = "",
 } = Astro.props;
 ---
 
 <figure class={classAttr}>
-  <img
-    src={src}
-    alt={alt?.trim() || caption || ""}
-    loading="lazy"
-    decoding="async"
-    class="w-full rounded-xl shadow-sm"
-  />
-  {(caption || credit) && (
-    <figcaption class="mt-2.5">
-      {caption && <span class={`block font-heading text-sm font-semibold ${captionColor}`}>{caption}</span>}
-      {credit && <span class={`block text-xs mt-0.5 ${creditColor}`}>Image: {credit}</span>}
-    </figcaption>
+  <div class="group relative overflow-hidden rounded-xl shadow-sm">
+    <img
+      src={src}
+      alt={alt?.trim() || caption || ""}
+      loading="lazy"
+      decoding="async"
+      class="w-full block"
+    />
+    {caption && <HoverCaption text={caption} textColor={captionColor} />}
+  </div>
+  {credit && (
+    <figcaption class={`mt-2.5 text-xs ${creditColor}`}>Image: {credit}</figcaption>
   )}
 </figure>

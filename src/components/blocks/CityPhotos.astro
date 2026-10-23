@@ -1,6 +1,8 @@
 ---
 // A row of captioned photos of partner places. Stacks on mobile, three-up
-// from `sm`. Credits sit under each caption in small muted type.
+// from `sm`. Captions fade in over each photo on hover; credits sit under it
+// in small muted type.
+import HoverCaption from "../ui/HoverCaption.astro";
 
 interface Photo {
   photo?: { src: string | null; alt?: string } | null;
@@ -15,7 +17,7 @@ interface Props {
 
 const {
   photos = [],
-  captionColor = "text-text-primary",
+  captionColor,
   creditColor = "text-text-muted",
 } = Astro.props;
 
@@ -26,18 +28,18 @@ const items = photos.filter((p) => p.photo?.src);
   <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 my-10 md:my-12">
     {items.map((p) => (
       <figure>
-        <img
-          src={p.photo!.src}
-          alt={p.photo!.alt?.trim() || p.caption || ""}
-          loading="lazy"
-          decoding="async"
-          class="w-full aspect-[4/3] object-cover rounded-xl shadow-sm"
-        />
-        {(p.caption || p.credit) && (
-          <figcaption class="mt-2.5">
-            {p.caption && <span class={`block font-heading text-sm font-semibold ${captionColor}`}>{p.caption}</span>}
-            {p.credit && <span class={`block text-xs mt-0.5 ${creditColor}`}>Photo: {p.credit}</span>}
-          </figcaption>
+        <div class="group relative overflow-hidden rounded-xl shadow-sm">
+          <img
+            src={p.photo!.src}
+            alt={p.photo!.alt?.trim() || p.caption || ""}
+            loading="lazy"
+            decoding="async"
+            class="w-full aspect-[4/3] object-cover block"
+          />
+          {p.caption && <HoverCaption text={p.caption} textColor={captionColor} />}
+        </div>
+        {p.credit && (
+          <figcaption class={`mt-2.5 text-xs ${creditColor}`}>Photo: {p.credit}</figcaption>
         )}
       </figure>
     ))}

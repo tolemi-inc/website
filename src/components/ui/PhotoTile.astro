@@ -1,14 +1,15 @@
 ---
 // A rounded photo that fills its box (give it a height via `class`, or let a
-// grid cell size it), with an optional caption underneath. The caption takes
-// its line from the box, so the photo shrinks to make room rather than
-// overflowing.
+// grid cell size it). An optional caption fades in over the photo, on a dark
+// filter, on hover.
+import HoverCaption from "./HoverCaption.astro";
 
 interface Props {
   src: string;
   alt?: string;
   caption?: string;
   captionColor?: string;
+  overlayColor?: string;
   imgPosition?: string;
   position?: string;
   class?: string;
@@ -19,7 +20,8 @@ const {
   src,
   alt,
   caption,
-  captionColor = "text-text-secondary",
+  captionColor,
+  overlayColor,
   imgPosition = "object-center",
   position = "relative",
   class: classAttr = "",
@@ -28,7 +30,7 @@ const {
 ---
 
 <figure class={`${position} flex flex-col ${classAttr}`} {...attrs}>
-  <div class="relative flex-1 min-h-0 overflow-hidden rounded-2xl shadow-lg shadow-black/5">
+  <div class="group relative flex-1 min-h-0 overflow-hidden rounded-2xl shadow-lg shadow-black/5">
     <img
       src={src}
       alt={alt?.trim() || caption || ""}
@@ -36,10 +38,6 @@ const {
       decoding="async"
       class={`absolute inset-0 w-full h-full object-cover ${imgPosition}`}
     />
+    {caption && <HoverCaption text={caption} textColor={captionColor} overlayColor={overlayColor} />}
   </div>
-  {caption && (
-    <figcaption class={`mt-2.5 text-sm leading-snug ${captionColor}`}>
-      {caption}
-    </figcaption>
-  )}
 </figure>
