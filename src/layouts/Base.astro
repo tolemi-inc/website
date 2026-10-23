@@ -71,7 +71,10 @@ const imageUrl = image ? new URL(image, Astro.site).href : undefined;
             }
           });
         },
-        { threshold: 0.1 }
+        // reveal once the element's top clears the bottom 10% of the viewport.
+        // (A ratio threshold never fires for elements taller than ~10x the
+        // viewport, like the legal pages on a phone.)
+        { rootMargin: '0px 0px -10% 0px' }
       );
       document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
     </script>
