@@ -8,7 +8,7 @@ import SectionHeader from "../../ui/SectionHeader.astro";
 import DemoButton from "../../ui/DemoButton.astro";
 import AccentLine from "../../ui/AccentLine.astro";
 import InfoCard from "../../ui/InfoCard.astro";
-import { accentTextGradients, dotFill, type BrandAccent } from "../../../lib/brandAccents";
+import { accentTextGradients, type BrandAccent } from "../../../lib/brandAccents";
 
 interface TitledItem {
   title: string;
@@ -55,7 +55,7 @@ const tabs = items.map((item, i) => ({
   slug: slugify(item.name),
   accent: accents[i % accents.length],
 }));
-// Panel accents (lines, card dots, icons) match the headline accent's color.
+// Tab dots and panel accents (lines, card dots, icons) match the headline accent's color.
 const panelAccent = (accent: BrandAccent) => headlineAccentGradients[accent];
 ---
 
@@ -79,15 +79,15 @@ const panelAccent = (accent: BrandAccent) => headlineAccentGradients[accent];
               i === 0 && "product-tab--active",
             ]}
           >
-            <span class={`product-tab-dot w-2.5 h-2.5 rounded-full ${dotFill(tab.accent)}`}></span>
+            <span class={`product-tab-dot w-2.5 h-2.5 rounded-full bg-gradient-to-br ${panelAccent(tab.accent)}`}></span>
             {tab.name}
           </button>
         ))}
       </div>
     </div>
 
-    {/* Tab panels */}
-    <div class="relative">
+    {/* Tab panels — reveal with the tab bar so the screenshot fades in with the text */}
+    <div class="relative reveal">
       {tabs.map((tab, i) => (
         <div
           data-panel={tab.slug}
