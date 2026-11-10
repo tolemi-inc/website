@@ -53,6 +53,8 @@ const imageUrl = image ? new URL(image, Astro.site).href : undefined;
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Raleway:wght@300;400;500;700;800&family=Montserrat:wght@400;600;700&display=swap"
       rel="stylesheet"
     />
+    <!-- RB2B visitor tracking -->
+    <script is:inline>!function(key) {if (window.reb2b) return;window.reb2b = {loaded: true};var s = document.createElement("script");s.async = true;s.src = "https://b2bjsstore.s3.us-west-2.amazonaws.com/b/" + key + "/" + key + ".js.gz";document.getElementsByTagName("script")[0].parentNode.insertBefore(s, document.getElementsByTagName("script")[0]);}("XOE9GH24DGOM");</script>
   </head>
   <body class="font-sans text-text-primary bg-surface antialiased">
     <Header companyName={siteData.companyName} nav={siteData.nav} demoBookingUrl={(siteData as any).demoBookingUrl} />
